@@ -19,9 +19,9 @@ user_route.post('/otpverification',userController.verifyotp)
 
 
 //LOGIN------------------
-// user_route.get('/login',userController.loginLoad);
-// user_route.post('/login',userController.verifyLogin);
-// user_route.get('/logout',auth.isLogin,userController.userLogout);
+user_route.get('/login',userController.loginLoad);
+user_route.post('/login',userController.verifyLogin);
+user_route.get('/logout',auth.isLogin,userController.userLogout);
 
 
 module.exports = user_route;
