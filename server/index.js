@@ -11,7 +11,6 @@ const path = require("path");
 
 
 mongoose.connect("mongodb+srv://yatheeshbc8:tDRpoZqglS7GfVVp@cluster0.sjvvmgl.mongodb.net/?retryWrites=true&w=majority");
-
 mongoose.set("strictQuery", false);
 
 
