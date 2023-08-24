@@ -10,7 +10,7 @@ const path = require("path");
 
 
 
-mongoose.connect("mongodb+srv://yatheeshbc8:tDRpoZqglS7GfVVp@cluster0.sjvvmgl.mongodb.net/?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://yatheeshbc8:tDRpoZqglS7GfVVp@cluster0.sjvvmgl.mongodb.net/?retryWrites=true&w=majority/ONLINEDOC");
 mongoose.set("strictQuery", false);
 
 
@@ -23,9 +23,7 @@ app.use(express.static(path.join(__dirname, "public"))); //Register your public 
 const createError = require('http-errors')
 
 
-//view engine setup
-app.set('view engine', 'hbs')
-app.set('views', './views')
+
 
 app.use(function(req, res, next) { 
     res.header('Cache-Control', 'no-cache, no-store');
