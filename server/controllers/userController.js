@@ -18,7 +18,7 @@ async function securePassword(password) {
   const signup=async (req,res)=>{
     try {
         const { Name, Email, Age, Mobile, Password } = req.body;
-        console.log("21",Name, Email, Age, Mobile, Password);
+        console.log("21 register",Name, Email, Age, Mobile, Password);
         const exist = await User.findOne({ email: Email });
         if (exist)res.json("email already exist") 
         else {
