@@ -1,7 +1,7 @@
 require("dotenv").config();
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
-const nodemailer = require("nodemailer")
+const mailSender = require("../config/nodeMailer");
 const config = require("../config/config")
 const randomstring = require("randomstring")
 
@@ -16,37 +16,44 @@ async function securePassword(password) {
   }
 
   const signup=async (req,res)=>{
+    console.log("<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     try {
-        const { Name, Email, Age, Mobile, Password } = req.body;
-        console.log("21 register",Name, Email, Age, Mobile, Password);
-        const exist = await User.findOne({ email: Email });
-        if (exist)res.json("email already exist") 
+        const { name, email, age, mobile, password } = req.body;
+        
+        const exist = await User.findOne({ email: email });
+        if (exist){res.json("email already exist")
+          }
         else {
-        const hashedPassword=await securePassword(Password)
+        const hashedPassword=await securePassword(password)
         const otp =Math.floor(1000+Math.random()*9000)
+        console.log(">>>>>>>>>>>>>>>>",otp)
+        console.log(otp,"otp 32");
         const string =randomstring.generate()
         const user=new User({
-            userName:Name,
-            email:Email,
-            age:Age,
-            contact:Mobile,
+            userName:name,
+            email:email,
+            age:age,
+            contact:mobile,
             password:hashedPassword,
             otp:otp,
             token:string,
-            timeStamp:dateTime
         });    
 
         const userData = await user.save();
       if (userData) {
-        await mailSender(Email, otp, "signup");
+        console.log(userData,"51 userData");
+
+        await mailSender(email, otp, "signup");
         const data = {
           message: "Check mail",
           string: string,
         };
         res.json(data);
+        console.log(data,"data 58");
       }
     }
     } catch (error) {
+      console.log(error.message, 68);
         res.json("error");
 
     }
@@ -54,9 +61,11 @@ async function securePassword(password) {
 
   
 const verify = async (req, res) => {
+  
     try {
       const { token } = req.params;
       const user = await User.findOne({ token: token });
+      console.log(user,"user 66");
       if (!user) {
         res.json("Invalid");
       } else {
