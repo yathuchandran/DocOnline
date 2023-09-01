@@ -18,22 +18,24 @@ async function securePassword(password) {
   const signup=async (req,res)=>{
     console.log("<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     try {
-        const { name, email, age, mobile, password } = req.body;
+      console.log("//////////?????????????????????????????????????????????")
+        const { Name,Email,Age,Mobile,Password } = req.body;
+        console.log(Name,Email,Age,Mobile,Password ,"Name,Email,Age,Mobile,Password 22");
         
-        const exist = await User.findOne({ email: email });
+        const exist = await User.findOne({ email: Email });
         if (exist){res.json("email already exist")
           }
         else {
-        const hashedPassword=await securePassword(password)
+        const hashedPassword=await securePassword(Password)
         const otp =Math.floor(1000+Math.random()*9000)
         console.log(">>>>>>>>>>>>>>>>",otp)
         console.log(otp,"otp 32");
         const string =randomstring.generate()
         const user=new User({
-            userName:name,
-            email:email,
-            age:age,
-            contact:mobile,
+            userName:Name,
+            email:Email,
+            age:Age,
+            contact:Mobile,
             password:hashedPassword,
             otp:otp,
             token:string,
@@ -43,7 +45,7 @@ async function securePassword(password) {
       if (userData) {
         console.log(userData,"51 userData");
 
-        await mailSender(email, otp, "signup");
+        await mailSender(Email, otp, "signup");
         const data = {
           message: "Check mail",
           string: string,
