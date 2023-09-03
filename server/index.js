@@ -29,7 +29,7 @@ const createError = require('http-errors')
 // Use the cors middleware to allow requests from localhost:3001
 app.use(
     cors({
-      origin: 'http://localhost:3001', // Replace with the actual origin of your frontend
+      origin: 'http://localhost:3000', // Replace with the actual origin of your frontend
       credentials: true, // If you are sending cookies or authentication headers
       // Add the extended option as well
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -59,7 +59,7 @@ app.use('/', userRoute)
 
 
 
-const PORT=process.env.PORT || 3000
+const PORT=process.env.PORT || 5000
 
 app.listen(PORT, function () {
     console.log(`server is running...${process.env.NODE_MODE} Mode on port ${process.env.PORT}` );

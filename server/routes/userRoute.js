@@ -9,8 +9,9 @@ require("dotenv").config();
 
 
 userRoute.post("/signup", userController.signup);
-userRoute.post("/verify/:token", userController.verify);
+userRoute.post("/otp", userController.verifyOtp);
 userRoute.post("/login", userController.login);
+//  userRoute.post("/otp", userController.verifyOtp);
 
 
 

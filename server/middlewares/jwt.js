@@ -23,3 +23,10 @@ const validateToken = (req, res, next) => {
     res.json("unauthorized");
   }
 };
+
+module.exports = {
+  createTokens,
+  
+  validateToken,
+
+};

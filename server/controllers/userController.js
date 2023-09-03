@@ -62,44 +62,34 @@ async function securePassword(password) {
   }
 
   
-const verify = async (req, res) => {
-  
-    try {
-      const { token } = req.params;
-      const user = await User.findOne({ token: token });
-      console.log(user,"user 66");
-      if (!user) {
-        res.json("Invalid");
-      } else {
-        if (user.otp != req.body.otp) {
-          res.json("Invalid");
-        } else {
-          await User.findOneAndUpdate(
-            { token: token },
-            { $set: { token: "", otp: "", isVerified: true } }
-          );
-          res.json("verified");
-        }
-      }
-    } catch (error) {
-      res.json("error");
-    }
-  };
+
+
+
+
+
   
 
   const verifyOtp = async (req, res) => {
+    console.log("hello otp ")
+    console.log(req.body,"body fo the otp")
     try {
-      const { email, otp } = req.body;
-      const user = await User.findOne({ email: email });
+      const {  otp } = req.body;
+      console.log(req.body,"body fo the otp in the try block")
+      const user = await User.findOne({ otp });
+      console.log(user,"????????????????????????????????????")
       if (user.otp != otp) {
         res.json("invalid");
+        
       }else{
+        console.log("inside else")
         await User.findOneAndUpdate(
-          { email:email },
+          
           { $set: { otp: "" } }
         );
-        res.json('valid')
+        res.status(201).json({message:"user otp correct"})
       }
+      console.log(user,"user 107")
+
   
     } catch (error) {
       console.log(error);
@@ -133,6 +123,36 @@ const login = async (req,res)=>{
     res.json("error")
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -422,9 +442,8 @@ const login = async (req,res)=>{
 module.exports = {
 
     signup,
-    verify,
     verifyOtp,
-    verifyOtp,
+    
     login,
 
     // loadRegister,
