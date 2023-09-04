@@ -1,31 +1,15 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React from 'react'
 import Signup from '../components/Signup'
-function Signup() {
+function SignupPage() {
   return (
-    <div>Signup</div>
+    <div>
+      <Signup/>
+    </div>
   )
 }
 
-export default Signup
+export default SignupPage
 
 
 

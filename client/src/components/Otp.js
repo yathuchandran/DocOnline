@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../Services/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,13 +15,15 @@ function Otp() {
    
 
 
-    const result=await axios.post('http://localhost:5000/otp',{otp}).then((res)=>{
+    const result=await axios.post('/otp',{otp}).then((res)=>{
       console.log(res,"==========result============")
 
       try {
         if(res.data.message==='user otp correct')
+
         {
-          navigate('/home')
+          console.log("user otp correct");
+          navigate('/login')
         }else
 {
   throw new Error('otp incoorect')

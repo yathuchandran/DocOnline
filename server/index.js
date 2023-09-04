@@ -1,15 +1,14 @@
-//import userRoute from './routes/userRoute.js'
-//  const mongoose = require('mongoose')
 const express = require("express");
 const cors = require('cors'); // Import the cors middleware
 const app = express();
 const userRoute = require('./routes/userRoute')
 const dotenv= require("dotenv")
-
-
-
 const path = require("path");
+const connectDB = require('./config/config');
 
+
+//mongoDB connection
+connectDB();
 //dotenv cofig
 dotenv.config()
 
@@ -46,14 +45,7 @@ app.use(function(req, res, next) {
  
 //register partial route setup
 app.use(express.static(__dirname + '/public'));
-const bodyParser = require('body-parser');
-const connectDB = require('./config/config');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
 
-
-//mongoDB connection
-connectDB();
 
 app.use('/', userRoute)
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 import PropTypes from "prop-types"; // Make sure 'PropTypes' is spelled correctly with a lowercase 'p'
-import axios from "axios";
+import axios from "../Services/axios";
 import Otp from "../pages/Otp";
 import {
   validateEmail,
@@ -10,62 +10,58 @@ import {
   validatePassword,
 } from "./validator";
 
-// Signup.propTypes = {
-//   value: PropTypes.string,
-// };
+Signup.propTypes = {
+  value: PropTypes.string,
+};
 function Signup({ value }) {
   const navigate = useNavigate();
   const [Name, setUserName] = useState("");
   const [Email, setEmail] = useState("");
-  const [Age, setAge] = useState("");
+  // const [Age, setAge] = useState("");
   const [Mobile, setMobile] = useState("");
   const [Password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  //   console.log(Name,Email,Age,Mobile,Password,"details19");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (!Name || !Email || !Mobile || !Age || !Password) {
-    // setErrorMsg('Please fill all the blanks...!')
-    // return
-    // } else {
+   if (!Name || !Email || !Mobile || !Password) {
+    setErrorMsg('Please fill all the blanks...!')
+    return
+    } else {
 
-    // if (!validateEmail(Email)) {
-    // setErrorMsg('Invalid Email id,Please enter valid email id...!')
-    // return;
-    // }
+    if (!validateEmail(Email)) {
+    setErrorMsg('Invalid Email id,Please enter valid email id...!')
+    return;
+    }
 
-    // if (!validateMobileNumber(Mobile)) {
-    // setErrorMsg("Mobile number can only have 10 digits,Please enter valid mobile number...!")
-    // return;
-    // }
+    if (!validateMobileNumber(Mobile)) {
+    setErrorMsg("Mobile number can only have 10 digits,Please enter valid mobile number...!")
+    return;
+    }
 
-    // if (!validatePassword(Password)) {
-    // setErrorMsg('Password should have a capital letter,symbol,number and atleast have 6 charectors...!')
-    // return
-    // }
+    if (!validatePassword(Password)) {
+    setErrorMsg('Password should have a capital letter,symbol,number and atleast have 6 charectors...!')
+    return
+    }
 
-    // if (Password != cPassword) {
-    // setErrorMsg("Passwords are not matching,Please try again...!")
-    // return;
-    // }
-
-    // if (Age <= 0 || Age > 120) {
-    // setErrorMsg('Please enter valid age...!')
-    // return
-    // }
+    if (Password != cPassword) {
+    setErrorMsg("Passwords are not matching,Please try again...!")
+    return;
+    }
 
     const res = await axios
-      .post("http://localhost:5000/signup", { Name, Email, Mobile, Age, Password })
+      .post("/signup", { Name, Email, Mobile, Password })
+
       .then((res) => {
         console.log(res, ">>>>>>>>>>>>>");
         try {
           if (res.data.message === "Check mail") {
             navigate("/otp");
           } else {
+            setErrorMsg(res.data)
             throw new Error("eroor occured");
           }
         } catch (error) {
@@ -74,7 +70,7 @@ function Signup({ value }) {
       });
    
   };
-
+  }
   //value == 'doctor' ?
   // await axios.post(import.meta.env.VITE_BASE_URL + 'doctor/signup', {
   //     Name,
@@ -130,8 +126,6 @@ function Signup({ value }) {
                   role="alert"
                   style={{ textAlign: "center" }}
                 >
-                  {/* // <div className="alert alert-danger" role="alert" style={{ textAlign: 'center' }}> */}
-
                   {errorMsg}
                 </div>
               ) : (
@@ -155,25 +149,6 @@ function Signup({ value }) {
                   required
                 />
               </div>
-
-              <div className="row ">
-                <div className="col-4">
-                  <label className="form-label" htmlFor="form3Example3">
-                    Age
-                  </label>
-                  <input
-                    type="number"
-                    id="form3Example3"
-                    max={120}
-                    min={1}
-                    value={Age}
-                    onChange={(e) => setAge(e.target.value)}
-                    className="form-control form-control-m"
-                    placeholder="Age..."
-                    required
-                  />
-                </div>
-                <div className="col-8">
                   <label className="form-label small" htmlFor="form3Example3">
                     Mobile
                   </label>
@@ -186,8 +161,6 @@ function Signup({ value }) {
                     placeholder="Mobile..."
                     required
                   />
-                </div>
-              </div>
               <div
                 className="form-outline mb-4"
                 style={{ textAlign: "center" }}
