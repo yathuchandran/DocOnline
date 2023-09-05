@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 import PropTypes from "prop-types"; // Make sure 'PropTypes' is spelled correctly with a lowercase 'p'
 import axios from "../Services/axios";
-import Otp from "../pages/Otp";
+import Otp from "../components/Otp";
 import {
   validateEmail,
   validateMobileNumber,
