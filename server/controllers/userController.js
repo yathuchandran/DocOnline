@@ -2,6 +2,8 @@ require("dotenv").config();
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
 const mailSender = require("../config/nodeMailer");
+const { createTokens } = require("../middlewares/jwt");
+
 const config = require("../config/config")
 const randomstring = require("randomstring")
 

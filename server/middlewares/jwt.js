@@ -7,10 +7,12 @@ const createTokens = (user) => {
 
 const validateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader);
+  console.log(authHeader,"authHeader 10jwt");
   if (authHeader) {
     const token = authHeader.split(" ")[1];
+    console.log(token,"token  13jwt");
     verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      console.log(token, process.env.JWT_SECRET,"token, process.env.JWT_SECRET 15 jwt");
       if (err) {
         res.json("unauthorized");
       }else{
