@@ -23,54 +23,64 @@ function Signup({ value }) {
   const [cPassword, setCPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-   if (!Name || !Email || !Mobile || !Password) {
-    setErrorMsg('Please fill all the blanks...!')
-    return
+    if (!Name || !Email || !Mobile || !Password) {
+      setErrorMsg("Please fill all the blanks...!");
+      return;
     } else {
+      if (!validateEmail(Email)) {
+        setErrorMsg("Invalid Email id,Please enter valid email id...!");
+        return;
+      }
 
-    if (!validateEmail(Email)) {
-    setErrorMsg('Invalid Email id,Please enter valid email id...!')
-    return;
+      if (!validateMobileNumber(Mobile)) {
+        setErrorMsg(
+          "Mobile number can only have 10 digits,Please enter valid mobile number...!"
+        );
+        return;
+      }
+
+      if (!validatePassword(Password)) {
+        setErrorMsg(
+          "Password should have a capital letter,symbol,number and atleast have 6 charectors...!"
+        );
+        return;
+      }
+
+      if (Password != cPassword) {
+        setErrorMsg("Passwords are not matching,Please try again...!");
+        return;
+      }
+
+
+      value = "doctor"
+        ? await axios
+            .post("/doctor/signup", { Name, Email, Mobile, Password })
+            .then((res) => {
+              console.log(res,"res doctor 62..... ");
+              if (res.data.message == "Check mail")
+                navigate(`/doctor/otp/${res.data.string}`);
+              else setErrorMsg(res.data);
+            })
+        : await axios
+            .post("/signup", { Name, Email, Mobile, Password })
+            .then((res) => {
+              console.log(res, ">>>>>>>>>>>>>");
+              try {
+                if (res.data.message === "Check mail") {
+                  navigate("/otp");
+                } else {
+                  setErrorMsg(res.data);
+                  throw new Error("eroor occured");
+                }
+              } catch (error) {
+                console.log(error.message);
+              }
+            });
     }
-
-    if (!validateMobileNumber(Mobile)) {
-    setErrorMsg("Mobile number can only have 10 digits,Please enter valid mobile number...!")
-    return;
-    }
-
-    if (!validatePassword(Password)) {
-    setErrorMsg('Password should have a capital letter,symbol,number and atleast have 6 charectors...!')
-    return
-    }
-
-    if (Password != cPassword) {
-    setErrorMsg("Passwords are not matching,Please try again...!")
-    return;
-    }
-
-    const res = await axios
-      .post("/signup", { Name, Email, Mobile, Password })
-
-      .then((res) => {
-        console.log(res, ">>>>>>>>>>>>>");
-        try {
-          if (res.data.message === "Check mail") {
-            navigate("/otp");
-          } else {
-            setErrorMsg(res.data)
-            throw new Error("eroor occured");
-          }
-        } catch (error) {
-          console.log(error.message);
-        }
-      });
-   
   };
-  }
   //value == 'doctor' ?
   // await axios.post(import.meta.env.VITE_BASE_URL + 'doctor/signup', {
   //     Name,
@@ -149,18 +159,18 @@ function Signup({ value }) {
                   required
                 />
               </div>
-                  <label className="form-label small" htmlFor="form3Example3">
-                    Mobile
-                  </label>
-                  <input
-                    type="tel"
-                    id="form3Example3"
-                    value={Mobile}
-                    onChange={(e) => setMobile(e.target.value)}
-                    className="form-control form-control-m"
-                    placeholder="Mobile..."
-                    required
-                  />
+              <label className="form-label small" htmlFor="form3Example3">
+                Mobile
+              </label>
+              <input
+                type="tel"
+                id="form3Example3"
+                value={Mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                className="form-control form-control-m"
+                placeholder="Mobile..."
+                required
+              />
               <div
                 className="form-outline mb-4"
                 style={{ textAlign: "center" }}

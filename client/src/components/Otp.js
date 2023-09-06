@@ -1,8 +1,13 @@
 import axios from "../Services/axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-function Otp() {
+Otp.propTypes = {
+  value: PropTypes.string,
+};
+
+function Otp({ value }) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -10,31 +15,30 @@ function Otp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (parseInt(otp) < 1000 || parseInt(otp) > 9999 || !parseInt(otp)) {
-      setErrorMsg('Invalid otp')
+      setErrorMsg("Invalid otp");
     }
-   
 
+    value == "doctor"
+      ? await axios
+          .post('/doctor/otp/', {otp})
+          .then((res) => {
+            console.log('=====doctor=result========25');
+            if (res.data == "verified") navigate("/doctor/login");
+            else setErrorMsg("Invalid otp");
+          })
+      : await axios.post("/otp", { otp }).then((res) => {
+          console.log(res, "==========result============");
 
-    const result=await axios.post('/otp',{otp}).then((res)=>{
-      console.log(res,"==========result============")
-
-      try {
-        if(res.data.message==='user otp correct')
-
-        {
-          console.log("user otp correct");
-          navigate('/login')
-        }else
-{
-  throw new Error('otp incoorect')
-}
-      } catch (error) {
-        
-      }
-
-    })
-
-}
+          try {
+            if (res.data.message === "user otp correct") {
+              console.log("user otp correct");
+              navigate("/login");
+            } else {
+              throw new Error("otp incoorect");
+            }
+          } catch (error) {}
+        });
+  };
   return (
     <section className="otpForm">
       <div
@@ -110,7 +114,14 @@ function Otp() {
                       onChange={(e) => setOtp(e.target.value)}
                     />
                   </div> */}
-                          <input type="number" value={otp} max={9999} min={1000} onChange={(e) => setOtp(e.target.value)} className='form-control ' />
+                  <input
+                    type="number"
+                    value={otp}
+                    max={9999}
+                    min={1000}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="form-control "
+                  />
 
                   <div class="mt-4">
                     <button

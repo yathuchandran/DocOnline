@@ -1,9 +1,10 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-
+import HomePage from './HomePage'
 import Signup from '../components/Signup'
 import Otp from '../components/Otp'
-import HomePage from './HomePage'
+import Login from '../components/Login'
+
 
 function User() {
   return (
@@ -12,6 +13,8 @@ function User() {
     <Route path='/' element={<HomePage />} ></Route>
           <Route path='/signup' element={<Signup />} />
           <Route path='/otp' element={<Otp />} />
+          <Route path='/login' element={<Login />} />
+
   </Routes>
     </>
   )
