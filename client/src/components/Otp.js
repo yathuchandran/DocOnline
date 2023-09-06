@@ -18,26 +18,53 @@ function Otp({ value }) {
       setErrorMsg("Invalid otp");
     }
 
-    value == "doctor"
-      ? await axios
-          .post('/doctor/otp/', {otp})
-          .then((res) => {
-            console.log('=====doctor=result========25');
-            if (res.data == "verified") navigate("/doctor/login");
-            else setErrorMsg("Invalid otp");
-          })
-      : await axios.post("/otp", { otp }).then((res) => {
-          console.log(res, "==========result============");
+    try {
+      if (value === "doctor") {
+        const res = await axios.post('/otp', { otp });
+        console.log('=====doctor=result========25');
+    
+        if (res.data === "verified") {
+          console.log("verified");
+          navigate("/login");
+        } else {
+          setErrorMsg("Invalid otp");
+        }
+      } else {
+        const res = await axios.post("/otp", { otp });
+        console.log(res, "==========result============");
+    
+        if (res.data.message === "user otp correct") {
+          console.log("user otp correct");
+          navigate("/login");
+        } else {
+          throw new Error("otp incorrect");
+        }
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+    
 
-          try {
-            if (res.data.message === "user otp correct") {
-              console.log("user otp correct");
-              navigate("/login");
-            } else {
-              throw new Error("otp incoorect");
-            }
-          } catch (error) {}
-        });
+    // value == "doctor"
+    //   ? await axios
+    //       .post('/otp', {otp})
+    //       .then((res) => {
+    //         console.log('=====doctor=result========25');
+    //         if (res.data == "verified") navigate("/doctor/login");
+    //         else setErrorMsg("Invalid otp");
+    //       })
+    //   : await axios.post("/otp", { otp }).then((res) => {
+    //       console.log(res, "==========result============");
+
+    //       try {
+    //         if (res.data.message === "user otp correct") {
+    //           console.log("user otp correct");
+    //           navigate("/login");
+    //         } else {
+    //           throw new Error("otp incoorect");
+    //         }
+    //       } catch (error) {}
+    //     });
   };
   return (
     <section className="otpForm">

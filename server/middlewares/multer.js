@@ -26,4 +26,4 @@
 // const store = multer({ storage: storage });
 
 
-module.exports={store}
+// module.exports={store}

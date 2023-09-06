@@ -1,8 +1,7 @@
 require("dotenv").config();
-const Doctor = require("../model/doctorModel");
+const Doctor = require("../models/doctorModel");
 const bcrypt = require("bcrypt");
 const randomString = require("randomstring");
-const { dateTime } = require("../config/dateAndTime");
 const mailSender = require("../config/nodeMailer");
 const { createDoctorTokens } = require("../middlewares/jwt");
 
@@ -21,7 +20,7 @@ async function securePassword(password) {
     try {
       //AGE KALANJ
         const { Name,Email,Mobile,Password } = req.body;
-        console.log(Name,Email,Mobile,Password ,"Name,Email,Age,Mobile,Password 22");
+        console.log(Name,Email,Mobile,Password ,"DOCTOR SIGNUP Name,Email,Age,Mobile,Password 22");
         
         const exist = await Doctor.findOne({ email: Email });
         if (exist){res.json("email already exist")
@@ -64,19 +63,21 @@ async function securePassword(password) {
     
     try {
       const {  otp } = req.body;
-      const user = await User.findOne({ otp });
-      if (user.otp != otp) {
+      console.log(req.body,"req.body 67");
+      const doctor = await Doctor.findOne({ otp });
+      console.log(doctor,"doctor  69");
+      if (doctor.otp != otp) {
         res.json("invalid");
         
       }else{
         console.log("inside else")
-        await User.findOneAndUpdate(
+        await Doctor.findOneAndUpdate(
           
           { $set: { otp: "" } }
         );
         res.status(201).json({message:"user otp correct"})
       }
-      console.log(user,"user 107")
+      console.log(doctor,"doctor 107")
 
   
     } catch (error) {

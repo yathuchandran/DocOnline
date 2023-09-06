@@ -54,31 +54,69 @@ function Signup({ value }) {
         return;
       }
 
+      if (value === "doctor") {
+        try {
+          const res = await axios.post("/signup", { Name, Email, Mobile, Password });
+          console.log(res, "res doctor 62..... ");
+          
+          if (res.data.message === "Check mail") {
+            navigate('/doctor/otp/');
+          } else {
+            throw new Error("Error occurred");
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else {
+        try {
+          const res = await axios.post("/signup", { Name, Email, Mobile, Password });
+          console.log(res, ">>>>>>>>>>>>>");
+          
+          if (res.data.message === "Check mail") {
+            navigate("/otp");
+          } else {
+            setErrorMsg(res.data);
+            throw new Error("Error occurred");
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+      
 
-      value = "doctor"
-        ? await axios
-            .post("/doctor/signup", { Name, Email, Mobile, Password })
-            .then((res) => {
-              console.log(res,"res doctor 62..... ");
-              if (res.data.message == "Check mail")
-                navigate('/doctor/otp/');
-              else setErrorMsg(res.data);
-            })
-        : await axios
-            .post("/signup", { Name, Email, Mobile, Password })
-            .then((res) => {
-              console.log(res, ">>>>>>>>>>>>>");
-              try {
-                if (res.data.message === "Check mail") {
-                  navigate("/otp");
-                } else {
-                  setErrorMsg(res.data);
-                  throw new Error("eroor occured");
-                }
-              } catch (error) {
-                console.log(error.message);
-              }
-            });
+      // value = "doctor"
+      //   ? await axios
+      //       .post("/doctor/signup", { Name, Email, Mobile, Password })
+      //       .then((res) => {
+      //         console.log(res,"res doctor 62..... ");
+      //         // if (res.data.message == "Check mail")
+      //         //   navigate('/doctor/otp/');
+      //         // else setErrorMsg(res.data);
+      //         try {
+      //           if (res.data.message == "Check mail"){}
+      //           navigate('/doctor/otp/');
+      //         }else{
+      //           throw new Error("eroor occured");
+      //         }
+      //         } catch (error) {
+      //           console.log(error.message);
+      //         }
+      //       })
+      //   : await axios
+      //       .post("/signup", { Name, Email, Mobile, Password })
+      //       .then((res) => {
+      //         console.log(res, ">>>>>>>>>>>>>");
+      //         try {
+      //           if (res.data.message === "Check mail") {
+      //             navigate("/otp");
+      //           } else {
+      //             setErrorMsg(res.data);
+      //             throw new Error("eroor occured");
+      //           }
+      //         } catch (error) {
+      //           console.log(error.message);
+      //         }
+      //       });
     }
   };
   //value == 'doctor' ?
