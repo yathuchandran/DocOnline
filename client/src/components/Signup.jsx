@@ -61,7 +61,7 @@ function Signup({ value }) {
             .then((res) => {
               console.log(res,"res doctor 62..... ");
               if (res.data.message == "Check mail")
-                navigate(`/doctor/otp/${res.data.string}`);
+                navigate('/doctor/otp/');
               else setErrorMsg(res.data);
             })
         : await axios
