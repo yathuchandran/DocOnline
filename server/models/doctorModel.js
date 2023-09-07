@@ -47,10 +47,10 @@ const doctorSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  timeStamp: {
-    type: String,
-    required: true,
-  },
+  // timeStamp: {
+  //   type: String,
+  //   required: true,
+  // },
   image: {
     type: String,
   },

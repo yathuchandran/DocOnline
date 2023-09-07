@@ -2,29 +2,46 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../Services/axios";
 
-function Login() {
+function Login({ value }) {
   const navigate = useNavigate();
-    const [errorMsg, setErrorMsg] = useState("");
-
+  const [errorMsg, setErrorMsg] = useState("");
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post("/login", input);
-      console.log("res15=============");
-      if (res.status === 200) {
-        // alert(res.data.message);
 
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("name", res.data.name);
-        localStorage.setItem("email", res.data.email);
-        navigate("/");
+    try {
+      if (value === "doctor") {
+        const res = await axios.post("/doctor/login", input);
+        console.log(res, "===doctor=login");
+
+        if (res.status === 200) {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("name", res.data.name); // You probably want to store the actual name and email values from the response
+          localStorage.setItem("email", res.data.email);
+          navigate("/doctor");
+        } else {
+          setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
+        }
+      } else {
+        const res = await axios.post("/login", input);
+        console.log(res, "res15=============");
+
+        if (res.status === 200) {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("name", res.data.name);
+          localStorage.setItem("email", res.data.email);
+          navigate("/");
+        } else {
+          setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
+        }
       }
     } catch (error) {
       console.log(error);
+      setErrorMsg("An error occurred"); // Handle network or other unexpected errors
     }
   };
   return (
@@ -53,7 +70,7 @@ function Login() {
           </div>
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1  ">
             <form onSubmit={handleLogin}>
-            {errorMsg ? (
+              {errorMsg ? (
                 <div
                   className="alert alert-danger"
                   role="alert"
@@ -66,7 +83,6 @@ function Login() {
               ) : (
                 ""
               )}
-
               <div className="form-outline mb-4" style={{ textAlign: "start" }}>
                 <label
                   className="form-label small"

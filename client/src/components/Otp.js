@@ -1,6 +1,6 @@
 import axios from "../Services/axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 Otp.propTypes = {
@@ -8,63 +8,42 @@ Otp.propTypes = {
 };
 
 function Otp({ value }) {
+  const { token } = useParams();
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (parseInt(otp) < 1000 || parseInt(otp) > 9999 || !parseInt(otp)) {
-      setErrorMsg("Invalid otp");
-    }
 
-    try {
-      if (value === "doctor") {
-        const res = await axios.post('/otp', { otp });
-        console.log('=====doctor=result========25');
-    
-        if (res.data === "verified") {
-          console.log("verified");
-          navigate("/login");
+    if (isNaN(parseInt(otp)) || parseInt(otp) < 1000 || parseInt(otp) > 9999) {
+      setErrorMsg("Invalid OTP");
+    } else {
+      try {
+        if (value === "doctor") {
+          const res = await axios.post(`/doctor/otp/${token}`, { otp: parseInt(otp) });
+          console.log("=====doctor=result========25");
+
+          if (res.status === 200) {
+            console.log("Verified");
+            navigate("/doctor/login");
+          } else {
+            setErrorMsg("Invalid OTP");
+          }
         } else {
-          setErrorMsg("Invalid otp");
+          const res = await axios.post("/otp", { otp });
+          console.log(res, "==========result============");
+
+          if (res.data.message === "user otp correct") {
+            navigate("/login");
+          } else {
+            throw new Error("OTP incorrect");
+          }
         }
-      } else {
-        const res = await axios.post("/otp", { otp });
-        console.log(res, "==========result============");
-    
-        if (res.data.message === "user otp correct") {
-          console.log("user otp correct");
-          navigate("/login");
-        } else {
-          throw new Error("otp incorrect");
-        }
+      } catch (error) {
+        console.error(error.message);
       }
-    } catch (error) {
-      console.error(error.message);
     }
-    
-
-    // value == "doctor"
-    //   ? await axios
-    //       .post('/otp', {otp})
-    //       .then((res) => {
-    //         console.log('=====doctor=result========25');
-    //         if (res.data == "verified") navigate("/doctor/login");
-    //         else setErrorMsg("Invalid otp");
-    //       })
-    //   : await axios.post("/otp", { otp }).then((res) => {
-    //       console.log(res, "==========result============");
-
-    //       try {
-    //         if (res.data.message === "user otp correct") {
-    //           console.log("user otp correct");
-    //           navigate("/login");
-    //         } else {
-    //           throw new Error("otp incoorect");
-    //         }
-    //       } catch (error) {}
-    //     });
   };
   return (
     <section className="otpForm">
@@ -104,43 +83,6 @@ function Otp({ value }) {
                     <span>A code has been sent to</span>{" "}
                     <small>*******@gmail.com</small>
                   </div>
-                  {/* <div
-                    id="otp"
-                    class="inputs d-flex flex-row justify-content-center mt-2"
-                  >
-                    <input
-                      class="m-2 text-center form-control rounded"
-                      type="text"
-                      id="otp-input-0"
-                      max={9}
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                    />
-                    <input
-                      class="m-2 text-center form-control rounded"
-                      type="text"
-                      id="otp-input-1"
-                      max={9}
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                    />
-                    <input
-                      class="m-2 text-center form-control rounded"
-                      type="text"
-                      id="otp-input-2"
-                      max={9}
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                    />
-                    <input
-                      class="m-2 text-center form-control rounded"
-                      type="text"
-                      id="otp-input-3"
-                      max={9}
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                    />
-                  </div> */}
                   <input
                     type="number"
                     value={otp}
@@ -164,14 +106,7 @@ function Otp({ value }) {
                     </button>
                   </div>
                 </div>
-                {/* <div className="card-2">
-                  <div className="content d-flex justify-content-center align-items-center">
-                    <span>Didn't get the code</span>
-                    <a href="#" className="text-decoration-none ms-3">
-                      Resend(1/3)
-                    </a>
-                  </div>
-                </div> */}
+                
               </div>
             </div>
           </form>
@@ -182,3 +117,6 @@ function Otp({ value }) {
 }
 
 export default Otp;
+
+
+

@@ -10,14 +10,15 @@ import {
   validatePassword,
 } from "./validator";
 
+
 Signup.propTypes = {
   value: PropTypes.string,
 };
+
 function Signup({ value }) {
   const navigate = useNavigate();
   const [Name, setUserName] = useState("");
   const [Email, setEmail] = useState("");
-  // const [Age, setAge] = useState("");
   const [Mobile, setMobile] = useState("");
   const [Password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
@@ -26,121 +27,51 @@ function Signup({ value }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!Name || !Email || !Mobile || !Password) {
-      setErrorMsg("Please fill all the blanks...!");
+    if (!Name || !Email || !Mobile || !Password || !cPassword) {
+      setErrorMsg("Please fill in all the fields.");
       return;
-    } else {
-      if (!validateEmail(Email)) {
-        setErrorMsg("Invalid Email id,Please enter valid email id...!");
-        return;
-      }
+    }
 
-      if (!validateMobileNumber(Mobile)) {
-        setErrorMsg(
-          "Mobile number can only have 10 digits,Please enter valid mobile number...!"
-        );
-        return;
-      }
+    if (!validateEmail(Email)) {
+      setErrorMsg("Invalid email address. Please enter a valid email.");
+      return;
+    }
 
-      if (!validatePassword(Password)) {
-        setErrorMsg(
-          "Password should have a capital letter,symbol,number and atleast have 6 charectors...!"
-        );
-        return;
-      }
+    if (!validateMobileNumber(Mobile)) {
+      setErrorMsg("Invalid mobile number. Please enter a valid 10-digit number.");
+      return;
+    }
 
-      if (Password != cPassword) {
-        setErrorMsg("Passwords are not matching,Please try again...!");
-        return;
-      }
+    if (!validatePassword(Password)) {
+      setErrorMsg("Invalid password format. Password should have a capital letter, symbol, number, and be at least 6 characters long.");
+      return;
+    }
 
-      if (value === "doctor") {
-        try {
-          const res = await axios.post("/signup", { Name, Email, Mobile, Password });
-          console.log(res, "res doctor 62..... ");
-          
-          if (res.data.message === "Check mail") {
-            navigate('/doctor/otp/');
-          } else {
-            throw new Error("Error occurred");
-          }
-        } catch (error) {
-          console.log(error.message);
-        }
+    if (Password !== cPassword) {
+      setErrorMsg("Passwords do not match. Please try again.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(value === "doctor" ? "/doctor/signup" : "/signup", {
+        Name,
+        Email,
+        Mobile,
+        Password,
+      });
+
+      console.log(res, "Response");
+
+      if (res.data.message === "Check mail") {
+        navigate(value === "doctor" ? `/doctor/otp/${res.data.string}` : "/otp");
       } else {
-        try {
-          const res = await axios.post("/signup", { Name, Email, Mobile, Password });
-          console.log(res, ">>>>>>>>>>>>>");
-          
-          if (res.data.message === "Check mail") {
-            navigate("/otp");
-          } else {
-            setErrorMsg(res.data);
-            throw new Error("Error occurred");
-          }
-        } catch (error) {
-          console.log(error.message);
-        }
+        setErrorMsg("Error occurred");
       }
-      
-
-      // value = "doctor"
-      //   ? await axios
-      //       .post("/doctor/signup", { Name, Email, Mobile, Password })
-      //       .then((res) => {
-      //         console.log(res,"res doctor 62..... ");
-      //         // if (res.data.message == "Check mail")
-      //         //   navigate('/doctor/otp/');
-      //         // else setErrorMsg(res.data);
-      //         try {
-      //           if (res.data.message == "Check mail"){}
-      //           navigate('/doctor/otp/');
-      //         }else{
-      //           throw new Error("eroor occured");
-      //         }
-      //         } catch (error) {
-      //           console.log(error.message);
-      //         }
-      //       })
-      //   : await axios
-      //       .post("/signup", { Name, Email, Mobile, Password })
-      //       .then((res) => {
-      //         console.log(res, ">>>>>>>>>>>>>");
-      //         try {
-      //           if (res.data.message === "Check mail") {
-      //             navigate("/otp");
-      //           } else {
-      //             setErrorMsg(res.data);
-      //             throw new Error("eroor occured");
-      //           }
-      //         } catch (error) {
-      //           console.log(error.message);
-      //         }
-      //       });
+    } catch (error) {
+      console.error(error.message);
     }
   };
-  //value == 'doctor' ?
-  // await axios.post(import.meta.env.VITE_BASE_URL + 'doctor/signup', {
-  //     Name,
-  //     Email,
-  //     Age,
-  //     Mobile,
-  //     Password
-  // }).then(res => {
-  //     if (res.data.message === 'Check mail') history(`/doctor/verify/${res.data.string}`)
-  //     else setErrorMsg(res.data)
-  // })
-  // :
-  // await axios.post('http://localhost:3000/signup', {
-  //     Name,
-  //     Email,
-  //     Age,
-  //     Mobile,
-  //     Password
-  // }).then(res => {
-  //     if (res.data.message === 'Check mail') history(`/verify/${res.data.string}`)
-  //     else setErrorMsg(res.data)
-  // })
+
 
   return (
     <section className="logForm  ">
