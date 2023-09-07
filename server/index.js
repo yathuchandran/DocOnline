@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const app = express();
+const app = express(); // Use express() to create an instance of the Express app
 const userRoute = require("./routes/userRoute");
 const doctorRoute = require("./routes/doctorRoute");
 const dotenv = require("dotenv");
