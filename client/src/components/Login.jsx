@@ -22,7 +22,7 @@ function Login({ value }) {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("name", res.data.name); // You probably want to store the actual name and email values from the response
           localStorage.setItem("email", res.data.email);
-          navigate("/doctor");
+          navigate("/doctor/");
         } else {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
         }

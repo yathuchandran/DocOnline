@@ -97,12 +97,31 @@ const login =async (req,res)=>{
     const docData=await Doctor.findOne({email:email})
     if (docData) {
       console.log(docData,"docdat=99");
+      const passwordMatch=await bcrypt.compare(password,docData?.password)
+      console.log(password,docData?.password,"password,docData?.password 101");
+      if (passwordMatch) {
+        if (docData.isVerified ===true){
+          if(!docData.isBlocked){
+            const token=createDoctorTokens(docData._id)
+            console.log(token,"token  106");
+            res.json({docData,token})
+          }else{
+            res.json("blocked")
+          }
+        }else {
+          res.json("unverified");
+        }
+      } else {
+        res.json("unauthorized");
+      }
+    }else {
+      res.json("unauthorized");
     }
   } catch (error) {
-    
-  }
+    res.json("error")
+    console.log(error,"error--129");  
 }
-
+}
 
 
 
