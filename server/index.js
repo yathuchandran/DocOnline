@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express(); // Use express() to create an instance of the Express app
 const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
 const doctorRoute = require("./routes/doctorRoute");
 const dotenv = require("dotenv");
 const path = require("path");
@@ -36,8 +37,10 @@ app.use(express.static(__dirname + '/public'));
 // Routes
 app.use("/", userRoute);
 app.use("/doctor", doctorRoute);
+app.use("/admin", adminRoute);
 
-const PORT = process.env.PORT || 5000;
+
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, function () {
   console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);

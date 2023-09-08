@@ -26,22 +26,25 @@ function Login({ value }) {
         } else {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
         }
-
       } else if (value === "admin") {
-
-       const res= await axios.post('admin/login',input)
+        const res = await axios.post("admin/login", input);
         console.log("====ADMIN======");
-          if (res.status === 200) {
+
+        if (res.data === "unauthorized") {
+          
+          setErrorMsg("invalid email or password");
+        } else if (res.data === "blocked") {
+          setErrorMsg("Your access has been blocked...!");
+        } else {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("name", res.data.name); // You probably want to store the actual name and email values from the response
           localStorage.setItem("email", res.data.email);
           navigate("/admin/");
+        }
+        // else {
+        //   setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
 
-          } else {
-            setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
-
-          }
-        
+        // }
       } else {
         const res = await axios.post("/login", input);
         console.log(res, "res15=============");
