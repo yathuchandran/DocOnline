@@ -27,24 +27,30 @@ function Login({ value }) {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
         }
       } else if (value === "admin") {
-        const res = await axios.post("admin/login", input);
-        console.log("====ADMIN======");
-
-        if (res.data === "unauthorized") {
-          
-          setErrorMsg("invalid email or password");
-        } else if (res.data === "blocked") {
-          setErrorMsg("Your access has been blocked...!");
-        } else {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("name", res.data.name); // You probably want to store the actual name and email values from the response
-          localStorage.setItem("email", res.data.email);
-          navigate("/admin/");
+        try {
+          const res = await axios.post("admin/login", input);
+          console.log("====ADMIN======");
+        
+          if (res.status === 401) {
+            setErrorMsg("Invalid email or password");
+          } else if (res.status === 403) {
+            setErrorMsg("Your access has been blocked...!");
+          } else if (res.status === 200) {
+            const { token, name, email } = res.data;
+            localStorage.setItem("token", token);
+            localStorage.setItem("name", name);
+            localStorage.setItem("email", email);
+            navigate("/admin/");
+          } else {
+            // Handle other status codes if needed
+            setErrorMsg("An error occurred while logging in.");
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+          setErrorMsg("An error occurred while logging in.");
         }
-        // else {
-        //   setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
-
-        // }
+        
+        
       } else {
         const res = await axios.post("/login", input);
         console.log(res, "res15=============");
