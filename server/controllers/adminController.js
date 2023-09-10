@@ -7,40 +7,34 @@ const { createAdminTokens } = require("../middlewares/jwt");
 const login = async (req, res) => {
   console.log("login");
   try {
-    console.log(1);
     const { email, password } = req.body;
-    console.log(req.body,"req.body  12");
-    const adminData = await Admin.findOne({ email:email }); // Use findOne instead of find
-    console.log(adminData, "adminData 14.fn");
+    console.log(req.body, "req.body 12");
+
+    const adminData = await Admin.findOne({ email: email });
+    
+    console.log(adminData, "adminData =15");
+
     if (adminData) {
-      const passwordMatch = await bcrypt.compare(password, adminData.password);
-      if (passwordMatch) {
+      if (password === adminData.password) { // Direct password comparison
+        console.log(password, adminData.password, "passwordMatch21");
         if (!adminData.isBlocked) {
           const token = createAdminTokens(adminData._id);
-          res.json({ adminData, token });
+          console.log(token, "token==25");
+          res.status(200).json({ token, name: adminData.name, email: adminData.email });
         } else {
-          res.json("blocked");
+          res.status(403).json({ error: "Your access has been blocked." });
         }
       } else {
-        res.json("unauthorized");
+        res.status(401).json({ error: "Invalid email or password." });
       }
     } else {
-      res.json("unauthorized");
+      res.status(401).json({ error: "Invalid email or password." });
     }
   } catch (error) {
-    console.error(error); // Log the actual error for debugging
-    res.status(500).json("error"); // Return a 500 Internal Server Error status code
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while processing your request." });
   }
 };
-
-
-
-
-
-
-
-
-
 
 
 

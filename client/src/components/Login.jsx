@@ -19,9 +19,8 @@ function Login({ value }) {
         console.log(res, "===doctor=login");
 
         if (res.status === 200) {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("name", res.data.name); // You probably want to store the actual name and email values from the response
-          localStorage.setItem("email", res.data.email);
+          localStorage.setItem("doctorToken", res.data.token);
+        
           navigate("/doctor/");
         } else {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
@@ -36,10 +35,8 @@ function Login({ value }) {
           } else if (res.status === 403) {
             setErrorMsg("Your access has been blocked...!");
           } else if (res.status === 200) {
-            const { token, name, email } = res.data;
-            localStorage.setItem("token", token);
-            localStorage.setItem("name", name);
-            localStorage.setItem("email", email);
+            localStorage.setItem("adminToken",res.data.token);
+            
             navigate("/admin/");
           } else {
             // Handle other status codes if needed
@@ -56,9 +53,8 @@ function Login({ value }) {
         console.log(res, "res15=============");
 
         if (res.status === 200) {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("name", res.data.name);
-          localStorage.setItem("email", res.data.email);
+          localStorage.setItem("userToken", res.data.token);
+          
           navigate("/");
         } else {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
