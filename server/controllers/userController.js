@@ -60,6 +60,7 @@ async function securePassword(password) {
     }
   }
 
+
   
 
 
@@ -127,6 +128,15 @@ const login = async (req,res)=>{
 
 
 
+const userData = async (req, res) => {
+
+  try {
+    const userData = await User.findOne({ _id: req._id.id });
+    console.log(userData, req._id.id , "_id: req._id.id =135");
+
+    res.json(userData);
+  } catch (error) {}
+};
 
 
 
@@ -141,4 +151,5 @@ module.exports = {
     signup,
     verifyOtp,
     login,
+    userData,
 }
