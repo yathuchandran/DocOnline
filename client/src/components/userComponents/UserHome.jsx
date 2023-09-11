@@ -12,9 +12,7 @@ function UserHome() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          import.meta.env.VITE_BASE_URL + "departments"
-        );
+        const response = await axios.get("departments");
         setDepartments(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

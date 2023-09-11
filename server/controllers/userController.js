@@ -88,45 +88,40 @@ async function securePassword(password) {
       console.log(error);
     }
   };
-
-  
-const login = async (req,res)=>{
-  try {
-    const {email,password}=req.body;
-    console.log(email,password,"email,password--92");
-    const userData=await User.findOne({email:email});
-    if(userData){
-      console.log(userData,"userData--107");
-      const passwordMatch = await bcrypt.compare(password,userData?.password)
-      console.log(password,userData.password,"password,userData.password ---97");
-      if (passwordMatch) {
-        if (userData.isVerified === true) {
-          if (!userData.isBlocked) {
-            const token = createTokens(userData._id);
-            console.log(token,"token 102");
-            res.json({ userData, token });
+  const login = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      console.log(email, password, "email,password--92");
+      const userData = await User.findOne({ email: email });
+      if (userData) {
+        const passwordMatch = await bcrypt.compare(password, userData.password);
+        console.log(password, userData.password, "password,userData.password ---97");
+        if (passwordMatch) {
+          console.log(userData.isVerified,"userData.isVerified==101");
+          if (userData.isVerified === false) {
+            console.log("keri");
+            if (!userData.isBlocked) {
+              const token = createTokens(userData._id);
+              console.log(token, "token 102");
+              res.json({ userData, token });
+            } else {
+              res.json("blocked");
+            }
           } else {
-            res.json("blocked");
+            res.json("unverified");
           }
         } else {
-          res.json("unverified");
+          res.json("unauthorized");
         }
       } else {
         res.json("unauthorized");
       }
-    }else {
-      res.json("unauthorized");
+    } catch (error) {
+      console.error(error, "error--129");
+      res.status(500).json({ error: "An error occurred" });
     }
-  } catch (error) {
-    res.json("error")
-    console.log(error,"error--129");
-  }
-}
-
-
-
-
-
+  };
+  
 
 const userData = async (req, res) => {
 

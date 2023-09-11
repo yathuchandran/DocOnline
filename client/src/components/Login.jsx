@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../Services/axios";
+import useAuth from '../context/hooks/useAuth'
+import { useDispatch } from 'react-redux'
+import { setUserData } from '../redux/userData'
+import { setDoctorData } from '../redux/doctorData'
+import { setAdminData } from '../redux/adminData'
 
 function Login({ value }) {
+  const { setUser, setDoctor, setAdmin } = useAuth()
+  const dispatch = useDispatch()
+
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [input, setInput] = useState({
@@ -20,51 +28,56 @@ function Login({ value }) {
 
         if (res.status === 200) {
           localStorage.setItem("doctorToken", res.data.token);
-        
+          setDoctor(true)
+          dispatch(setDoctorData(res.data.doctorData))
           navigate("/doctor/");
         } else {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
         }
       } else if (value === "admin") {
-        try {
-          const res = await axios.post("admin/login", input);
-          console.log("====ADMIN======");
-        
-          if (res.status === 401) {
-            setErrorMsg("Invalid email or password");
-          } else if (res.status === 403) {
-            setErrorMsg("Your access has been blocked...!");
-          } else if (res.status === 200) {
-            localStorage.setItem("adminToken",res.data.token);
-            
-            navigate("/admin/");
-          } else {
-            // Handle other status codes if needed
-            setErrorMsg("An error occurred while logging in.");
-          }
-        } catch (error) {
-          console.error("An error occurred:", error);
+        const res = await axios.post("/admin/login", input);
+        console.log("====ADMIN======");
+
+        if (res.status === 401) {
+          setErrorMsg("Invalid email or password");
+        } else if (res.status === 403) {
+          setErrorMsg("Your access has been blocked...!");
+        } else if (res.status === 200) {
+          localStorage.setItem("adminToken", res.data.token);
+          dispatch(setAdminData(res.data.adminData))
+          setAdmin(true)
+
+          navigate("/admin/");
+        } else {
+          // Handle other status codes if needed
           setErrorMsg("An error occurred while logging in.");
         }
-        
-        
       } else {
+        console.log("user");
         const res = await axios.post("/login", input);
         console.log(res, "res15=============");
 
-        if (res.status === 200) {
+        if (res.data === 'unauthorized') {
+          setErrorMsg('Invalid email or password...!');
+        } else if (res.data === 'unverified') {
+          setErrorMsg("Mail not verified, please check your email...!");
+        } else if (res.data === 'blocked') {
+          setErrorMsg('This account has been blocked. Please contact the support team...!');
+        } else if (res.status === 200) {
           localStorage.setItem("userToken", res.data.token);
-          
+          setUser(true)
+          dispatch(setUserData(res.data.userData))
           navigate("/");
         } else {
-          setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
+          setErrorMsg("An error occurred while logging in."); // Handle other status codes or error messages from the server
         }
       }
     } catch (error) {
-      console.log(error);
-      setErrorMsg("An error occurred"); // Handle network or other unexpected errors
+      console.error("An error occurred:", error);
+      setErrorMsg("An error occurred while logging in."); // Handle network or other unexpected errors
     }
   };
+
   return (
     <section className="logForm  ">
       <div

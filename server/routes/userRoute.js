@@ -7,7 +7,7 @@ const { authUser } = require("../middlewares/auth.js");
 require("dotenv").config();
 
 
-
+console.log("hi");
 userRoute.post("/signup", userController.signup);
 userRoute.post("/otp", userController.verifyOtp);
 userRoute.post("/login", userController.login);
