@@ -1,0 +1,29 @@
+.side {
+    display: block;
+  }
+  
+  .dataButton {
+    background-color: rgb(96, 84, 236);
+    margin: 50px;
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+  }
+  .adminCont {
+    background-color: rgb(250, 247, 247);
+    margin-right: 0;
+    padding-right: 0;
+  }
+  @media (max-width: 770px) {
+    .side {
+      display: none;
+    }
+  }
+ 
+  .btn{
+    color: rgb(245, 238, 238);
+  }
+  .col-md-3 {
+    height: 100%;
+  }
+  
