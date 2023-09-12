@@ -5,7 +5,7 @@ require("dotenv").config();
 const { validateDoctorToken } = require("../middlewares/jwt");
 const upload = require("../middlewares/multer");
 
-
+console.log("heelloo docRoute");
 doctorRoute.post("/signup", doctorController.signup);
 doctorRoute.post("/otp/:token", doctorController.verifyOtp);
 doctorRoute.post("/login", doctorController.login);
