@@ -1,4 +1,8 @@
 const Admin = require("../models/adminModel");
+const Patients = require("../models/userModel");
+const User = require("../models/userModel");
+
+
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const { createAdminTokens } = require("../middlewares/jwt");
@@ -36,9 +40,38 @@ const login = async (req, res) => {
   }
 };
 
+const adminData = async (req, res) => {
+  console.log("adminData===40");
+  try {
+    const data = await Admin.findOne({ _id: req._id.id });
+    res.json(data);
+  } catch (error) {
+    res.json("error");
+  }
+};
+
+
+
+
+const patientsss = async (req, res) => {
+  console.log("patients controll");
+  try {
+    const patients = await Patients.find();
+    console.log(patients, "patients 59");
+    res.status(200).json(patients); // Send status 200 (OK) and the JSON data
+  } catch (error) {
+    console.error("Error in fetching patients:", error);
+    res.status(500).json({ error: "Internal server error" }); // Send a 500 (Internal Server Error) status and an error JSON object
+  }
+};
+
+
+
 
 
 
   module.exports = {
     login,
+    adminData,
+    patientsss,
   }

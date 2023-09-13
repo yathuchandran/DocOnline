@@ -8,8 +8,8 @@ function AdminSidebar() {
     const navigate =useNavigate()
 
     const handlePatient=useCallback(()=>{
-        console.log("==patients");
-        navigate('/patients')
+       
+        navigate('/admin/patients')
     },[navigate])
 
 
