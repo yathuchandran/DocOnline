@@ -205,8 +205,8 @@ function Signup({ value }) {
                   type="button"
                   className="btn btn-success btn-lg btn-md"
                   style={{
-                    backgroundColor: "#002147", // Add the background color here
-                    color: "white", // Optionally, set the text color
+                    backgroundColor: "#002147", 
+                    color: "white", 
                   }}
                   onClick={handleSubmit}
                 >

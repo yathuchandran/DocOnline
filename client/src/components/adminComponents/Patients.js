@@ -1,22 +1,22 @@
-
-
-import React, { useEffect, useState } from 'react'
-import axios from '../../Services/axios'
-import DataTables from '../dataTables'
+import React, { useEffect, useState } from "react";
+import axios from "../../Services/axios";
+import DataTables from "../dataTables";
+import View from "./View";
 
 
 function Patients() {
-  const [patientsList,setPatientsList]=useState([])
-  const [search, setSearch] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [patientsList, setPatientsList] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState('')
 
-  const adminToken = localStorage.getItem('adminToken')
+  const adminToken = localStorage.getItem("adminToken");
 
   const viewPatient = (row) => {
-    const doc = patientsList.filter(el => el._id == row._id)
-    console.log(doc,"patientsList");
-    // setSelectedPatient(doc[0])
-  }
+    const doc = patientsList.filter((el) => el._id == row._id);
+    console.log(doc, "patientsList");
+     setSelectedPatient(doc[0])
+  };
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
@@ -30,26 +30,37 @@ function Patients() {
 
   const columns = [
     {
-      name: 'ID',
-      selector: (row) => row._id
+      name: "ID",
+      selector: (row) => row._id,
     },
     {
-      name: 'name',
-      selector: (row) => row.userName
+      name: "name",
+      selector: (row) => row.userName,
     },
     {
-      name: 'contact',
-      selector: (row) => row.contact
+      name: "contact",
+      selector: (row) => row.contact,
     },
-    {
-      name: 'age',
-      selector: (row) => row.age
-    },
+    // {
+    //   name: "age",
+    //   selector: (row) => row.age,
+    // },
     {
       name: "Action",
-      cell: row => <button className="btn btn-success" onClick={() => viewPatient(row)}>View</button>
-    }
-  ]
+      cell: (row) => (
+        <button
+          className="btn "
+          style={{
+            backgroundColor: "#002147",
+            color: "white",
+          }}
+          onClick={() => viewPatient(row)}
+        >
+          View
+        </button>
+      ),
+    },
+  ];
 
   useEffect(() => {
     const patientData = async () => {
@@ -57,12 +68,15 @@ function Patients() {
       try {
         console.log("patientData======");
 
-        const res = await axios.get('admin/patients');
+        const res = await axios.get("admin/patients", {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          }
+        })
         console.log(res, "res 10");
         console.log(res.data, "res.status 11");
-        setPatientsList(res.data)
+        setPatientsList(res.data);
 
-  
         if (res.status === 200) {
           console.log("successs patient");
         } else {
@@ -73,27 +87,30 @@ function Patients() {
         console.error("An error occurred:", error);
       }
     };
-  
+
     patientData();
-  }, []); // Make sure to include an empty dependency array to run the effect only once
-  
+  }, [adminToken]); // Make sure to include an empty dependency array to run the effect only once
+
   return (
     <div>
-      <h1>Patient</h1>
-      <input type="text"
-      
-      placeholder='search..'
-      className='form-controll' />
+       {
+        selectedPatient ? <View user={selectedPatient} setSelected={setSelectedPatient} value="patient" /> :
+          (
+        <div>
+          <h1>Patient</h1>
+          <input
+            type="text"
+            value={search}
+            onChange={handleSearch}
+            placeholder="search.."
+            className="form-controll"
+          />
 
-      <DataTables columns={columns} title='Patients'  />
-
-
-<div>
-      
-      </div>
+          <DataTables columns={columns} title="Patients" data={filteredData} />
+        </div>
+          )}
     </div>
-   
-  )
+  );
 }
 
-export default Patients
+export default Patients;

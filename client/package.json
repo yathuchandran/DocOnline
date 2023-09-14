@@ -14,6 +14,7 @@
     "antd": "^5.8.4",
     "axios": "^1.4.0",
     "dom": "^0.0.3",
+    "file-saver": "^2.0.5",
     "mdb-react-ui-kit": "^6.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
