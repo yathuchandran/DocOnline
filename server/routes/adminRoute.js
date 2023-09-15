@@ -5,14 +5,9 @@ const { validateAdminToken } = require("../middlewares/jwt");
 const upload = require("../middlewares/multer");
 require("dotenv").config();
 
-
 adminRoute.post("/login", adminController.login);
 //adminRoute.get("/adminData", validateAdminToken,(()=>{console.log("admindata route")}), adminController.adminData);
 adminRoute.get("/patients", adminController.patientsss);
-
-
-
-
-
+adminRoute.patch("/managePatient/:patientId",(()=>{"ADMINROUTE"}),validateAdminToken, adminController.managePatient);
 
 module.exports = adminRoute;
