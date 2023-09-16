@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Sidebar from "./adminComponents/AdminSidebar"
+import DocSidebar from './DoctorComponents/DocSidebar';
 import { IoIosContact } from 'react-icons/io';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -19,8 +21,8 @@ Navbar.propTypes = {
 function Navbar({ value }) {
   const {  doctor, admin, setDoctor, setAdmin, setUser } = useAuth(); // Destructure once
   const { user } = useAuth();
+console.log(value,"====24 value nav");
 
-  console.log(user,"user==15");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,9 +37,10 @@ function Navbar({ value }) {
         dispatch(setAdminData({}));
         setAdmin(false);
     } else {
+      console.log("userrrrrrrr========");
         localStorage.removeItem('userToken');
         dispatch(setUserData({}));
-        setUser(null);
+        setUser(false);
     }
   }
 console.log(user,"user=====41");
@@ -220,6 +223,12 @@ return (
               </li>
             </ul>
           )}
+           {
+                        value === 'admin' ?
+                            <Sidebar />
+                            : value == 'doctor' ?
+                                <DocSidebar /> : '  '
+                    }
         </div>
       
     </div>

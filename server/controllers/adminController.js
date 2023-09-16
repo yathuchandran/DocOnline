@@ -66,19 +66,21 @@ const patientsss = async (req, res) => {
 };
 
 
-const managePatient = async (req, res) => {
+const managePatients = async (req, res) => {
   console.log("managePatient70");
   try {
-    const { isuserBlocked } = req.body;
-    console.log(isuserBlocked,"isuserBlocked");
+    const { isUserBlocked } = req.body;
+    console.log(isUserBlocked,"isuserBlocked");
     const id = req.params.patientId;
     console.log(id,"ID 75");
-    if (isuserBlocked == false) {
+    if (isUserBlocked == false) {
+
       const user = await User.findOneAndUpdate(
         { _id: id },
         { $set: { isBlocked: true } }
       );
       res.json("blocked");
+      console.log("blocked");
     } else {
       const user = await User.findOneAndUpdate(
         { _id: id },
@@ -99,5 +101,5 @@ const managePatient = async (req, res) => {
     login,
     adminData,
     patientsss,
-    managePatient,
+    managePatients,
   }

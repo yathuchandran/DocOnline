@@ -4,6 +4,7 @@ import HomePage from './HomePage'
 import Signup from '../components/Signup'
 import Otp from '../components/Otp'
 import Login from '../components/Login'
+import Profile from '../components/userComponents/Profile'
 
 
 function User() {
@@ -14,6 +15,8 @@ function User() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/otp' element={<Otp />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/profile' element={<Profile/>} />
+
 
   </Routes>
     </>

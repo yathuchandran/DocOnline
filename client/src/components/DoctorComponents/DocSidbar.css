@@ -1,0 +1,12 @@
+.docham {
+    display: none;
+    top: 88px !important;
+    background-color: aqua; /* Change 'your-color' to the desired background color */
+  }
+  
+  @media (max-width: 770px) {
+    .docham {
+      display: block;
+    }
+  }
+  

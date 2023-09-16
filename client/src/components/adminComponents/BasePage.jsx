@@ -19,8 +19,6 @@ function BasePage({ value }) {
                 :value==="patients"?
                  <Patients />:''
                  
-                 
-                 
                  }
                   {value}
               </div>

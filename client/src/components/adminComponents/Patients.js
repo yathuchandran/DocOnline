@@ -52,7 +52,7 @@ function Patients() {
           className="btn "
           style={{
             backgroundColor: "#002147",
-            color: "white",
+            
           }}
           onClick={() => viewPatient(row)}
         >
