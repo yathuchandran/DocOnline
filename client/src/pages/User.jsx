@@ -15,7 +15,7 @@ function User() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/otp' element={<Otp />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/profile' element={<Profile/>} />
+          <Route path='/profile' element={<Profile user={"user"}/>} />
 
 
   </Routes>

@@ -67,6 +67,7 @@ function Login({ value }) {
           localStorage.setItem("userToken", res.data.token);
           setUser(true)
           dispatch(setUserData(res.data.userData))
+          console.log(res.data.userData,"login chyeyumbo ");
           navigate("/");
         } else {
           setErrorMsg("An error occurred while logging in."); // Handle other status codes or error messages from the server

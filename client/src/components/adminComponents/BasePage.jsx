@@ -3,7 +3,6 @@ import AdminSidebar from "./AdminSidebar";
 import Patients from "./Patients";
 
 function BasePage({ value }) {
-
   return (
     <div>
       <div className="adminCont">

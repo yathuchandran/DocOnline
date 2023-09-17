@@ -11,7 +11,7 @@ userRoute.post("/signup", userController.signup);
 userRoute.post("/otp", userController.verifyOtp);
 userRoute.post("/login", userController.login);
 userRoute.get("/userData", validateToken,authUser, userController.userData);
-
+userRoute.post("/profile", userController.profile)
 
 
 module.exports = userRoute;

@@ -19,7 +19,6 @@ async function securePassword(password) {
 
   const signup=async (req,res)=>{
     try {
-      //AGE KALANJ
         const { Name,Email,Mobile,Password } = req.body;
         console.log(Name,Email,Mobile,Password ,"Name,Email,Age,Mobile,Password 22");
         
@@ -136,6 +135,22 @@ const userData = async (req, res) => {
 
 
 
+const profile=async (req,res)=>{
+  try {
+    const userId = req.body?.user._id;
+    console.log(req.body?.user._id,"==============142");
+    const userData = await User.findById({  _id:userId });
+    console.log(userData,"userdata +++++++143");
+    if (userData) {
+      res.json({userData})
+      console.log("front");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 
 
 
@@ -147,4 +162,5 @@ module.exports = {
     verifyOtp,
     login,
     userData,
+    profile
 }
