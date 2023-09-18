@@ -151,7 +151,14 @@ const profile=async (req,res)=>{
 }
 
 
-
+const setProfile=async(req,res)=>{
+  try {
+    const {name,email,age,address,contact,gender}=req.body
+    console.log(req.body,"req.body 157");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -162,5 +169,6 @@ module.exports = {
     verifyOtp,
     login,
     userData,
-    profile
+    profile,
+    setProfile
 }
