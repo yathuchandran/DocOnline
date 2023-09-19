@@ -7,7 +7,7 @@ require("dotenv").config();
 
 adminRoute.post("/login", adminController.login);
 //adminRoute.get("/adminData", validateAdminToken,(()=>{console.log("admindata route")}), adminController.adminData);
-adminRoute.get("/patients",(()=>{console.log("patient route");}),validateAdminToken, adminController.patientsss);
+adminRoute.get("/patients",validateAdminToken, adminController.patientsss);
 adminRoute.put("/managePatient/:patientId",validateAdminToken, adminController.managePatients);
 
 module.exports = adminRoute;

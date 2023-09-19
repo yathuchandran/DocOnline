@@ -13,7 +13,6 @@ function Patients() {
   const adminToken = localStorage.getItem("adminToken");
 
   const viewPatient = (row) => {
-    console.log("viewPatient");
     const doc = patientsList.filter((el) => el._id == row._id);
     console.log(doc, "patientsList");
      setSelectedPatient(doc[0])
@@ -21,7 +20,6 @@ function Patients() {
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
-    console.log(searchValue,"searchValue");
     setSearch(searchValue);
     const filtered = patientsList.filter((patient) =>
       patient.userName.toLowerCase().startsWith(searchValue)
@@ -68,7 +66,11 @@ function Patients() {
     const patientData = async () => {
       try {
 
-        const res = await axios.get("admin/patients")
+        const res = await axios.get("admin/patients", {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          }
+        })
         setPatientsList(res.data);
 
         if (res.status === 200) {
