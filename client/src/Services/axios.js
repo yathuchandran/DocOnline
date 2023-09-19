@@ -4,44 +4,24 @@ const instance =axios.create({
     baseURL: baseUrl,
 })
 
+const setAuthorizationHeader = (config) => {
+    const userToken = localStorage.getItem('userToken');
+    const doctorToken = localStorage.getItem('doctorToken');
+    const adminToken = localStorage.getItem('adminToken');
 
-
-axios.interceptors.request.use(
-    (config) => {
-        const userToken = localStorage.getItem('userToken');
-        if (userToken) {
-            config.headers['Authorization'] = `Bearer ${userToken}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+    if (userToken) {
+        config.headers['Authorization'] = `Bearer ${userToken}`;
+    } else if (doctorToken) {
+        config.headers['Authorization'] = `Bearer ${doctorToken}`;
+    } else if (adminToken) {
+        config.headers['Authorization'] = `Bearer ${adminToken}`;
     }
-);
 
-
-
-axios.interceptors.request.use(
-    (config) => {
-        const doctorToken = localStorage.getItem('doctorToken');
-        if (doctorToken) {
-            config.headers['Authorization'] = `Bearer ${doctorToken}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
+    return config;
+};
 
 axios.interceptors.request.use(
-    (config) => {
-        const adminToken = localStorage.getItem('adminToken');
-        if (adminToken) {
-            config.headers['Authorization'] = `Bearer ${adminToken}`;
-        }
-        return config;
-    },
+    setAuthorizationHeader,
     (error) => {
         return Promise.reject(error);
     }

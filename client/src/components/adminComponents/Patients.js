@@ -13,6 +13,7 @@ function Patients() {
   const adminToken = localStorage.getItem("adminToken");
 
   const viewPatient = (row) => {
+    console.log("viewPatient");
     const doc = patientsList.filter((el) => el._id == row._id);
     console.log(doc, "patientsList");
      setSelectedPatient(doc[0])
@@ -20,6 +21,7 @@ function Patients() {
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
+    console.log(searchValue,"searchValue");
     setSearch(searchValue);
     const filtered = patientsList.filter((patient) =>
       patient.userName.toLowerCase().startsWith(searchValue)
@@ -64,17 +66,9 @@ function Patients() {
 
   useEffect(() => {
     const patientData = async () => {
-      console.log("patientData");
       try {
-        console.log("patientData======");
 
-        const res = await axios.get("admin/patients", {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          }
-        })
-        console.log(res, "res 10");
-        console.log(res.data, "res.status 11");
+        const res = await axios.get("admin/patients")
         setPatientsList(res.data);
 
         if (res.status === 200) {
@@ -91,6 +85,8 @@ function Patients() {
     patientData();
   }, [adminToken]); // Make sure to include an empty dependency array to run the effect only once
 
+
+  
   return (
     <div>
        {

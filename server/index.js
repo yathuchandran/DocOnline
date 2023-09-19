@@ -7,6 +7,9 @@ const doctorRoute = require("./routes/doctorRoute");
 const dotenv = require("dotenv");
 const path = require("path");
 const connectDB = require("./config/config");
+const cloudinary =require ('cloudinary') ;
+
+
 
 // MongoDB connection
 connectDB();
@@ -14,9 +17,16 @@ connectDB();
 // Dotenv config
 dotenv.config();
 
+          
+cloudinary.v2.config({ 
+  cloud_name: 'dyvmqs56r', 
+  api_key: '662229676537357', 
+  api_secret: 'Cy34_Payi7dgrEpREF5-TTHvugM' 
+});
+
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true,limit:"500mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors({
   origin: 'http://localhost:3000',

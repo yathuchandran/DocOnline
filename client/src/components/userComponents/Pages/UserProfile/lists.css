@@ -1,6 +1,9 @@
 .lists {
     border-width: 1px;
     border-style: solid;
-    border-color: green;
+    border-color: rgb(229, 238, 229);
   }
-  
+.btn-custom-radius{
+  border-radius: 20px; /* Adjust the value to control the radius */
+
+}  

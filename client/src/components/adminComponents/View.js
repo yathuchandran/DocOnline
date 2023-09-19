@@ -26,7 +26,6 @@ function View({ user, setSelected, value }) {
               },
             }
           );
-          console.log(res,"haiii axios");
       
 
       if (res.data === 'blocked' || res.data === 'unblocked') {
@@ -59,7 +58,6 @@ function View({ user, setSelected, value }) {
 
 
   const { name, email, _id, isBlocked, isApproved } = user;
-console.log(name, email, _id, isBlocked, isApproved,"name, email, _id, isBlocked, isApproved==57");
   return (
     <>
      

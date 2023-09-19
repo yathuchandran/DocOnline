@@ -4,37 +4,36 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Pages/UserProfile/lists.css";
 import { useNavigate } from "react-router";
 import { setUserData } from "../../redux/userData";
-import { Axios } from "axios";
 
 function Profile() {
   const userData = useSelector((state) => state.user.data);
-  const [preview, setPreview] = useState("");
-  // const [profilee, setProfile] = useState(userData.image ? userData.image : null)
-  const [name, setName] = useState(userData.userName);
+  const [preview, setPreview] = useState(userData?.image ||"");
+  const [name, setName] = useState(userData?.userName || "");
   const [msg, setMsg] = useState("");
-  const [address, setAddress] = useState(userData.address);
-  const [contact, setContact] = useState(userData.contact);
-  const [gender, setGender] = useState(userData.gender);
-  const [age, setAge] = useState(userData.age);
+  const [address, setAddress] = useState(userData?.address || "");
+  const [contact, setContact] = useState(userData?.contact || ""); // Fixed '|' to '||'
+  const [gender, setGender] = useState(userData?.gender || "");
+  const [age, setAge] = useState(userData?.age || "");
   const navigate = useNavigate();
   const userToken = localStorage.getItem("userToken");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(userData?.image || null); // Initialize image state with null
 
-  console.log(userData,"userData",userData.userName);
+  console.log(userData.image,"userData?.image=22");
   useEffect(() => {
     async function dataCall() {
-      console.log("dataCalll");
+      console.log("dataCall");
       if (userToken) {
         await axios.get(`/userData`).then((res) => {
           if (res.data === "blocked") {
             navigate("/login");
           }
-        });
+        }).catch((err)=>{
+          console.log(err.message)
+        })
       }
     }
     dataCall();
-  }, []);
-  
+  }, [navigate, userToken]); // Added dependencies to useEffect
 
   const dispatch = useDispatch();
 
@@ -45,50 +44,46 @@ function Profile() {
     gender: gender,
     age: age,
     _id: userData._id,
+    image: image, // Use the selected image here
   };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Set the image state to the reader result
+        setImage(reader.result);
+        setPreview(reader.result)
+      };
+      reader.readAsDataURL(file); // Read the selected file as a data URL
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-        // Use Axios to upload the image to Cloudinary
-        const cloudinaryURL = "https://api.cloudinary.com/v1_1/onlinedoc/image/upload";
-        const uploadPreset = "onlinedoc"; // Replace with your Cloudinary upload preset
-
-    
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("upload_preset", uploadPreset);
-        formData.append("cloud_name", "dyvmqs56r");
-
-        try {
-          const cloudinaryResponse = await Axios.post(cloudinaryURL, formData);
-    
-          // Now you can access the Cloudinary response data
-          console.log(cloudinaryResponse.data);
-    
-          // Continue with the rest of your form submission logic
-          const res = await axios.put(`/setProfile`, userform);
-    
-          if (res.data === "error") {
-            setMsg("Something went wrong");
-          } else if (res.data === "blocked") {
-            navigate("/login");
-            localStorage.removeItem("userToken");
-          } else {
-            dispatch(setUserData(res.data));
-            setMsg("Profile updated Successfully");
-            setTimeout(() => {
-              setMsg("");
-            }, 4000);
-            navigate("/");
-          }
-        } catch (error) {
-          console.error("An error occurred:", error);
-        }
-      };
-
-
-  
+    try {
+     
+      const res = await axios.put(`/setProfile`, userform);
+      console.log(res.status,"userform------------------------------------",res.data,"===========");
+      if (res.data === "error") {
+        setMsg("Something went wrong");
+      } else if (res.data === "blocked") {
+        navigate("/login");
+        localStorage.removeItem("userToken");
+      } else {
+        dispatch(setUserData(res.data));
+        setMsg("Profile updated Successfully");
+        setTimeout(() => {
+          setMsg("");
+        }, 4000);
+        
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
   return (
     <div>
@@ -96,33 +91,37 @@ function Profile() {
         <form className="mx-auto w-75 setProfile" encType="multipart/form-data">
           <div className="text-center text-bold mb-3 mt-3">SET PROFILE</div>
           <div className="text-center  mb-3 mt-3">
-            {/* {preview != [] ? (
-                        <img width={'150px'} height={"200px"} className='text-wrap' src={preview} alt="" />
-                    ) : userData.image ? (
-                        <img
-                            width={'150px'}
-                            height={"200px"}
-                            src={`images/${userData.image}`}
-                            alt="profile"
-                        />
-                    ) : (
-                        <img
-                            width={'150px'}
-                            height={"200px"}
-                            src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
-                            alt="default"
-                        />
-                    )} */}
-            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+            {preview != [] ? (
+              <img
+                width={"150px"}
+                height={"200px"}
+                className="text-wrap"
+                src={preview}
+                alt=""
+              />
+            ) : userData.image ? (
+              <img
+                width={"150px"}
+                height={"200px"}
+                src={`images/${userData.image}`}
+                alt="profile"
+              />
+            ) : (
+              <img
+                width={"150px"}
+                height={"200px"}
+                src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+                alt="default"
+              />
+            )}
+
+            <input
+              type="file"
+              className="form-control w-25 m-auto mt-3"
+              onChange={(e) => handleFileChange(e)}
+            />
+            
             <br />
-            {/* <input
-                        className="form-control w-25 m-auto mt-3"
-                        type="file"
-                        onChange={(e) => {
-                            setProfile(e.target.files[0]);
-                            setPreview(URL.createObjectURL(e.target.files[0]));
-                        }}
-                    /> */}
             {msg == "Profile updated successfully" ? (
               <div className="alert mt-3 alert-success" role="alert">
                 Profile updated successfully
@@ -223,6 +222,7 @@ function Profile() {
             <div className="col-12 text-center">
               <button
                 className="btn btn-outline-success mb-3"
+                style={{ backgroundColor: "#002147" }}
                 onClick={handleSubmit}
               >
                 Save
