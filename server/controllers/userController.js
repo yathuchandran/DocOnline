@@ -151,12 +151,37 @@ const profile=async (req,res)=>{
 }
 
 
-const setProfile=async(req,res)=>{
+const setProfilee=async(req,res)=>{
+  console.log("setProfile");
   try {
-    const {name,email,age,address,contact,gender}=req.body
-    console.log(req.body,"req.body 157");
-  } catch (error) {
+    const {name,age,address,contact,gender}=req.body
+    console.log(name,age,address,contact,gender,"req.file----");
+   
+      const updatedData = await User.findOneAndUpdate(
+        { _id: req._id},
+        {
+          $set: {
+            userName: name,
+            age: age,
+            address: address,
+            contact: contact,
+            gender: gender,
+            
+          },
+        }
+      );
+    
+      console.log("esle");
+      console.log(req.body);
+
+      
+    
+   const userData = await User.findOne({ _id: req._id });
+    res.json(userData);
+ } catch (error) {
     console.log(error);
+    res.status(500).json({ error: 'Internal server error' });
+
   }
 }
 
@@ -170,5 +195,5 @@ module.exports = {
     login,
     userData,
     profile,
-    setProfile
+    setProfilee,
 }

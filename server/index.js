@@ -33,6 +33,7 @@ app.use(function(req, res, next) {
 
 // Register partial route setup
 app.use(express.static(__dirname + '/public'));
+app.use("/images", express.static("images"));
 
 // Routes
 app.use("/", userRoute);
@@ -40,7 +41,7 @@ app.use("/doctor", doctorRoute);
 app.use("/admin", adminRoute);
 
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, function () {
   console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
