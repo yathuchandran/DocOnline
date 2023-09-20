@@ -9,10 +9,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  age: {
-    type: Number,
-    required: true,
-  },
+  age: Number,
   contact: {
     type: Number,
     required: true,

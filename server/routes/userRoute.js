@@ -13,6 +13,8 @@ userRoute.post("/otp", userController.verifyOtp);
 userRoute.post("/login", userController.login);
 userRoute.get("/userData", userController.userData);
 userRoute.put("/setProfile",userController.setProfilee)
+userRoute.get("/forgotPassword/:email",userController.forgotPassword)
+userRoute.patch("/verifyOtp",userController.verifyOtp)
 
 
 module.exports = userRoute;

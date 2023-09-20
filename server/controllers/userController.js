@@ -15,6 +15,8 @@ async function securePassword(password) {
   }
 }
 
+
+
 const signup = async (req, res) => {
   try {
     const { Name, Email, Mobile, Password } = req.body;
@@ -34,8 +36,11 @@ const signup = async (req, res) => {
         otp: otp,
         token: string,
       });
+      console.log(user,"user----------");
 
       const userData = await user.save();
+      console.log(userData,"userdat----------");
+
       if (userData) {
         await mailSender(Email, otp, "signup");
         const data = {
@@ -51,6 +56,7 @@ const signup = async (req, res) => {
 };
 
 const verifyOtp = async (req, res) => {
+  console.log("verifyOtp");
   try {
     const { otp } = req.body;
     const user = await User.findOne({ otp });
@@ -106,7 +112,6 @@ const userData = async (req, res) => {
   } catch (error) {}
 };
 
-
 const setProfilee = async (req, res) => {
   try {
     const { name, age, address, contact, gender, _id, image } = req.body;
@@ -120,7 +125,7 @@ const setProfilee = async (req, res) => {
           address: address,
           contact: contact,
           gender: gender,
-          image: uploadedImage.url, 
+          image: uploadedImage.url,
         },
       },
       { new: true }
@@ -138,20 +143,29 @@ const setProfilee = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  console.log("forgotPassword");
+  try {
+    const email = req.params.email;
+    const emailData = await User.find({ email: email });
 
+    console.log(emailData, "emailData====",);
+    if (emailData) {
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      console.log(otp,"otp+++++++++++++++++++++++++++");
+      const mailupdated= await User.updateOne({email:email},{$set:{otp:otp}})
+      await mailSender(email,otp,"forgotpassword")
+      console.log(email,"=======emailData.email");
 
-
-
-
-
-
-
-
-
-
-
-
-
+      console.log(mailupdated,"mailupdated----------");
+      res.status(200).json("success");
+    }else{
+      res.status(404).json("Not Found")
+    }
+  } catch (error) {
+    res.status(500).json({ error: " " });
+  }
+};
 
 module.exports = {
   signup,
@@ -159,4 +173,5 @@ module.exports = {
   login,
   userData,
   setProfilee,
+  forgotPassword,
 };
