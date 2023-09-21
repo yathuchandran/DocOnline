@@ -7,6 +7,7 @@ import Login from '../components/Login'
 import ProfilePageStructure from '../components/userComponents/Pages/UserProfile/ProfilePageStructure'
 import RequireUser from '../context/auth/RequireUser'
 import ForgotPassword from '../components/ForgotPassword'
+import ResetPassword from '../components/ResetPassword'
 
 
 function User() {
@@ -18,6 +19,7 @@ function User() {
   <Route path='/otp' element={<Otp />} />
   <Route path='/login' element={<Login />} />
   <Route path='/forgotpassword' element={<ForgotPassword />} />
+  <Route path='/newPassword' element={<ResetPassword />}/>
 
   <Route  element={<RequireUser />}>
     <Route path='/profile' element={<ProfilePageStructure user="user" />} />

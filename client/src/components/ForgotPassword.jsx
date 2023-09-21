@@ -61,10 +61,15 @@ function ForgotPassword({ value }) {
         const res = await axios.patch(`/verifyOtp`, { email, otp });
         console.log(res, "----------------------------");
         if (res.status === 200) {
+          navigate(`/newPassword/${emailRef.current.value}`)
           console.log("success");
+        }else{
+          setErrorMsg("Invalid OTP")
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
