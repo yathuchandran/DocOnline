@@ -148,7 +148,23 @@ const forgotPassword=async(req,res)=>{
   
 }
 
-const verifyOtpp=async
+const verifyOtpp=async(req,res)=>{
+  console.log("otpppppppppppp");
+  try {
+    const { otp } = req.body;
+    const doctor = await Doctor.findOne({ otp });
+    if (doctor.otp != otp) {
+      res.json("invalid");
+    } else {
+      console.log("inside else");
+      await Doctor.findOneAndUpdate({ $set: { otp: "" } });
+      res.status(200).json({ message: "user otp correct" });
+    }
+    console.log(doctor, "Doctor 107");
+  } catch (error) {
+    
+  }
+}
 
 
 
@@ -157,4 +173,6 @@ module.exports = {
   verifyOtp,
   login,
   forgotPassword,
+  verifyOtpp,
+
 };

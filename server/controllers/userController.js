@@ -56,7 +56,7 @@ const signup = async (req, res) => {
 };
 
 const verifyOtp = async (req, res) => {
-  console.log("verifyOtp");
+  console.log("verifyOtp=user");
   try {
     const { otp } = req.body;
     const user = await User.findOne({ otp });
