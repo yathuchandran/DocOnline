@@ -65,7 +65,7 @@ const verifyOtp = async (req, res) => {
     } else {
       console.log("inside else");
       await User.findOneAndUpdate({ $set: { otp: "" } });
-      res.status(201).json({ message: "user otp correct" });
+      res.status(200).json({ message: "user otp correct" });
     }
     console.log(user, "user 107");
   } catch (error) {
@@ -74,6 +74,7 @@ const verifyOtp = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log("login");
   try {
     const { email, password } = req.body;
     const userData = await User.findOne({ email: email });
@@ -83,7 +84,7 @@ const login = async (req, res) => {
         if (userData.isVerified === false) {
           if (!userData.isBlocked) {
             const token = createTokens(userData._id);
-            res.json({ userData, token });
+            res.status(200).json({ userData, token });
           } else {
             res.json("blocked");
           }
@@ -167,6 +168,19 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+const resetPassword=async(req,res)=>{
+  console.log("resetPassword=============");
+ try {
+  const {email,password}=req.body
+  console.log(email,"-----",password,"email,password");
+  await User.findByIdAndUpdate({email:email},{$set:{password:password}}).then(
+    res.status(200).json("success"))
+    
+ } catch (error) {
+  res.status(500).json({ error: " " });
+}
+}
+
 module.exports = {
   signup,
   verifyOtp,
@@ -174,4 +188,5 @@ module.exports = {
   userData,
   setProfilee,
   forgotPassword,
+  resetPassword
 };

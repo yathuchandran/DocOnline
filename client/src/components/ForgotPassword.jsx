@@ -28,7 +28,24 @@ function ForgotPassword({ value }) {
       setErrorMsg("Please enter a valid email address");
     } else {
       try {
-        if (!value) {
+        if (value=='doctor') {
+          const email=emailRef.current.value;
+          const res=await axios.get( `/doctor/forgotPassword/${email}`)
+          console.log(res.data, "--------", res.status);
+
+          if (res.status === 200) {
+            setErrorMsg("");
+            btnRef.current.style.display = "none";
+            otpRef.current.style.display = "block";
+            otpBtnRef.current.style.display = "block";
+            console.log("--------", res.status, "res.status");
+
+            console.log("success");
+          } else {
+            setErrorMsg("Email not found");
+          }
+        
+        }else if (!value) {
           const email = emailRef.current.value;
           const res = await axios.get(`/forgotPassword/${email}`);
           console.log(res.data, "--------", res.status);
@@ -51,10 +68,27 @@ function ForgotPassword({ value }) {
     }
   };
 
+
+
+
+
+
   const handleOtp = async (e) => {
     e.preventDefault();
     try {
-      if (!value) {
+      if (value=='doctor') {
+        const email = emailRef.current.value;
+        const otp = otpRef.current.value;
+        console.log("==========docto=");
+        const res = await axios.patch(`/verifyOtp`, { email, otp });
+        console.log(res, "----------------------------");
+        if (res.status === 200) {
+          navigate(`/doctor/newPassword/${emailRef.current.value}`)
+        }else{
+          setErrorMsg("Invalid OTP")
+        }
+
+      }else if (!value) {
         const email = emailRef.current.value;
         const otp = otpRef.current.value;
         console.log("=================================================");

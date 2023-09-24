@@ -1,11 +1,63 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import "./ResetPassword.css";
+import { useNavigate, useParams } from "react-router";
+import PropTypes from "prop-types";
+import axios from '../Services/axios'
+import {validatePassword} from './validator'
 
-function ResetPassword() {
+ResetPassword.propTypes = {
+  value: PropTypes.string,
+};
+
+function ResetPassword({ value }) {
+  const { email } = useParams();
+  const passRef = useRef();
+  const confirmRef = useRef();
+  const errRef = useRef();
+  const [errMsg, setErrorMsg] = useState(null);
+  const navigate = useNavigate();
+  const [success, setSuccess] = useState(false)
 
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const password = passRef.current.value;
+    const confirmPassword = confirmRef.current.value;
 
-  
+   
+    if (!password || !confirmPassword) {
+      setErrorMsg("Passwords do not match");
+    } else if (password !== confirmPassword) {
+      setErrorMsg("Password did not match. Please re-enter both fields");
+    } else if (!validatePassword(password)) {
+      setErrorMsg("Invalid password. Please follow password requirements.");
+    } else {
+      async function resetPassword() {
+
+      if (!value) {
+        try {
+          const res = await axios.patch(`/resetPassword`, {
+            password: password,
+            email: email,
+          });
+          if (res.status === 200) {
+            console.log("success");
+            setSuccess(true);
+            setErrorMsg("Password changed successfully.");
+            setTimeout(() => {
+              navigate("/login");
+            }, 2000);
+          }
+        } catch (error) {
+          console.error("Password reset failed:", error);
+        }
+      }
+    }
+    resetPassword();
+
+  }
+  };
+
   return (
     <section className="resetForm">
       <div
@@ -21,47 +73,43 @@ function ResetPassword() {
             borderRadius: "15px",
           }}
         >
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <h1 style={{ fontFamily: "Times New Roman, serif" }}>
               RESET-PASSWORD
             </h1>
 
-            {/* {errorMsg ? (
-            <div className=" mt-1 alert alert-danger text-10" role="alert">
-              {errorMsg}
-            </div>
-          ) : (
-            ""
-          )} */}
             <h6>
               Please Reset your password
               <br /> to verify your account
             </h6>
-            {/* <div>
-                  <span>A code has been sent to</span>{" "}
-                  <small>*******@gmail.com</small>
-                </div> */}
+
             <br />
             <input
-             
               placeholder="New Password"
-              className="form-control "
+              className="form-controll"
+              ref={passRef}
             />
             <br />
             <br />
             <input
-             
-              placeholder="confirm Password"
-              className="form-control   "
+              placeholder="Confirm Password"
+              className="form-controll"
+              ref={confirmRef}
             />
 
-            <div class="mt-4">
+            {errMsg && (
+              <div className="mt-4 alert alert-danger" role="alert">
+                {errMsg}
+              </div>
+            )}
+
+            <div className="mt-4">
               <button
-                type="button"
+                type="submit"
                 className="btn btn-success btn-lg btn-md"
                 style={{
-                  backgroundColor: "#002147", // Add the background color here
-                  color: "white", // Optionally, set the text color
+                  backgroundColor: "#002147",
+                  color: "white",
                 }}
               >
                 Confirm

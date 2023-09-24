@@ -123,12 +123,38 @@ const login =async (req,res)=>{
 }
 }
 
+const forgotPassword=async(req,res)=>{
+  try {
+    const email = req.params.email;
+  const emailData = await Doctor.find({ email: email });
+  console.log(email,"------",emailData);
 
+    if (emailData) {
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      console.log(otp,"otp+++++++++++++++++++++++++++");
+      const mailupdated= await Doctor.updateOne({email:email},{$set:{otp:otp}})
+      await mailSender(email,otp,"forgotpassword")
+      console.log(email,"=======emailData.email");
+
+      console.log(mailupdated,"mailupdated--docto--------");
+      res.status(200).json("success");
+    }else{
+      res.status(404).json("Not Found")
+    }
+  } catch (error) {
+    res.status(500).json({ error: " " });
+
+  }
+  
+}
+
+const verifyOtpp=async
 
 
 
 module.exports = {
   signup,
   verifyOtp,
-  login
+  login,
+  forgotPassword,
 };

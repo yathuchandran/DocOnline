@@ -19,7 +19,7 @@ function User() {
   <Route path='/otp' element={<Otp />} />
   <Route path='/login' element={<Login />} />
   <Route path='/forgotpassword' element={<ForgotPassword />} />
-  <Route path='/newPassword' element={<ResetPassword />}/>
+  <Route path='/newPassword/:email' element={<ResetPassword />}/>
 
   <Route  element={<RequireUser />}>
     <Route path='/profile' element={<ProfilePageStructure user="user" />} />

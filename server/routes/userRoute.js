@@ -15,6 +15,6 @@ userRoute.get("/userData", userController.userData);
 userRoute.put("/setProfile",userController.setProfilee)
 userRoute.get("/forgotPassword/:email",userController.forgotPassword)
 userRoute.patch("/verifyOtp",userController.verifyOtp)
-
+userRoute.patch("/resetPassword",userController.resetPassword)
 
 module.exports = userRoute;

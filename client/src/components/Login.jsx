@@ -178,7 +178,7 @@ function Login({ value }) {
                   Login
                 </button>
               </div>
-              Forgot Password ?<Link to={"/reset-password"}>Click Here</Link>
+              Forgot Password ?<Link to={"/forgotpassword"}>Click Here</Link>
               <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>
                 Don't have an account?{" "}
                 <Link to="/Signup" style={{ color: "#393f81" }}>
