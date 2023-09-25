@@ -10,6 +10,7 @@ doctorRoute.post("/otp/:token", doctorController.verifyOtp);
 doctorRoute.post("/login", doctorController.login);
 doctorRoute.get("/forgotPassword/:email",doctorController.forgotPassword)
 doctorRoute.patch("/verifyOtp",doctorController.verifyOtpp)
+doctorRoute.patch("/resetPassword",doctorController.resetPassword)
 
 
 

@@ -34,7 +34,24 @@ function ResetPassword({ value }) {
     } else {
       async function resetPassword() {
 
-      if (!value) {
+        if (value=='doctor') {
+          try {
+            const res = await axios.patch(`/doctor/resetPassword`, {
+              password: password,
+              email: email,})
+              if (res.status === 200) {
+                console.log("success");
+                setSuccess(true);
+                setErrorMsg("Password changed successfully.");
+                setTimeout(() => {
+                  navigate("/doctor/login");
+                }, 2000);
+              }
+          } catch (error) {
+            console.error("Password reset failed:", error);
+
+          }
+        } else if (!value) {
         try {
           const res = await axios.patch(`/resetPassword`, {
             password: password,

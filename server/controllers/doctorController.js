@@ -166,6 +166,18 @@ const verifyOtpp=async(req,res)=>{
   }
 }
 
+const resetPassword=async(req,res)=>{
+  console.log("reset doct");
+  try {
+    const {email,password}=req.body
+  console.log(email,"-----",password,"email,password");
+  await Doctor.findByIdAndUpdate({email:email},{$set:{password:password}}).then(
+    res.status(200).json("success"))
+  } catch (error) {
+    
+  }
+}
+
 
 
 module.exports = {
@@ -174,5 +186,7 @@ module.exports = {
   login,
   forgotPassword,
   verifyOtpp,
+  resetPassword,
+
 
 };

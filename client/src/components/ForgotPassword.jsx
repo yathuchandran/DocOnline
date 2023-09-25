@@ -80,7 +80,7 @@ function ForgotPassword({ value }) {
         const email = emailRef.current.value;
         const otp = otpRef.current.value;
         console.log("==========docto=");
-        const res = await axios.patch(`/verifyOtp`, { email, otp });
+        const res = await axios.patch(`/doctor/verifyOtp`, { email, otp });
         console.log(res, "----------------------------");
         if (res.status === 200) {
           navigate(`/doctor/newPassword/${emailRef.current.value}`)
