@@ -93,7 +93,7 @@ function Patients() {
     <div>
        {
         selectedPatient ? <View user={selectedPatient} setSelected={setSelectedPatient} value="patient" /> :
-          (
+        (
         <div>
           <h1>Patient</h1>
           <input
@@ -101,10 +101,10 @@ function Patients() {
             value={search}
             onChange={handleSearch}
             placeholder="search.."
-            className="form-controll"
+            className="form-control w-25 mb-2"
           />
 
-          <DataTables columns={columns} title="Patients" data={filteredData} />
+              <DataTables columns={columns} title='Patients' data={filteredData} />
         </div>
           )}
     </div>

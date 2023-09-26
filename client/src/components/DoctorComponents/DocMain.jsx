@@ -15,13 +15,11 @@ function DocMain({ value }) {
           <div className="col-md-3 text-center bg-white side col-lg-3"> 
               <DocSidebar />
                     </div>
-          <div className="col-md-9 p-5">
+          <div className="col-md-8 p-5">
             <div style={{ width: "100%" }}>
-              {value == "home" ? <DoctorHome /> : ""}
+              {value == "home" ? <DoctorHome /> : ''}
             </div>
           </div>
-          <h1>haiii</h1>
-
         </div>
       </div>
     </>

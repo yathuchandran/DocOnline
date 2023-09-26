@@ -1,6 +1,7 @@
 const Admin = require("../models/adminModel");
 const Patients = require("../models/userModel");
 const User = require("../models/userModel");
+const Departments = require("../models/department");
 
 
 const bcrypt = require("bcrypt");
@@ -95,6 +96,14 @@ const managePatients = async (req, res) => {
 
 
 
+const departments = async (req, res) => {
+  console.log("departments");
+  const data = await Departments.find();
+  res.status(200).json(data);
+};
+
+
+
 
 
   module.exports = {
@@ -102,4 +111,5 @@ const managePatients = async (req, res) => {
     adminData,
     patientsss,
     managePatients,
+    departments,
   }

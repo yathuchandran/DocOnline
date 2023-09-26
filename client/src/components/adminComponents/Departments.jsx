@@ -1,0 +1,144 @@
+import { useCallback, useEffect, useState } from "react"
+import DataTables from "../dataTables"
+import { validateCapitalLetter } from "../validator"
+import axios from '../../Services/axios'
+
+console.log("sdvnwdwkjgbfwkjgfekgjfngjfegj=================================================");
+function Departments() {
+    const [departmentList, setDepartList] = useState([])
+    const [newDep, setNewDep] = useState('')
+    const adminToken = localStorage.getItem("adminToken")
+    const [createStatus, setStatus] = useState('')
+    const [image, setImage] = useState([])
+    const [preview, setPreView] = useState('')
+    const [filteredData, setFilteredData] = useState([]);
+    const [search, setSearch] = useState('')
+
+
+
+    const departmentData = useCallback(async () => {
+        console.log("departmentData===");
+       const res= await axios.get('admin/departments')
+           if (res===200) {
+            setDepartList(res.data)
+          setFilteredData(res.data)
+           }
+      },[adminToken])
+    
+      
+    
+
+      const columns = [
+        {
+          name: 'ID',
+          selector: (row) => row._id
+        },
+        {
+          name: 'name',
+          selector: (row) => row.name
+        },
+        {
+          name: 'Created at',
+          selector: (row) => row.timeStamp
+        },
+        {
+          name: "Image",
+          selector: (row) => <img className="m-2 ms-0" width={'100px'} src={row.image} alt="" />
+        },
+        {
+          name: "Action",
+          cell: row => <button className="btn btn-success" >{row.isBlocked == false ? "Block" : "Unblock"}</button>
+        }
+      ]
+
+
+      departmentData()
+
+  return (
+    
+    <> 
+    <div className="container mt-5 ps-5">
+      <h1>Create Department</h1>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="depName" className="form-label">Department Name</label>
+          <input
+            type="text"
+            className="form-control"
+            id="depName"
+            name="depName"
+          />
+          <p className="form-text  text-muted ps-4">Please note that the first letter should be capital</p>
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="image" className="form-label">Upload image</label>
+          <input
+            type="file"
+            className="form-control"
+            id="image"
+            name="image"
+          />
+        </div>
+
+        <div className="mb-3">
+          {/* {preview ? (
+            <img className="mt-2" src={preview} alt="img" width={'100px'} height={'120px'} />
+          ) : (
+            <img
+              className="mt-2"
+              width={'100px'}
+              height={'120px'}
+              src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+              alt="sf"
+            />
+          )} */}
+        </div>
+
+        <div className="mb-3 ps-5">
+          <button type="button" className="btn btn-primary" >
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+
+       <div>
+        <button type="button" className="btn mb-2 ms-1 btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" >Create Department</button>
+      </div>
+      <div className="ms-1" style={{ zIndex: '0' }}>
+        {/* {
+          createStatus == "error" ?
+            <div className="alert alert-danger" role="alert">
+              There was an error! cannot create depaprtment.
+            </div>
+            : createStatus == "success" ?
+              <div className="alert alert-success" role="alert">
+                Department created successfully.
+              </div>
+              : createStatus === 'exist' ?
+                <div className="alert alert-danger" role="alert">
+                  Department already exist.
+                </div>
+                : createStatus === 'capLetter' ?
+                  <div className="alert alert-danger" role="alert">
+                    First letter of department should be capital.
+                  </div>
+                  : ''
+
+        } */}
+        <h3>Departments</h3>
+        <input
+          type="text"
+          placeholder="Search..."
+          className="form-control w-25 mb-2"
+        />
+                <DataTables columns={columns} title='Departments' data={filteredData} />
+
+      </div>
+    </>
+
+  )
+}
+
+export default Departments

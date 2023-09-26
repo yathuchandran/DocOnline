@@ -10,7 +10,7 @@ const DocSidebar = () => {
 
 
   return (
-    <div className='fixed bg-white top-0 navbar flex justify-between items-center p-4 text-white' style={{ zIndex: 10 }}>
+    <div className='fixed bg-dark top-0 navbar flex justify-between items-center p-3 text-white' style={{ zIndex: 10 }}>
 
       {!nav ?
         <div className=' sm:flex items-center  docham bg-dark ms-0 mt-0 text-[18px]'>

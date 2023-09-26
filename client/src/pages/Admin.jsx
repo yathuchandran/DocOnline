@@ -11,6 +11,8 @@ function Admin() {
             <Route path="/login" element={<Login value={'admin'}/>} />
             <Route element={<RequireAdmin />}/>
             <Route path="/" element={<BasePage value={'home'} user={'admin'}/>} />
+            <Route path="/doctors" element={<BasePage value={"doctors"} user={"admin"} />} />
+            <Route path="/departments" element={<BasePage value={"departments"} user={"admin"} />} />
             <Route path="/patients" element={<BasePage value={"patients"} user={"admin"} />} />
 
 
