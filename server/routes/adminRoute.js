@@ -10,5 +10,6 @@ adminRoute.post("/login", adminController.login);
 adminRoute.get("/patients",validateAdminToken, adminController.patientsss);
 adminRoute.put("/managePatient/:patientId",validateAdminToken, adminController.managePatients);
 adminRoute.get("/departments", adminController.departments);
-
+adminRoute.post("/createDepartment",adminController.createDepartment);
+adminRoute.patch("/manageDepartment",adminController.manageDepartment);
 module.exports = adminRoute;

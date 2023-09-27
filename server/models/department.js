@@ -5,10 +5,7 @@ const departmentSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  timeStamp: {
-    type: String,
-    required: true,
-  },
+
   isBlocked: {
     type: Boolean,
     default: false,
@@ -17,6 +14,8 @@ const departmentSchema = mongoose.Schema({
     type:String,
     required:true
   }
+},{
+  timestamps:true
 });
 
 module.exports = mongoose.model("department", departmentSchema);

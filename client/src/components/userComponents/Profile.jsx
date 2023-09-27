@@ -18,7 +18,6 @@ function Profile() {
   const userToken = localStorage.getItem("userToken");
   const [image, setImage] = useState(userData?.image || null); // Initialize image state with null
 
-  console.log(userData.image,"userData?.image=22");
   useEffect(() => {
     async function dataCall() {
       console.log("dataCall");

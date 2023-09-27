@@ -2,12 +2,11 @@ const Admin = require("../models/adminModel");
 const Patients = require("../models/userModel");
 const User = require("../models/userModel");
 const Departments = require("../models/department");
-
+const cloudinary = require("cloudinary");
 
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const { createAdminTokens } = require("../middlewares/jwt");
-
 
 const login = async (req, res) => {
   console.log("login");
@@ -16,16 +15,19 @@ const login = async (req, res) => {
     console.log(req.body, "req.body 12");
 
     const adminData = await Admin.findOne({ email: email });
-    
+
     console.log(adminData, "adminData =15");
 
     if (adminData) {
-      if (password === adminData.password) { // Direct password comparison
+      if (password === adminData.password) {
+        // Direct password comparison
         console.log(password, adminData.password, "passwordMatch21");
         if (!adminData.isBlocked) {
           const token = createAdminTokens(adminData._id);
           console.log(token, "token==25");
-          res.status(200).json({ token, name: adminData.name, email: adminData.email });
+          res
+            .status(200)
+            .json({ token, name: adminData.name, email: adminData.email });
         } else {
           res.status(403).json({ error: "Your access has been blocked." });
         }
@@ -37,7 +39,9 @@ const login = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "An error occurred while processing your request." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while processing your request." });
   }
 };
 
@@ -51,9 +55,6 @@ const adminData = async (req, res) => {
   }
 };
 
-
-
-
 const patientsss = async (req, res) => {
   console.log("patients controll");
   try {
@@ -66,16 +67,14 @@ const patientsss = async (req, res) => {
   }
 };
 
-
 const managePatients = async (req, res) => {
   console.log("managePatient70");
   try {
     const { isUserBlocked } = req.body;
-    console.log(isUserBlocked,"isuserBlocked");
+    console.log(isUserBlocked, "isuserBlocked");
     const id = req.params.patientId;
-    console.log(id,"ID 75");
+    console.log(id, "ID 75");
     if (isUserBlocked == false) {
-
       const user = await User.findOneAndUpdate(
         { _id: id },
         { $set: { isBlocked: true } }
@@ -94,22 +93,99 @@ const managePatients = async (req, res) => {
   }
 };
 
-
-
 const departments = async (req, res) => {
   console.log("departments");
   const data = await Departments.find();
   res.status(200).json(data);
 };
 
+const deleteImageFromDisk = (imagePath) => {
+  fs.unlink(imagePath, (error) => {
+    if (error) {
+      console.error("Failed to delete image from disk:", error);
+    } else {
+      console.log("Image deleted from disk:", imagePath);
+    }
+  });
+};
 
+const createDepartment = async (req, res) => {
+  console.log("createDepartment");
 
+  try {
+    const { newDep, image } = req.body;
 
+    // Check if the department already exists
+    const exist = await Departments.findOne({ name: newDep });
 
-  module.exports = {
-    login,
-    adminData,
-    patientsss,
-    managePatients,
-    departments,
+    if (exist) {
+      return res.json({ message: "Department already exists" });
+    }
+
+    // Upload the image to Cloudinary
+    const result = await cloudinary.v2.uploader.upload(image);
+    console.log(result, "result--125");
+
+    // Create a new department
+    const dep = new Departments({
+      name: newDep,
+      image: result.secure_url, // Use secure_url for HTTPS image link
+    });
+
+    // Save the new department to the database
+    const depData = await dep.save();
+    console.log(depData, "depData--137");
+
+    res.json({ message: "Department created successfully" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "An error occurred" });
   }
+};
+
+
+const manageDepartment = async (req, res) => {
+  const { id, status } = req.body;
+  console.log(req.body, "req.body-----155");
+  try {
+    let update;
+    if (status === false) {
+      update = await Departments.findOneAndUpdate(
+        { _id: id },
+        { $set: { isBlocked: true } }
+      );
+      if (!update) {
+        return res.status(404).json({ message: "Department not found" });
+      }
+      console.log(update, "update==162");
+      return res.json({ message: "Department blocked" });
+    } else if (status === true) {
+      update = await Departments.findOneAndUpdate(
+        { _id: id },
+        { $set: { isBlocked: false } }
+      );
+      if (!update) {
+        return res.status(404).json({ message: "Department not found" });
+      }
+      console.log(update, "update==181");
+      return res.json({ message: "Department unblocked" });
+    } else {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "An error occurred" });
+  }
+};
+
+
+
+module.exports = {
+  login,
+  adminData,
+  patientsss,
+  managePatients,
+  departments,
+  createDepartment,
+  manageDepartment,
+};
