@@ -9,44 +9,25 @@ function Departments() {
   const adminToken = localStorage.getItem("adminToken");
   const [createStatus, setStatus] = useState("");
   const [image, setImage] = useState([]);
-  const [preview, setPreView] = useState("");
+  const [preview, setPreview] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const [refresh, setRefresh] = useState(false);
 
-  // const departmentData = useCallback(async () => {
-  //   console.log("departmentData===");
-  //   try {
-  //     const res = await axios.get('admin/departments');
-  //     if (res.status === 200) {
-  //       setDepartList(res.data);
-  //       setFilteredData(res.data);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching department data:', error);
-  //   }
-  // }, [adminToken]);
-
-  useEffect(() => {
-    async function departmentData() {
-      console.log("departmentData===");
-      try {
-        if (adminToken) {
-          const res = await axios.get("admin/departments");
-          if (res.status === 200) {
-            setDepartList(res.data);
-            setFilteredData(res.data);
-          }
+  async function departmentData() {
+    console.log("departmentData===");
+    try {
+      if (adminToken) {
+        const res = await axios.get("admin/departments");
+        if (res.status === 200) {
+          setDepartList(res.data);
+          setFilteredData(res.data);
         }
-      } catch (error) {
-        console.error("Error fetching department data:", error);
       }
+    } catch (error) {
+      console.error("Error fetching department data:", error);
     }
-    departmentData();
-  }, [adminToken,refresh]);
-
-
-
+  }
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
@@ -68,6 +49,7 @@ function Departments() {
 
       if (res.data === "blocked" || res.data === "Unblocked") {
         setRefresh(!refresh);
+        console.log(!refresh,"refresh!!!!!!");
         // Update the department's status within the component state
         setDepartList((prevDepartments) =>
           prevDepartments.map((department) => {
@@ -131,7 +113,7 @@ function Departments() {
       reader.onload = () => {
         // Set the image state to the reader result
         setImage(reader.result);
-        setPreView(reader.result);
+        setPreview(reader.result);
       };
       reader.readAsDataURL(file); // Read the selected file as a data URL
     }
@@ -151,13 +133,13 @@ function Departments() {
       setTimeout(() => {
         setStatus("");
       }, 4000);
-      // departmentData();
+      setRefresh(!refresh); // Refresh the data after creating a department
     }
   };
 
   useEffect(() => {
     departmentData();
-  }, [refresh]);
+  }, [adminToken, refresh]);
 
   return (
     <>
