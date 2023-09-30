@@ -15,7 +15,6 @@ function Departments() {
   const [refresh, setRefresh] = useState(false);
 
   async function departmentData() {
-    console.log("departmentData===");
     try {
       if (adminToken) {
         const res = await axios.get("admin/departments");
@@ -46,29 +45,18 @@ function Departments() {
         status: row.isBlocked,
         id: row._id,
       });
-
-      if (res.data === "blocked" || res.data === "Unblocked") {
-        setRefresh(!refresh);
-        console.log(!refresh,"refresh!!!!!!");
-        // Update the department's status within the component state
-        setDepartList((prevDepartments) =>
-          prevDepartments.map((department) => {
-            if (department._id === row._id) {
-              return {
-                ...department,
-                isBlocked: !department.isBlocked,
-              };
-            }
-            return department;
-          })
-        );
-      } else {
-        // Handle other response messages or errors if needed
-        setStatus("Error occurred");
-        setTimeout(() => {
-          setStatus("");
-        }, 4000);
-      }
+      setRefresh(!refresh);
+      setDepartList((prevDepartments) =>
+        prevDepartments.map((department) => {
+          if (department._id === row._id) {
+            return {
+              ...department,
+              isBlocked: !department.isBlocked,
+            };
+          }
+          return department;
+        })
+      );
     } catch (error) {
       console.error(error);
       setStatus("Error occurred");
@@ -97,7 +85,7 @@ function Departments() {
       name: "Action",
       cell: (row) => (
         <button
-          className="btn btn-success"
+          className={`btn ${row.isBlocked ? "btn-danger" : "btn-success"}`}
           onClick={() => blockDepartment(row)}
         >
           {row.isBlocked === false ? "Block" : "Unblock"}
@@ -143,8 +131,8 @@ function Departments() {
 
   return (
     <>
-      <div className="container mt-5 ">
-        <h1>Create Department</h1>
+      <div className="container mt-1  ">
+      <h1 style={{ fontFamily: "Times New Roman, serif" }}>Create Department</h1>
         <form className="d-flex flex-column align-items-center">
           <div className="mb-3 ">
             {preview ? (
@@ -166,7 +154,7 @@ function Departments() {
             )}
           </div>
           <div className="mb-1">
-            <label htmlFor="depName" className="form-label">
+            <label htmlFor="depName" className="form-label"style={{ fontFamily: "Times New Roman, serif" }}>
               Department Name
             </label>
             <input
@@ -183,7 +171,7 @@ function Departments() {
           </div>
 
           <div className="">
-            <label htmlFor="image" className="form-label">
+            <label htmlFor="image" className="form-label" style={{ fontFamily: "Times New Roman, serif" }}>
               Upload image
             </label>
             <input
@@ -200,6 +188,7 @@ function Departments() {
               type="button"
               className="btn btn-primary"
               onClick={handleSubmit}
+              
             >
               Create Department
             </button>
@@ -230,7 +219,7 @@ function Departments() {
         ) : (
           ""
         )}
-        <h3>Departments</h3>
+        <h3 style={{ fontFamily: "Times New Roman, serif" }}>Departments List</h3>
         <input
           type="text"
           value={search}
