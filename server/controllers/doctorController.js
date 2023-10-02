@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 const randomString = require("randomstring");
 const mailSender = require("../config/nodeMailer");
 const { createDoctorTokens } = require("../middlewares/jwt");
+const department = require("../models/department");
+const cloudinary = require("cloudinary");
+
 
 async function securePassword(password) {
   try {
@@ -59,11 +62,11 @@ const verifyOtp = async (req, res) => {
   try {
     const { token } = req.params;
     console.log(req.params, "req.params==61");
-    
+
     // Find the doctor using the provided token
     const doctor = await Doctor.findOne({ token: token });
     console.log(doctor, "doctor 69");
-    
+
     if (!doctor) {
       // If the doctor with the provided token is not found, respond with "invalid"
       res.json("invalid");
@@ -74,14 +77,13 @@ const verifyOtp = async (req, res) => {
         res.json("invalid otp");
       } else {
         console.log("inside else");
-        
+
         // If OTP is correct, clear the token, OTP, and set isVerified to true
         await Doctor.findOneAndUpdate(
           { token: token },
           { $set: { token: "", otp: "", isVerified: true } }
         );
-        res.status(200).json({message:"verified"});
-
+        res.status(200).json({ message: "verified" });
       }
     }
   } catch (error) {
@@ -90,65 +92,70 @@ const verifyOtp = async (req, res) => {
   }
 };
 
-const login =async (req,res)=>{
+const login = async (req, res) => {
   try {
-    const {email,password}=req.body;
-    console.log(email,password,"==email,password 96==DOC");
-    const docData=await Doctor.findOne({email:email})
+    const { email, password } = req.body;
+    console.log(email, password, "==email,password 96==DOC");
+    const docData = await Doctor.findOne({ email: email });
     if (docData) {
-      console.log(docData,"docdat=99");
-      const passwordMatch=await bcrypt.compare(password,docData?.password)
-      console.log(password,docData?.password,"password,docData?.password 101");
+      console.log(docData, "docdat=99");
+      const passwordMatch = await bcrypt.compare(password, docData?.password);
+      console.log(
+        password,
+        docData?.password,
+        "password,docData?.password 101"
+      );
       if (passwordMatch) {
-        if (docData.isVerified ===true){
-          if(!docData.isBlocked){
-            const token=createDoctorTokens(docData._id)
-            console.log(token,"token  106");
-            res.json({docData,token})
-          }else{
-            res.json("blocked")
+        if (docData.isVerified === true) {
+          if (!docData.isBlocked) {
+            const token = createDoctorTokens(docData._id);
+            console.log(token, "token  106");
+            res.json({ docData, token });
+          } else {
+            res.json("blocked");
           }
-        }else {
+        } else {
           res.json("unverified");
         }
       } else {
         res.json("unauthorized");
       }
-    }else {
+    } else {
       res.json("unauthorized");
     }
   } catch (error) {
-    res.json("error")
-    console.log(error,"error--129");  
-}
-}
+    res.json("error");
+    console.log(error, "error--129");
+  }
+};
 
-const forgotPassword=async(req,res)=>{
+const forgotPassword = async (req, res) => {
   try {
     const email = req.params.email;
-  const emailData = await Doctor.find({ email: email });
-  console.log(email,"------",emailData);
+    const emailData = await Doctor.find({ email: email });
+    console.log(email, "------", emailData);
 
     if (emailData) {
       const otp = Math.floor(1000 + Math.random() * 9000);
-      console.log(otp,"otp+++++++++++++++++++++++++++");
-      const mailupdated= await Doctor.updateOne({email:email},{$set:{otp:otp}})
-      await mailSender(email,otp,"forgotpassword")
-      console.log(email,"=======emailData.email");
+      console.log(otp, "otp+++++++++++++++++++++++++++");
+      const mailupdated = await Doctor.updateOne(
+        { email: email },
+        { $set: { otp: otp } }
+      );
+      await mailSender(email, otp, "forgotpassword");
+      console.log(email, "=======emailData.email");
 
-      console.log(mailupdated,"mailupdated--docto--------");
+      console.log(mailupdated, "mailupdated--docto--------");
       res.status(200).json("success");
-    }else{
-      res.status(404).json("Not Found")
+    } else {
+      res.status(404).json("Not Found");
     }
   } catch (error) {
     res.status(500).json({ error: " " });
-
   }
-  
-}
+};
 
-const verifyOtpp=async(req,res)=>{
+const verifyOtpp = async (req, res) => {
   console.log("otpppppppppppp");
   try {
     const { otp } = req.body;
@@ -161,20 +168,79 @@ const verifyOtpp=async(req,res)=>{
       res.status(200).json({ message: "user otp correct" });
     }
     console.log(doctor, "Doctor 107");
-  } catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};
 
-const resetPassword=async(req,res)=>{
+const resetPassword = async (req, res) => {
   console.log("reset doct");
   try {
-    const {email,password}=req.body
-  console.log(email,"-----",password,"email,password");
-  await Doctor.findByIdAndUpdate({email:email},{$set:{password:password}}).then(
-    res.status(200).json("success"))
+    const { email, password } = req.body;
+    console.log(email, "-----", password, "email,password");
+    await Doctor.findByIdAndUpdate(
+      { email: email },
+      { $set: { password: password } }
+    ).then(res.status(200).json("success"));
+  } catch (error) {}
+};
+
+const registration = async (req, res) => {
+  console.log("registration");
+  try {
+    const {
+      address,
+      liceNum,
+      department,
+      exp,
+      profile, 
+      availability,
+      docs,
+    } = req.body;
+    const exist = await Doctor.findOne({ liceNum: liceNum });
+
+    if (exist) {
+      return res.status(400).json({ error: "License number already exists" });
+    }
+
+    const docprofile = await cloudinary.v2.uploader.upload(profile,);
+    const Certificate = await cloudinary.v2.uploader.upload(docs,);
+
+
+    const doctor = new Doctor({
+      address: address,
+      liceNum: liceNum,
+      department: department,
+      exp: exp, 
+      image:docprofile.url,
+      availability: availability,
+       documents: Certificate.url,
+    });
+
+    const docData = await doctor.save();
+    console.log(docData, "docData------------");
+
+    res.status(200).json({ message: "Registration successful" });
   } catch (error) {
-    
+    console.error(error);
+    res.status(500).json({ error: "Registration failed" });
+  }
+};
+
+
+const deptList=async(req,res)=>{
+  try {
+    const dept= await department.find()
+    if (dept) {
+      res.json(
+        {
+          dept,
+          message:'okey success'
+        }
+      )
+    }else{
+      res.status(404).json("there is no such data")
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -187,6 +253,6 @@ module.exports = {
   forgotPassword,
   verifyOtpp,
   resetPassword,
-
-
+  registration,
+  deptList,
 };

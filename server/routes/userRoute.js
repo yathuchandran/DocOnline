@@ -11,10 +11,12 @@ require("dotenv").config();
 userRoute.post("/signup", userController.signup);
 userRoute.post("/otp", userController.verifyOtp);
 userRoute.post("/login", userController.login);
-userRoute.get("/userData", userController.userData);
-userRoute.put("/setProfile",userController.setProfilee)
 userRoute.get("/forgotPassword/:email",userController.forgotPassword)
 userRoute.patch("/verifyOtp",userController.verifyOtp)
 userRoute.patch("/resetPassword",userController.resetPassword)
+
+userRoute.get("/userData",validateToken,authUser, userController.userData);
+userRoute.put("/setProfile",validateToken,authUser,userController.setProfilee)
+
 
 module.exports = userRoute;

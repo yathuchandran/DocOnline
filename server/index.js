@@ -8,7 +8,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const connectDB = require("./config/config");
 const cloudinary =require ('cloudinary') ;
-
+const bodyParser=require('body-parser')
 
 
 // MongoDB connection
@@ -21,10 +21,15 @@ dotenv.config();
 cloudinary.v2.config({ 
   cloud_name: 'dyvmqs56r', 
   api_key: '662229676537357', 
-  api_secret: 'Cy34_Payi7dgrEpREF5-TTHvugM' 
+  api_secret: 'Cy34_Payi7dgrEpREF5-TTHvugM' ,
+  max_file_size:50000000
 });
 
+app.use(bodyParser.json({ limit: '200mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
 // Middleware
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true,limit:"500mb" }));
 app.use(express.static(path.join(__dirname, "public")));

@@ -3,20 +3,24 @@ const objectid = mongoose.Types.ObjectId
 const doctorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
   },
-//   age: {
-//     type: Number,
-//     required: true,
-//   },
+  age: {
+    type: Number,
+  },
   gender: {
     type: String,
+    // required: true,
+
   },
   email: {
     type: String,
-    required: true,
+    // required: true,
   },
   fee: {
+    type: Number,
+  },
+  exp: {
     type: Number,
   },
   address: {
@@ -24,16 +28,15 @@ const doctorSchema = new mongoose.Schema({
   },
   contact: {
     type: Number,
-    required: true,
   },
   password: {
     type: String,
-    required: true,
+    // required: true,
   },
   department: {
-    type:objectid,
+    type:String,
   },
-  qualification: {
+  education: {
     type: String,
   },
   isApproved:{
@@ -54,9 +57,7 @@ const doctorSchema = new mongoose.Schema({
   image: {
     type: String,
   },
-  documents: {
-    type: Array,
-  },
+ 
   otp: {
     type: Number,
   },
@@ -64,6 +65,16 @@ const doctorSchema = new mongoose.Schema({
     type: String,
   },
   blockReason:{
+    type:String
+  },
+  liceNum: {
+    type: Number,
+
+  },
+  availability: {
+    type: Number,
+  },
+  document:{
     type:String
   }
 });

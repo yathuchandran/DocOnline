@@ -3,6 +3,7 @@ const Patients = require("../models/userModel");
 const User = require("../models/userModel");
 const Departments = require("../models/department");
 const cloudinary = require("cloudinary");
+const Doctor=require("../models/doctorModel")
 
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -67,6 +68,18 @@ const patientsss = async (req, res) => {
   }
 };
 
+const Doctors = async (req, res) => {
+  console.log("Doctors controll");
+  try {
+    const doctors = await Doctor.find();
+    console.log(doctors, "doctors 75");
+    res.status(200).json(doctors); // Send status 200 (OK) and the JSON data
+  } catch (error) {
+    console.error("Error in fetching doctors:", error);
+    res.status(500).json({ error: "Internal server error" }); // Send a 500 (Internal Server Error) status and an error JSON object
+  }
+};
+
 const managePatients = async (req, res) => {
   console.log("managePatient70");
   try {
@@ -94,7 +107,6 @@ const managePatients = async (req, res) => {
 };
 
 const departments = async (req, res) => {
-  console.log("departments");
   const data = await Departments.find();
   res.status(200).json(data);
 };
@@ -110,31 +122,24 @@ const deleteImageFromDisk = (imagePath) => {
 };
 
 const createDepartment = async (req, res) => {
-  console.log("createDepartment");
 
   try {
     const { newDep, image } = req.body;
 
-    // Check if the department already exists
     const exist = await Departments.findOne({ name: newDep });
 
     if (exist) {
       return res.json({ message: "Department already exists" });
     }
 
-    // Upload the image to Cloudinary
     const result = await cloudinary.v2.uploader.upload(image);
-    console.log(result, "result--125");
 
-    // Create a new department
     const dep = new Departments({
       name: newDep,
       image: result.secure_url, // Use secure_url for HTTPS image link
     });
 
-    // Save the new department to the database
     const depData = await dep.save();
-    console.log(depData, "depData--137");
 
     res.json({ message: "Department created successfully" });
   } catch (error) {
@@ -146,7 +151,6 @@ const createDepartment = async (req, res) => {
 
 const manageDepartment = async (req, res) => {
   const { id, status } = req.body;
-  console.log(req.body, "req.body-----155");
   try {
     let update;
     if (status === false) {
@@ -157,7 +161,6 @@ const manageDepartment = async (req, res) => {
       if (!update) {
         return res.status(404).json({ message: "Department not found" });
       }
-      console.log(update, "update==162");
       return res.json({ message: "Department blocked" });
     } else if (status === true) {
       update = await Departments.findOneAndUpdate(
@@ -167,7 +170,6 @@ const manageDepartment = async (req, res) => {
       if (!update) {
         return res.status(404).json({ message: "Department not found" });
       }
-      console.log(update, "update==181");
       return res.json({ message: "Department unblocked" });
     } else {
       return res.status(400).json({ message: "Invalid status value" });
@@ -184,6 +186,7 @@ module.exports = {
   login,
   adminData,
   patientsss,
+  Doctors,
   managePatients,
   departments,
   createDepartment,

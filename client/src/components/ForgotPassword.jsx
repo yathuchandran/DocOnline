@@ -116,7 +116,8 @@ function ForgotPassword({ value }) {
               "linear-gradient(to bottom, rgb(190, 181, 199), #002147)",
           }}
         >
-          <div className="signup-form bg-white row d-flex justify-content-center align-items-center h-100">
+
+          <div className="signup-formm bg-white row d-flex justify-content-center align-items-center h-100">
             <h1>Forgot Password</h1>
 
             <div className="col-md-3  col-lg-2 col-xl-5  ">

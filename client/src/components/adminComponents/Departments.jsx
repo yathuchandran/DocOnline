@@ -17,7 +17,8 @@ function Departments() {
   async function departmentData() {
     try {
       if (adminToken) {
-        const res = await axios.get("admin/departments");
+        
+        const res = await axios.get('admin/departments');
         if (res.status === 200) {
           setDepartList(res.data);
           setFilteredData(res.data);
@@ -27,6 +28,9 @@ function Departments() {
       console.error("Error fetching department data:", error);
     }
   }
+
+ 
+
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
@@ -39,7 +43,6 @@ function Departments() {
   };
 
   const blockDepartment = async (row) => {
-    console.log("blockDepartment 33");
     try {
       const res = await axios.patch(`/admin/manageDepartment`, {
         status: row.isBlocked,

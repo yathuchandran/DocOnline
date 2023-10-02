@@ -103,14 +103,14 @@ function ResetPassword({ value }) {
             <br />
             <input
               placeholder="New Password"
-              className="form-controll"
+              className="form-controlll"
               ref={passRef}
             />
             <br />
             <br />
             <input
               placeholder="Confirm Password"
-              className="form-controll"
+              className="form-controlll"
               ref={confirmRef}
             />
 

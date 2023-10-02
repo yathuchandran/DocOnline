@@ -1,50 +1,117 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import axios from "../../Services/axios";
+import PropTypes from "prop-types"; // Make sure 'PropTypes' is spelled correctly with a lowercase 'p'
+import { useNavigate } from "react-router";
+import useAuth from "../../context/hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { setDoctorData } from "../../redux/doctorData";
 
 function DoctorReg() {
-  const [address,setAaddress]=useState(null)
+  const [departments, setDepartments] = useState([]);
 
-  
-  // State to store verification information
-  const [verificationInfo, setVerificationInfo] = React.useState({
-    address: "",
-    licenseNumber: "",
-    specialty: "",
-    yearsOfExperience: "",
-    education: "",
-    profilePhoto: null, // For storing the profile photo file
-    availability: "",
-  });
+  const [address, setAddress] = useState("");
+  const [liceNum, setLiceNum] = useState("");
+  const [department, setDepartment] = useState("");
+  const [exp, setExp] = useState("");
+  const [profile, setProfile] = useState(null);
+  const [availability, setAvailability] = useState("");
+  const [docs, setDocs] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [preview, setPreview] = useState("");
 
-  // Function to handle file upload for profile photo
-  const handleProfilePhotoUpload = (e) => {
+  const { setDoctor } = useAuth();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchDeptList = async () => {
+      try {
+        const res = await axios.get("/doctor/department");
+        console.log(res.data.dept, "njkgrjkgrngj");
+        console.log(res);
+        if (res.data.message == "okey success") {
+          setDepartments(res.data.dept);
+        }
+      } catch (error) {}
+    };
+    fetchDeptList();
+  }, [0]);
+
+  const navigate = useNavigate();
+
+
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setVerificationInfo({ ...verificationInfo, profilePhoto: file });
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Set the image state to the reader result
+        setProfile(reader.result);
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file); // Read the selected file as a data URL
+    }
   };
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
+
+  const handleFileChanges = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setDocs(reader.result)
+      };
+      reader.readAsDataURL(file); // Read the selected file as a data URL
+    }
+  };
+// console.log(docs,"docs------------------------------------------");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // You can submit the verificationInfo to your backend for further processing
-    // Be sure to handle file uploads correctly, e.g., using FormData for the profile photo
-    // Also, implement license verification logic here
+    if (
+      !address ||
+      !liceNum ||
+      !department ||
+      !exp ||
+      !availability ||
+      !docs ||
+      !profile
+    ) {
+      setErrorMsg("Please fill in all the fields.");
+      return;
+    }
 
-    // Example of sending data to the backend using FormData:
-    const formData = new FormData();
-    formData.append("address", verificationInfo.address);
-    formData.append("licenseNumber", verificationInfo.licenseNumber);
-    formData.append("specialty", verificationInfo.specialty);
-    formData.append("yearsOfExperience", verificationInfo.yearsOfExperience);
-    formData.append("education", verificationInfo.education);
-    formData.append("profilePhoto", verificationInfo.profilePhoto);
-    formData.append("availability", verificationInfo.availability);
+    try {
+      const dataToSend = {
+        address,
+        liceNum,
+        department,
+        exp,
+        profile,
+        availability,
+        docs,
+      };
 
-    // Send formData to your server for further processing
-    // Example: axios.post('/api/doctor-verification', formData)
+      console.log(dataToSend,"dataToSend--------------------------88");
+      const res = await axios.post(`/doctor/registration`, dataToSend);
+
+      console.log(res, "res--------------");
+      if (res.data.message == "Registration successful") {
+        console.log("homeeeeee");
+
+        setDoctor(true);
+        dispatch(setDoctorData(res.data.doctorData));
+        navigate("/doctor/");
+      }
+      console.log("kerita");
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <div className="container">
       <div className="card mt-2 border-radius-round-10 ">
@@ -84,10 +151,20 @@ function DoctorReg() {
                   </div>
                 </div>
 
-
                 {/* Doctor Verification Section */}
                 <div className="mb-4">
-                  <form className="mt-0" onSubmit={handleSubmit}>
+                  <form className="mt-0">
+                    {errorMsg ? (
+                      <div
+                        className="alert alert-danger"
+                        role="alert"
+                        style={{ textAlign: "center" }}
+                      >
+                        {errorMsg}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     {/* ... Other input fields */}
 
                     {/* Address Input */}
@@ -104,13 +181,8 @@ function DoctorReg() {
                         id="address"
                         placeholder="Your Address"
                         className="form-control dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
-                        value={verificationInfo.address}
-                        onChange={(e) =>
-                          setVerificationInfo({
-                            ...verificationInfo,
-                            address: e.target.value,
-                          })
-                        }
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
                       />
                     </div>
 
@@ -128,17 +200,14 @@ function DoctorReg() {
                         id="licenseNumber"
                         placeholder="12345"
                         className="form-control dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
-                        value={verificationInfo.licenseNumber}
-                        onChange={(e) =>
-                          setVerificationInfo({
-                            ...verificationInfo,
-                            licenseNumber: e.target.value,
-                          })
-                        }
+                        value={liceNum}
+                        onChange={(e) => setLiceNum(e.target.value)}
                       />
                     </div>
 
                     {/* Specialty Input */}
+
+                    {/* Years of Experience Input */}
                     <div className="mb-0">
                       <label
                         htmlFor="specialty"
@@ -146,23 +215,22 @@ function DoctorReg() {
                       >
                         Specialty or Medical Field
                       </label>
-                      <input
-                        type="text"
+                      <select
                         name="specialty"
                         id="specialty"
-                        placeholder="Cardiology, Pediatrics, Dermatology"
-                        className="form-control dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
-                        value={verificationInfo.specialty}
-                        onChange={(e) =>
-                          setVerificationInfo({
-                            ...verificationInfo,
-                            specialty: e.target.value,
-                          })
-                        }
-                      />
+                        className="form-control dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                      >
+                        <option value="">Select a department</option>
+                        {departments.map((dept) => (
+                          <option key={dept.id} value={dept.name}>
+                            {dept.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
-                    {/* Years of Experience Input */}
                     <div className="mb-0">
                       <label
                         htmlFor="yearsOfExperience"
@@ -176,59 +244,72 @@ function DoctorReg() {
                         id="yearsOfExperience"
                         placeholder="5 years"
                         className="form-control dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
-                        value={verificationInfo.yearsOfExperience}
-                        onChange={(e) =>
-                          setVerificationInfo({
-                            ...verificationInfo,
-                            yearsOfExperience: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-
-                    {/* Education and Qualifications Input */}
-                    <div className="mb-0">
-                      <label
-                        htmlFor="education"
-                        className="form-label text-sm text-gray-600 dark:text-gray-200"
-                      >
-                        Education and Qualifications
-                      </label>
-                      <textarea
-                        name="education"
-                        id="education"
-                        rows="4"
-                        placeholder="Medical School, Residency, Board Certifications, etc."
-                        className="form-control dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
-                        value={verificationInfo.education}
-                        onChange={(e) =>
-                          setVerificationInfo({
-                            ...verificationInfo,
-                            education: e.target.value,
-                          })
-                        }
+                        value={exp}
+                        onChange={(e) => setExp(e.target.value)}
                       />
                     </div>
 
                     {/* Profile Photo Upload */}
-                    <div className="mb-0">
+                    <div className="text-center mb-0">
+                      {preview != [] ? (
+                        <img
+                          width={"100px"}
+                          height={"150px"}
+                          className="text-wrap"
+                          src={preview}
+                          alt=""
+                        />
+                      ) : profile ? (
+                        <img
+                          width={"100px"}
+                          height={"150px"}
+                          src={`images/${profile}`}
+                          alt="profile"
+                        />
+                      ) : (
+                        <img
+                          width={"150px"}
+                          height={"200px"}
+                          src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+                          alt="default"
+                        />
+                      )}
+                      <br />
                       <label
                         htmlFor="profilePhoto"
                         className="form-label text-sm text-gray-600 dark:text-gray-200"
                       >
                         Profile Photo
                       </label>
-                      </div>
-                      <div className="mb-0 ps-4">
-
-                      
+                    </div>
+                    <div className="mb-0 ps-4">
                       <input
                         type="file"
                         accept="image/*"
                         name="profilePhoto"
                         id="profilePhoto"
                         className="form-control-file"
-                        onChange={handleProfilePhotoUpload}
+                        onChange={(e) => handleFileChange(e)}
+                      />
+                    </div>
+
+                    {/* documents Photo Upload */}
+                    <div className="mb-0">
+                      <label
+                        htmlFor="docs"
+                        className="form-label text-sm text-gray-600 dark:text-gray-200"
+                      >
+                        Certifications
+                      </label>
+                    </div>
+                    <div className="mb-0 ps-4">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        name="docs"
+                        id="docs"
+                        className="form-control-file"
+                        onChange={(e) => handleFileChanges(e)}
                       />
                     </div>
 
@@ -246,28 +327,22 @@ function DoctorReg() {
                         id="availability"
                         placeholder="Set your working hours or availability"
                         className="form-control dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
-                        value={verificationInfo.availability}
-                        onChange={(e) =>
-                          setVerificationInfo({
-                            ...verificationInfo,
-                            availability: e.target.value,
-                          })
-                        }
+                        value={availability}
+                        onChange={(e) => setAvailability(e.target.value)}
                       />
                       {/* Submit Button */}
-
-                    
                     </div>
                     <br />
                     <div className="mb-5 d-flex justify-content-center">
-                        <button
-                          type="submit"
-                          className="btn btn-primary w-50"
-                          style={{ paddingLeft: "10px" }}
-                        >
-                          Sign in
-                        </button>
-                      </div>
+                      <button
+                        type="submit"
+                        className="btn btn-primary w-50"
+                        style={{ paddingLeft: "10px" }}
+                        onClick={handleSubmit}
+                      >
+                        Sign in
+                      </button>
+                    </div>
                   </form>
                 </div>
 
@@ -295,5 +370,9 @@ function DoctorReg() {
     </div>
   );
 }
+
+DoctorReg.propTypes = {
+  value: PropTypes.string,
+};
 
 export default DoctorReg;

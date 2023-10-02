@@ -65,7 +65,6 @@ function Profile() {
     try {
      
       const res = await axios.put(`/setProfile`, userform);
-      console.log(res.status,"userform------------------------------------",res.data,"===========");
       if (res.data === "error") {
         setMsg("Something went wrong");
       } else if (res.data === "blocked") {

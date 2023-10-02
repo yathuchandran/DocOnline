@@ -2,6 +2,7 @@ import axios from "../Services/axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
+import './Otp.css'
 
 Otp.propTypes = {
   value: PropTypes.string,
@@ -74,7 +75,7 @@ function Otp({ value }) {
 
             <div className=" text-center    ">
               <div class="position-relative">
-                <div class="   ">
+                <div class=" otp" >
                   <h6>
                     Please enter the one-time password <br /> to verify your
                     account
@@ -89,17 +90,16 @@ function Otp({ value }) {
                     max={9999}
                     min={1000}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="form-control "
+                    className="form-control"
                   />
+
 
                   <div class="mt-4">
                     <button
                       type="button"
                       className="btn btn-success btn-lg btn-md"
-                      style={{
-                        backgroundColor: "#002147", // Add the background color here
-                        color: "white", // Optionally, set the text color
-                      }}
+                      style={{ backgroundColor: "#002147", color: "white" }} // Correct usage of style prop
+
                       onClick={handleSubmit}
                     >
                       Validate

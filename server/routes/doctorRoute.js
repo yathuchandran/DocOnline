@@ -11,6 +11,8 @@ doctorRoute.post("/login", doctorController.login);
 doctorRoute.get("/forgotPassword/:email",doctorController.forgotPassword)
 doctorRoute.patch("/verifyOtp",doctorController.verifyOtpp)
 doctorRoute.patch("/resetPassword",doctorController.resetPassword)
+doctorRoute.post("/registration",doctorController.registration);
+doctorRoute.get("/department",doctorController.deptList);
 
 
 

@@ -98,7 +98,7 @@ function Signup({ value }) {
               }}
             />
           </div>
-          <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1  ">
+          <div className=" col-md-8 col-lg-6 col-xl-4 offset-xl-1 text-center">
             <form>
               {errorMsg ? (
                 <div
@@ -128,7 +128,7 @@ function Signup({ value }) {
                   placeholder="Name..."
                   required
                 />
-              </div>
+              
               <label className="form-label small" htmlFor="form3Example3">
                 Mobile
               </label>
@@ -141,10 +141,11 @@ function Signup({ value }) {
                 placeholder="Mobile..."
                 required
               />
+              {/* </div>
               <div
                 className="form-outline mb-4"
                 style={{ textAlign: "center" }}
-              >
+              > */}
                 <label
                   className="form-label small"
                   htmlFor="form3Example3"
@@ -161,11 +162,12 @@ function Signup({ value }) {
                   placeholder="Email address..."
                   required
                 />
-              </div>
-              <div className="form-outline mb-4">
+              {/* </div>
+              <div className="form-outline mb-4"> */}
                 <div className="row">
-                  <div className="col-6">
-                    <label className="form-label small" htmlFor="form3Example4">
+                  <div className="col-7 text-center">
+                    <label className="form-labell small" htmlFor="form3Example4"   
+>
                       Password
                     </label>
                     <input
@@ -178,10 +180,11 @@ function Signup({ value }) {
                       required
                     />
                   </div>
-                  <div className="col-6">
+                  <div className="col-7 text-center">
                     <label
-                      className="form-label small "
+                      className="form-labell small "
                       htmlFor="form3Example4"
+
                     >
                       Confirm Password
                     </label>
