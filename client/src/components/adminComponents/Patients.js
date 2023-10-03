@@ -72,6 +72,7 @@ function Patients() {
           }
         })
         setPatientsList(res.data);
+        setFilteredData(res.data);
 
         if (res.status === 200) {
           console.log("successs patient");

@@ -29,7 +29,7 @@ function Login({ value }) {
         if (res.status === 200) {
           localStorage.setItem("doctorToken", res.data.token);
           setDoctor(true)
-          dispatch(setDoctorData(res.data.doctorData))
+          dispatch(setDoctorData(res.data))
           navigate("/doctor/registration");
         } else {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server

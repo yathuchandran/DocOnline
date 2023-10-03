@@ -33,7 +33,7 @@ function AdminSidebar() {
                         Admin
                     </h2>
                     <nav >
-                        <div className='flex flex-col text-white t'  style={{ backgroundColor: "#002147", color: 'white',height: '85rem' }}>
+                        <div className='flex flex-col text-white t'  style={{ backgroundColor: "#002147", color: 'white',height: '86rem'}}>
                             <div className='text-xl buttons py-4 flex'onClick={handleDashboard}  ><button className='btn'><MdPerson size={25} className='mr-4'/> Dashboard</button></div>
                             <div className='text-xl buttons py-4 flex' onClick={handleDoctor}><button className='btn'><FaStethoscope size={25} className='mr-4' /> Doctors</button></div>
                             <div className='text-xl buttons py-4 flex' onClick={handlePatient}><button className='btn'><MdOutlineSick size={25} className='mr-4' /> Patients</button></div>

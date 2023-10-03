@@ -69,10 +69,8 @@ const patientsss = async (req, res) => {
 };
 
 const Doctors = async (req, res) => {
-  console.log("Doctors controll");
   try {
     const doctors = await Doctor.find();
-    console.log(doctors, "doctors 75");
     res.status(200).json(doctors); // Send status 200 (OK) and the JSON data
   } catch (error) {
     console.error("Error in fetching doctors:", error);
@@ -105,6 +103,33 @@ const managePatients = async (req, res) => {
     res.json("error");
   }
 };
+
+const manageDoctor=async(req,res)=>{
+  console.log("manageDoctor----110");
+  try {
+    console.log(req.body);
+    const { isDocBlocked } = req.body;
+    console.log(isDocBlocked, "isuserBlocked");
+    const id = req.params.docId;
+    if (isDocBlocked == false) {
+      const doctor = await Doctor.findOneAndUpdate(
+        { _id: id },
+        { $set: { isBlocked: true } }
+      );
+      res.json("blocked");
+      console.log("blocked");
+    } else {
+      const doctor = await Doctor.findOneAndUpdate(
+        { _id: id },
+        { $set: { isBlocked: false } }
+      );
+      res.json("unblocked");
+    }
+  } catch (error) {
+    res.json("error");
+  }
+}
+
 
 const departments = async (req, res) => {
   const data = await Departments.find();
@@ -186,6 +211,7 @@ module.exports = {
   login,
   adminData,
   patientsss,
+  manageDoctor,
   Doctors,
   managePatients,
   departments,

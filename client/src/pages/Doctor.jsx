@@ -7,6 +7,7 @@ import DocMain from '../components/DoctorComponents/DocMain';
 import ForgotPassword from '../components/ForgotPassword';
 import ResetPassword from '../components/ResetPassword';
 import DoctorReg from '../components/DoctorComponents/DoctorReg';
+import RequireDoctor from '../context/auth/RequireDoctor';
 
 
 function Doctor() {
@@ -22,8 +23,12 @@ function Doctor() {
      <Route path='/forgotPassword' element={<ForgotPassword value={'doctor'} />} />
      <Route path='/newPassword/:email' element={<ResetPassword value={'doctor'} />} />
 
+     <Route  element={<RequireDoctor />}>
 
      <Route path='/' element={<DocMain value={'home'}/>} />
+
+     </Route>
+
 
      </Routes>
     </>

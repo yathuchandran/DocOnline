@@ -9,6 +9,7 @@ function Admin() {
     <div>
         <Routes>
             <Route path="/login" element={<Login value={'admin'}/>} />
+
             <Route element={<RequireAdmin />}/>
             <Route path="/" element={<BasePage value={'home'} user={'admin'}/>} />
             <Route path="/doctors" element={<BasePage value={"doctors"} user={"admin"} />} />

@@ -11,7 +11,12 @@ function BasePage({ value }) {
   return (
     <div>
       <div className="adminCont ">
-        <div className="row bg-yellow">
+        <div className="row"style={{
+          background: "linear-gradient(to bottom, rgb(190, 181, 199), #002147)",
+          borderRadius: "10px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", // Add this line for box shadow
+
+        }}>
           <div className="col-md-2  text-center  ps-5 pe-2 bg-white side">
             <AdminSidebar />
           </div>

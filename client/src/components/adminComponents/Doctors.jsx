@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import View from "./View";
+import React, { useEffect, useState } from "react";
+import axios from "../../Services/axios";
 import DataTables from "../dataTables";
-import axios from 'axios';
+import View from "./View";
 
 function Doctors() {
-  const [doctorList,setDoctorList]=useState()
+  const [doctorList,setDoctorList]=useState([])
   const [search,setSearch]=useState('')
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState('')
+  const [selectedDoctor, setSelectedDoctor] = useState('')
 
   const adminToken = localStorage.getItem("adminToken");
+  console.log(doctorList,"doctorList-20");
 
 
   const viewDoctor = (row) => {
     const doc = doctorList.filter((el) => el._id == row._id);
-    console.log(doc, "doctorList");
-    setDoctorList(doc[0])
+    console.log(row, "row-------------------------------------doctorList");
+    setSelectedDoctor(doc[0])
+  };
+
+  const handleSearch = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    setSearch(searchValue);
+    const filtered = doctorList.filter((doctor) =>
+
+    doctor.name.toLowerCase().startsWith(searchValue)
+    );
+    console.log(filtered,"filtered------28");
+    setFilteredData(filtered);
   };
 
 
@@ -26,7 +38,7 @@ function Doctors() {
     },
     {
       name: "name",
-      selector: (row) => row.userName,
+      selector: (row) => <div className="tip " data-bs-toggle="tooltip" title={row.name}> {row.name}</div>
     },
     {
       name: "contact",
@@ -37,6 +49,10 @@ function Doctors() {
     //   selector: (row) => row.age,
     // },
     {
+      name: 'Department',
+      selector: (row) => row.department,
+    },
+    {
       name: "Action",
       cell: (row) => (
         <button
@@ -45,7 +61,7 @@ function Doctors() {
             backgroundColor: "#002147",
             
           }}
-          onClick={() => viewPatient(row)}
+          onClick={() => viewDoctor(row)}
         >
           View
         </button>
@@ -58,7 +74,8 @@ function Doctors() {
       try {
         const res=await axios.get('admin/doctors')
         setDoctorList(res.data)
-        console.log(res.data,"DoctorList=====res.data--------------61");
+        setFilteredData(res.data)
+
         if (res.status === 200) {
           console.log("successs doctors");
         } else {
@@ -70,23 +87,24 @@ function Doctors() {
       }
     }
     doctorData()
-  })
+  },[])
 
   return (
     <div>
     {
-    //  selectedPatient ? <View user={selectedPatient} setSelected={setSelectedPatient} value="patient" /> :
+      selectedDoctor ? <View user={selectedDoctor} setSelected={setSelectedDoctor} value="doctor" /> :
      (
      <div>
        <h1>Doctors</h1>
        <input
          type="text"
-        
+         value={search}
+         onChange={handleSearch}
          placeholder="search.."
          className="form-control w-25 mb-2"
        />
 
-           <DataTables  title='Patients'  />
+           <DataTables columns={columns} title='Doctors' data={filteredData} />
      </div>
        )}
  </div>

@@ -98,13 +98,9 @@ const login = async (req, res) => {
     console.log(email, password, "==email,password 96==DOC");
     const docData = await Doctor.findOne({ email: email });
     if (docData) {
-      console.log(docData, "docdat=99");
+      console.log(docData, "docdat=============99");
       const passwordMatch = await bcrypt.compare(password, docData?.password);
-      console.log(
-        password,
-        docData?.password,
-        "password,docData?.password 101"
-      );
+      console.log(password,docData?.password,"password,docData?.password============== 101");
       if (passwordMatch) {
         if (docData.isVerified === true) {
           if (!docData.isBlocked) {
@@ -194,31 +190,38 @@ const registration = async (req, res) => {
       profile, 
       availability,
       docs,
+      docId,
+      gender
     } = req.body;
     const exist = await Doctor.findOne({ liceNum: liceNum });
 
     if (exist) {
-      return res.status(400).json({ error: "License number already exists" });
+      return res.status(400).json({ message: "License number already exists" });
     }
 
     const docprofile = await cloudinary.v2.uploader.upload(profile,);
     const Certificate = await cloudinary.v2.uploader.upload(docs,);
 
-
-    const doctor = new Doctor({
-      address: address,
-      liceNum: liceNum,
-      department: department,
-      exp: exp, 
-      image:docprofile.url,
-      availability: availability,
-       documents: Certificate.url,
-    });
-
+    const doctor =await  Doctor.findByIdAndUpdate(
+       {_id:docId},
+      {
+        $set:{
+          address: address,
+          liceNum: liceNum,
+          department: department,
+          exp: exp,
+          availability: availability, 
+          image:docprofile.url,
+          document: Certificate.url,
+          gender:gender
+        },
+    },
+    { new: true }
+    );
     const docData = await doctor.save();
     console.log(docData, "docData------------");
 
-    res.status(200).json({ message: "Registration successful" });
+    res.status(200).json({docData, message: "Registration successful" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Registration failed" });

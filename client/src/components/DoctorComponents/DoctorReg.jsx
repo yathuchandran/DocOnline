@@ -6,11 +6,25 @@ import axios from "../../Services/axios";
 import PropTypes from "prop-types"; // Make sure 'PropTypes' is spelled correctly with a lowercase 'p'
 import { useNavigate } from "react-router";
 import useAuth from "../../context/hooks/useAuth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDoctorData } from "../../redux/doctorData";
 
+import {
+  validateLiceNumber
+} from "../validator";
+
+
 function DoctorReg() {
+  const docData = useSelector((state) => state.doctor.data);
+  console.log(
+    docData.docData._id,
+    "docData.docData._id-----------------------"
+  );
+  const {docId} = docData.docData._id;
+  console.log(docId, "docId");
+
   const [departments, setDepartments] = useState([]);
+  const [gender, setGender] = useState(docData?.gender || "");
 
   const [address, setAddress] = useState("");
   const [liceNum, setLiceNum] = useState("");
@@ -29,81 +43,65 @@ function DoctorReg() {
     const fetchDeptList = async () => {
       try {
         const res = await axios.get("/doctor/department");
-        console.log(res.data.dept, "njkgrjkgrngj");
         console.log(res);
-        if (res.data.message == "okey success") {
+        if (res.data.message === "okey success") {
           setDepartments(res.data.dept);
         }
       } catch (error) {}
     };
     fetchDeptList();
-  }, [0]);
+  }, []);
 
   const navigate = useNavigate();
-
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        // Set the image state to the reader result
         setProfile(reader.result);
         setPreview(reader.result);
       };
-      reader.readAsDataURL(file); // Read the selected file as a data URL
+      reader.readAsDataURL(file); 
     }
   };
-
 
   const handleFileChanges = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setDocs(reader.result)
+        setDocs(reader.result);
       };
-      reader.readAsDataURL(file); // Read the selected file as a data URL
+      reader.readAsDataURL(file); 
     }
   };
-// console.log(docs,"docs------------------------------------------");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !address ||
-      !liceNum ||
-      !department ||
-      !exp ||
-      !availability ||
-      !docs ||
-      !profile
-    ) {
+    if (!address ||!liceNum ||!department ||!exp ||!availability ||!docs ||!profile||!gender) {
       setErrorMsg("Please fill in all the fields.");
+      return;
+    }
+    if (!validateLiceNumber(liceNum)) {
+      setErrorMsg("Invalid Licence number. Please enter a valid 6-digit number.");
       return;
     }
 
     try {
-      const dataToSend = {
-        address,
-        liceNum,
-        department,
-        exp,
-        profile,
-        availability,
-        docs,
-      };
-
-      console.log(dataToSend,"dataToSend--------------------------88");
+      const dataToSend = {address,liceNum,department,exp,profile,availability,docs,docId,gender};
       const res = await axios.post(`/doctor/registration`, dataToSend);
 
       console.log(res, "res--------------");
-      if (res.data.message == "Registration successful") {
-        console.log("homeeeeee");
-
+      if (res.data.message === "Registration successful") {
+        setErrorMsg("Registration successful")
         setDoctor(true);
-        dispatch(setDoctorData(res.data.doctorData));
+        dispatch(setDoctorData(res.data.docData));
+        navigate("/doctor/");
+        
+      } else if (res.data.message === "License number already exists") {
+        setErrorMsg("License number already exists")
         navigate("/doctor/");
       }
       console.log("kerita");
@@ -204,6 +202,41 @@ function DoctorReg() {
                         onChange={(e) => setLiceNum(e.target.value)}
                       />
                     </div>
+
+                    <div className="row">
+                <div className="col-md-6">
+                  <div className="">
+                    Gender<span className="text-danger">*</span>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      type="radio"
+                      value="male"
+                      checked={gender === "male"}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="form-check-input"
+                      id="male"
+                    />
+                    <label htmlFor="male" className="form-check-label">
+                      Male
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      type="radio"
+                      value="female"
+                      checked={gender === "female"}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="form-check-input"
+                      id="female"
+                    />
+                    <label htmlFor="female" className="form-check-label">
+                      Female
+                    </label>
+                  </div>
+                  <br />
+                </div>
+              </div>
 
                     {/* Specialty Input */}
 

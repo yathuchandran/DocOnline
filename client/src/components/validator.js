@@ -38,3 +38,7 @@ export const validatePassword = (password) => {
     return regex.test(firstCharacter);
   };
   
+  export const validateLiceNumber = (LiceNumber) => {
+    const liceRegex = /^\d{6}$/;
+    return liceRegex.test(LiceNumber);
+  };

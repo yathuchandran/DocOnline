@@ -30,10 +30,10 @@ const DocSidebar = () => {
               <div className='flex flex-col  text-white'>
                 <div className='text-xl sideItem py-4 flex'> Dashboard</div>
                 <div className='text-xl sideItem py-4 flex'> Appointments</div>
-                <div className='text-xl sideItem py-4 flex'> Patients</div>
+                {/* <div className='text-xl sideItem py-4 flex'> Patients</div>
                 <div className='text-xl sideItem py-4 flex'> Prescriptions</div>
                 <div className='text-xl sideItem py-4 flex'> My Schedule</div>
-                <div className='text-xl sideItem py-4 flex'> Admins</div>
+                <div className='text-xl sideItem py-4 flex'> Admins</div> */}
               </div>
             </nav>
           </div>
