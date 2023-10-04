@@ -108,13 +108,28 @@ const manageDoctor=async(req,res)=>{
   console.log("manageDoctor----110");
   try {
     console.log(req.body);
-    const { isDocBlocked } = req.body;
-    console.log(isDocBlocked, "isuserBlocked");
+    const { isDocBlocked,isDocVerify } = req.body;
+    console.log(isDocBlocked, "isuserBlocked",isDocVerify,"isDocVerify");
     const id = req.params.docId;
-      const verify=await Doctor.find(
-        {_id:_id}
-        
-        )
+    
+      if (isDocVerify==false) {
+        const verify=await Doctor.findOneAndUpdate(
+          {_id:_id},
+          { $set: { isVerified: true } }
+  
+          )
+          res.json("Not Verified")
+          console.log("Not Verified",122);
+
+      }else {
+        const doctor = await Doctor.findOneAndUpdate(
+          { _id: id },
+          { $set: { isVerified: false } }
+        );
+        res.json("Verified");
+
+      }
+      
 
 
 

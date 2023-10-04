@@ -9,34 +9,45 @@ function View({ user, setSelected, value }) {
     user.isBlocked ? "Unblock" : "Block"
   );
   const [reason, setReason] = useState("");
+  
 
   const docIdRef = useRef();
 
-  console.log(user._id, "docIdRef------------14");
+  console.log(user, "docIdRef------------14");
 
   const handleDoctor = async () => {
     const isDocBlocked = !user.isBlocked;
+    const isDocVerify = !user.isVerified;
+  
     try {
       const res = await axios.put(`admin/manageDoctor/${user._id}`, {
-        isDocBlocked,
+        isBlocked: isDocBlocked,
+        isVerified: isDocVerify,
       });
+  
       if (res.data === "blocked" || res.data === "unblocked") {
-        const newMsg = `This account has been ${
-          res.data === "blocked" ? "blocked" : "unblocked"
-        } successfully.`;
-
-        setMsg(newMsg);
-
+        const action = res.data === "blocked" ? "blocked" : "unblocked";
+        const newMsg = `This account has been ${action} successfully.`;
         setSelected({ ...user, isBlocked: isDocBlocked });
-
-        setTimeout(() => {
-          setMsg("");
-        }, 4000);
+      } else if (res.data === "Not Verified" || res.data === "Verified") {
+        const action = res.data === "Not Verified" ? "Not Verified" : "Verified";
+        const newMsg = `This account has been ${action} successfully.`;
+        setSelected({ ...user, isVerified: isDocVerify });
       } else {
-        setMsg("There was an unexpected error.");
+        throw new Error("There was an unexpected error.");
       }
-    } catch (error) {}
+  
+      setMsg(newMsg);
+  
+      setTimeout(() => {
+        setMsg("");
+      }, 4000);
+    } catch (error) {
+      // Handle error, e.g., display an error message
+      setMsg("There was an unexpected error.");
+    }
   };
+  
 
   const handlePatient = async () => {
     const adminToken = localStorage.getItem("adminToken");
