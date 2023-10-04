@@ -12,7 +12,7 @@ function View({ user, setSelected, value }) {
 
   const docIdRef = useRef();
 
-  console.log(user.image, "userDocument------------14");
+  console.log(user._id, "docIdRef------------14");
 
   const handleDoctor = async () => {
     const isDocBlocked = !user.isBlocked;
@@ -79,40 +79,35 @@ function View({ user, setSelected, value }) {
         className="container"
         
       >
-        <div
+        {/* <div
           className="card"
-          style={{
-            width: "89%",
-            // outline: "2px solid #28a745",
-            borderRadius: "10px",
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", // Add this line for box shadow
-          }}
-        >
-          <div className="card-header">
+          
+        > 
+        */}
+          {/* <div className="card-header">
             <h1 className="fs-5">Are you sure...?</h1>
           </div>
-          <div className="card-body">
+          <div className="card-body" >
             <p>Mention the reason for blocking.</p>
             <textarea
+            style={{
+              borderRadius: "10px",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+            }}
               className="form-control"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               name="reason"
               rows="3"
-            />
-          </div>
-          <div className="card-footer">
+            /> 
+          </div>*/}
+          {/* <div className="card-footer">
             <button type="button" className="btn btn-secondary">
               Close
             </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={(e) => handleDoctor(e, "block")}
-            >
-              {blockButton}
-            </button>
-          </div>
+           
+          </div> 
+          </div>*/}
         
   
 
@@ -278,12 +273,19 @@ function View({ user, setSelected, value }) {
                       {blockButton}
                     </button>
                   )}
+                   <button
+              type="button"
+              className="btn btn-danger"
+              onClick={(e) => handleDoctor(e, "block")}
+            >
+              {blockButton}
+            </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div></div>
+      </div>
       </div>
     </>
   );

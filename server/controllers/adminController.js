@@ -111,6 +111,14 @@ const manageDoctor=async(req,res)=>{
     const { isDocBlocked } = req.body;
     console.log(isDocBlocked, "isuserBlocked");
     const id = req.params.docId;
+      const verify=await Doctor.find(
+        {_id:_id}
+        
+        )
+
+
+
+
     if (isDocBlocked == false) {
       const doctor = await Doctor.findOneAndUpdate(
         { _id: id },
