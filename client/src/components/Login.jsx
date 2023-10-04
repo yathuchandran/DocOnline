@@ -24,16 +24,25 @@ function Login({ value }) {
     try {
       if (value === "doctor") {
         const res = await axios.post("/doctor/login", input);
-        console.log(res, "===doctor=login");
 
         if (res.status === 200) {
           localStorage.setItem("doctorToken", res.data.token);
           setDoctor(true)
-          dispatch(setDoctorData(res.data))
-          navigate("/doctor/registration");
+          dispatch(setDoctorData(res.data))          
+          if (res.data.docData.isVerified===true) {
+            navigate("/doctor/");
+
+          }else{
+            navigate("/doctor/registration");
+
+          }
         } else {
           setErrorMsg("Invalid credentials"); // Handle other status codes or error messages from the server
         }
+
+
+
+
       } else if (value === "admin") {
         const res = await axios.post("/admin/login", input);
         console.log("====ADMIN======");
@@ -53,6 +62,9 @@ function Login({ value }) {
           setErrorMsg("An error occurred while logging in.");
         }
       } else {
+
+
+
         console.log("user");
         const res = await axios.post("/login", input);
         console.log(res, "res15=============");

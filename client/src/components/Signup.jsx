@@ -67,6 +67,7 @@ function Signup({ value }) {
         navigate(value === "doctor" ? `/doctor/otp/${res.data.string}` : "/otp");
       } else {
         setErrorMsg("Error occurred");
+
       }
     } catch (error) {
       console.error(error.message);

@@ -56,11 +56,13 @@ return (
             src="/Screenshotfrom.png" alt="" />
           </Link>
 
-        {value === 'doctor' && (
-          <button className='btn btn-outline-success text-dark doc_nav' onClick={() => navigate('/doctor/prescriptions')}>
+        {value === 'doctor' ?<>
+        <button className='btn btn-outline-success text-dark doc_nav' onClick={() => navigate('/doctor/prescriptions')}>
             <BiNotepad style={{ marginTop: '-7px' }} /> Prescriptions
           </button>
-        )}
+        </> 
+         :''
+        }
 
         <div className='d-flex navMine'>
           {value === "doctor" ? (
@@ -74,14 +76,16 @@ return (
             className="btn btn-white btn-lg btn-md"
             onClick={() => navigate('/findDoctor')}
             style={{
-              backgroundColor: "#002147", // Add the background color here
-              color: "white", // Optionally, set the text color
+              backgroundColor: "#002147", 
+              color: "white",
             }} >
               Doctors
             </button>
           )}
 
           <div>{'   '}</div>
+
+          
 
          
 

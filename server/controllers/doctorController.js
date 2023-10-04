@@ -249,6 +249,10 @@ const deptList=async(req,res)=>{
 
 
 
+
+
+
+
 module.exports = {
   signup,
   verifyOtp,

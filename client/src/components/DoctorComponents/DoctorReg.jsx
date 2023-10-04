@@ -16,12 +16,11 @@ import {
 
 function DoctorReg() {
   const docData = useSelector((state) => state.doctor.data);
-  console.log(
-    docData.docData._id,
-    "docData.docData._id-----------------------"
-  );
+  // console.log(
+  //   docData.docData._id,
+  //   "docData.docData._id-----------------------"
+  // );
   const {docId} = docData.docData._id;
-  console.log(docId, "docId");
 
   const [departments, setDepartments] = useState([]);
   const [gender, setGender] = useState(docData?.gender || "");
