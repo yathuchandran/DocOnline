@@ -3,7 +3,7 @@ const Patients = require("../models/userModel");
 const User = require("../models/userModel");
 const Departments = require("../models/department");
 const cloudinary = require("cloudinary");
-const Doctor=require("../models/doctorModel")
+const Doctor = require("../models/doctorModel");
 
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -104,43 +104,49 @@ const managePatients = async (req, res) => {
   }
 };
 
-const manageDoctor=async(req,res)=>{
-  console.log("manageDoctor----110");
+
+const manageDoctor = async (req, res) => {
   try {
     console.log(req.body);
-    const { isDocBlocked,isDocVerify } = req.body;
-    console.log(isDocBlocked, "isuserBlocked",isDocVerify,"isDocVerify");
+    const { isDocBlocked, isDocVerify } = req.body;
     const id = req.params.docId;
+
+    if (isDocVerify === false) {
+      const verify = await Doctor.findOneAndUpdate(
+        { _id: id },
+        { $set: { isVerified: true } }
+      );
+      res.json("Verified");
+      return; 
+    } else {
+      const doctor = await Doctor.findOneAndUpdate(
+        { _id: id },
+        { $set: { isVerified: false } }
+      );
+      res.json("Verify Reject");
+    }
+
     
-      if (isDocVerify==false) {
-        const verify=await Doctor.findOneAndUpdate(
-          {_id:_id},
-          { $set: { isVerified: true } }
-  
-          )
-          res.json("Not Verified")
-          console.log("Not Verified",122);
-
-      }else {
-        const doctor = await Doctor.findOneAndUpdate(
-          { _id: id },
-          { $set: { isVerified: false } }
-        );
-        res.json("Verified");
-
-      }
-      
+  } catch (error) {
+    console.error(error);
+    res.json("error");
+  }
+};
 
 
+const blockDoctor = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { isDocBlocked } = req.body;
+    const id = req.params.docId;
 
-
-    if (isDocBlocked == false) {
+    if (isDocBlocked === false) {
       const doctor = await Doctor.findOneAndUpdate(
         { _id: id },
         { $set: { isBlocked: true } }
       );
       res.json("blocked");
-      console.log("blocked");
+      console.log("blocked------------148");
     } else {
       const doctor = await Doctor.findOneAndUpdate(
         { _id: id },
@@ -149,9 +155,12 @@ const manageDoctor=async(req,res)=>{
       res.json("unblocked");
     }
   } catch (error) {
+    console.error(error);
     res.json("error");
   }
-}
+};
+
+
 
 
 const departments = async (req, res) => {
@@ -170,7 +179,6 @@ const deleteImageFromDisk = (imagePath) => {
 };
 
 const createDepartment = async (req, res) => {
-
   try {
     const { newDep, image } = req.body;
 
@@ -195,7 +203,6 @@ const createDepartment = async (req, res) => {
     res.status(500).json({ message: "An error occurred" });
   }
 };
-
 
 const manageDepartment = async (req, res) => {
   const { id, status } = req.body;
@@ -228,13 +235,12 @@ const manageDepartment = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   login,
   adminData,
   patientsss,
   manageDoctor,
+  blockDoctor,
   Doctors,
   managePatients,
   departments,

@@ -12,6 +12,8 @@ adminRoute.get("/doctors",validateAdminToken, adminController.Doctors);
 
 adminRoute.put("/managePatient/:patientId",validateAdminToken, adminController.managePatients);
 adminRoute.put("/manageDoctor/:docId",validateAdminToken, adminController.manageDoctor);
+adminRoute.put("/blockDoctor/:docId",validateAdminToken, adminController.blockDoctor);
+
 
 adminRoute.get("/departments",validateAdminToken, adminController.departments);
 adminRoute.post("/createDepartment",validateAdminToken,adminController.createDepartment);
