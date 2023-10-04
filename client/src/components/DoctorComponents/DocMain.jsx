@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 
 import DoctorHome from "./DoctorHome";
 import DocSidebar from './DocSidebar';
+import Navbar from '../Navbar';
 
 DocMain.propTypes = {
   value: PropTypes.string,

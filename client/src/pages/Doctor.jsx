@@ -8,13 +8,14 @@ import ForgotPassword from '../components/ForgotPassword';
 import ResetPassword from '../components/ResetPassword';
 import DoctorReg from '../components/DoctorComponents/DoctorReg';
 import RequireDoctor from '../context/auth/RequireDoctor';
-
+import Navbar from '../components/Navbar';
 
 function Doctor() {
 
 
   return (
     <>
+    <Navbar value='doctor' />
      <Routes>
      <Route path='/signup' element={<Signup value={'doctor'} />} />
      <Route path='/otp/:token' element={<Otp value={'doctor'} />} />

@@ -3,10 +3,12 @@ import { Route, Routes } from 'react-router'
 import Login from '../components/Login'
 import RequireAdmin from '../context/auth/requireAdmin'
 import BasePage from '../components/adminComponents/BasePage'
+import Navbar from '../components/Navbar'
 
 function Admin() {
   return (
     <div>
+      <Navbar value='admin' />
         <Routes>
             <Route path="/login" element={<Login value={'admin'}/>} />
 

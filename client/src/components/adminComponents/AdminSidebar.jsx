@@ -27,13 +27,12 @@ function AdminSidebar() {
     }, [navigate])
   return (
     <>
-    <div className=' z-2' style={{ backgroundColor: "#002147", color: 'blue', top: '0%', width: '15vw' }}>
-      <div className='sidebar adminSide  fixed top-0 right-0 h-100 z-10' style={{ backgroundColor: "#002147", color: 'blue', top: '0%' }}>
-        <h2 className=' p-4 text-white' style={{ backgroundColor: "#002147", color: 'blue', top: '0%' }}>
-          Admin
-        </h2>
+    <div className=' z-1' style={{ backgroundColor: "#002147", color: 'blue', top: '0%', }}>
         <nav>
-          <div className='flex flex-col text-white t' style={{ backgroundColor: "#002147", color: 'white', height: '86rem', top: '0%' }}>
+      
+          <div className='flex flex-col text-white t' style={{ backgroundColor: "#002147", color: 'white', height: '89rem', top: '0%' }}>
+          <h2 className='  text-white' style={{width:'20vw'}}>Admin</h2>
+
             <div className='text-xl buttons py-4 flex' onClick={handleDashboard}>
               <button className='btn'>
                 <MdPerson size={25} className='mr-4' /> Dashboard
@@ -61,8 +60,9 @@ function AdminSidebar() {
               <button className='btn'>Medicines</button>
             </div>
           </div>
+         
         </nav>
-      </div>
+      
     </div>
   </>
   

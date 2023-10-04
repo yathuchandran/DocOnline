@@ -8,13 +8,15 @@ import ProfilePageStructure from '../components/userComponents/Pages/UserProfile
 import RequireUser from '../context/auth/RequireUser'
 import ForgotPassword from '../components/ForgotPassword'
 import ResetPassword from '../components/ResetPassword'
-
+import Navbar from '../components/Navbar'
+import UserHome from '../components/userComponents/UserHome'
 
 function User() {
   return (
     <>
+    <Navbar />
     <Routes>
-  <Route path='/' element={<HomePage />} />
+  <Route path='/' element={<UserHome />} />
   <Route path='/signup' element={<Signup />} />
   <Route path='/otp' element={<Otp />} />
   <Route path='/login' element={<Login />} />

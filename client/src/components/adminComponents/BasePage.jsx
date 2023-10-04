@@ -6,6 +6,7 @@ import Departments from "./Departments";
 import Doctors from "./Doctors";
 import Patients from "./Patients";
 import Loader from "../loader";
+import Navbar from '../Navbar'
 
 function BasePage({ value }) {
   return (
