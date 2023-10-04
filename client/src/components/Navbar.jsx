@@ -23,6 +23,8 @@ function Navbar({ value }) {
   const { user } = useAuth();
 console.log(value,"====24 value nav");
 
+console.log(doctor, admin, setDoctor, setAdmin, setUser,"doctor, admin, setDoctor, setAdmin, setUser");
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
