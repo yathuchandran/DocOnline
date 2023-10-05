@@ -202,7 +202,7 @@ function Departments() {
       {/* <div>
         <button type="button" className="btn mb-2 ms-1 btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" >Create Department</button>
       </div> */}
-      <div className="ms-3" style={{ zIndex: "0" }}>
+      <div className="ms-0" style={{ zIndex: "0" }}>
         {createStatus == "error" ? (
           <div className="alert alert-danger" role="alert">
             There was an error! cannot create depaprtment.

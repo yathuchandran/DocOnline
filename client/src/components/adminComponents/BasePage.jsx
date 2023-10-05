@@ -11,19 +11,21 @@ import Navbar from '../Navbar'
 function BasePage({ value }) {
   return (
     <div>
-      <div className="adminCont ">
-        <div className="row"style={{
+      <div className="adminCont "style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
+        <div className="row">
+        <Navbar value='admin'  />
+          <div className="col-md-2  text-center  ps-2 m-0 pe-2  side">
+            <AdminSidebar />
+
+          </div>
+          <div className="col-md-9 p-0">
+            <div className="row mt-4 ps-5 pe-2 ">
+              <div className="col-12 m-1" style={{
           background: "linear-gradient(to bottom, rgb(190, 181, 199), #002147)",
           borderRadius: "10px",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", // Add this line for box shadow
-
+          
         }}>
-          <div className="col-md-2  text-center  ps-5 pe-2 bg-white side">
-            <AdminSidebar />
-          </div>
-          <div className="col-md-9 p-">
-            <div className="row mt-4 ps-5 pe-2">
-              <div className="col-12 m-1">
                 <Suspense fallback={<Loader />}>
                   {value == "doctors" ? (
                     <Doctors />

@@ -10,6 +10,8 @@ function HomePage() {
 
   return (
     <div>
+       <Navbar />
+          <UserHome />
       {user === 'user' ? (
         <div>
           <Navbar />

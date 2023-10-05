@@ -15,7 +15,6 @@ function Doctor() {
 
   return (
     <>
-    <Navbar value='doctor' />
      <Routes>
      <Route path='/signup' element={<Signup value={'doctor'} />} />
      <Route path='/otp/:token' element={<Otp value={'doctor'} />} />

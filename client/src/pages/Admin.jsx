@@ -8,10 +8,11 @@ import Navbar from '../components/Navbar'
 function Admin() {
   return (
     <div>
-      <Navbar value='admin' />
+      
         <Routes>
             <Route path="/login" element={<Login value={'admin'}/>} />
 
+            <Route element={<Navbar value='admin'  />}/>
             <Route element={<RequireAdmin />}/>
             <Route path="/" element={<BasePage value={'home'} user={'admin'}/>} />
             <Route path="/doctors" element={<BasePage value={"doctors"} user={"admin"} />} />

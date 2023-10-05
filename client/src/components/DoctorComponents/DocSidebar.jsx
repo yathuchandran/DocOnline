@@ -73,7 +73,7 @@ const handleAdmins = () => {
             <div className='bg-black z-10 docSide top-0 left-0' style={{ zIndex: 10, right:'10%', left: '10%', top: '10%', }}>
                 <div className='sidebar   fixed top-0 right-0 h-100 z-10 'style={{backgroundColor: "#002147"}}>
                     <h2 className='  text-white text-center' style={{backgroundColor: "#002147",width:'28vw',height:'20vh'}}>
-                        Wellcome<br /><span className='text-white'><h1>{doctor.docData}</h1></span>
+                        Wellcome<br /><span className='text-white'><h1>{doctor.docData.name}</h1></span>
                     </h2>
                     <nav >
                         <div className='flex flex-col  text-white ps-2 text-center'style={{backgroundColor: "#002147",width:'29vw'}}>

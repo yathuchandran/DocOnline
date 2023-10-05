@@ -94,7 +94,7 @@ function Doctors() {
     {
       selectedDoctor ? <View user={selectedDoctor} setSelected={setSelectedDoctor} value="doctor" /> :
      (
-     <div>
+     <>
        <h1>Doctors</h1>
        <input
          type="text"
@@ -105,7 +105,7 @@ function Doctors() {
        />
 
            <DataTables columns={columns} title='Doctors' data={filteredData} />
-     </div>
+     </>
        )}
  </div>
   )

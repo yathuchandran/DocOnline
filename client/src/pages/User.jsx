@@ -14,15 +14,15 @@ import UserHome from '../components/userComponents/UserHome'
 function User() {
   return (
     <>
-    <Navbar />
+    
     <Routes>
-  <Route path='/' element={<UserHome />} />
+  <Route path='/' element={<HomePage />} />
   <Route path='/signup' element={<Signup />} />
   <Route path='/otp' element={<Otp />} />
   <Route path='/login' element={<Login />} />
   <Route path='/forgotpassword' element={<ForgotPassword />} />
   <Route path='/newPassword/:email' element={<ResetPassword />}/>
-
+  <Route  element={<Navbar />} />
   <Route  element={<RequireUser />}>
     <Route path='/profile' element={<ProfilePageStructure user="user" />} />
   </Route>
