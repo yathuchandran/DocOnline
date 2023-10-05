@@ -2,12 +2,12 @@
     border-style: solid;
     border-width: 1px;
     border-radius: 20px;
-    border-color: green;
+    border-color: rgb(215, 235, 215);
     margin-top: 5%;
     margin-bottom: 10%;
   }
   .btn:hover {
-    background-color: rgb(35, 116, 59);
+    background-color: rgb(34, 25, 117);
     color: white !important;
   }
   .horizontal-scroll-container {
@@ -19,4 +19,10 @@
   .horizontal-scroll-content {
     display: inline-block;
   }
+
+  .small-input {
+    
+    width: 100px;
+  }
+ 
   

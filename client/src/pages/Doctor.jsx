@@ -9,6 +9,7 @@ import ResetPassword from '../components/ResetPassword';
 import DoctorReg from '../components/DoctorComponents/DoctorReg';
 import RequireDoctor from '../context/auth/RequireDoctor';
 import Navbar from '../components/Navbar';
+import SetProfile from '../components/DoctorComponents/SetProfile';
 
 function Doctor() {
 
@@ -26,6 +27,7 @@ function Doctor() {
      <Route  element={<RequireDoctor />}>
 
      <Route path='/' element={<DocMain value={'home'}/>} />
+     <Route path='/setprofile' element={<SetProfile />} />
 
      </Route>
 

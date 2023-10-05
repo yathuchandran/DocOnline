@@ -248,7 +248,46 @@ const deptList=async(req,res)=>{
 }
 
 
+const setProfile=async(req,rea)=>{
+  try {
+    console.log("setprofile-------");
 
+    const { name, age, address, contact, gender, _id ,qualification,fee,department,profileChange,exp } = req.body;
+    console.log(req.body,"req.body---------------------256");
+    const uploadedImage = await cloudinary.v2.uploader.upload(profileChange);
+    console.log("uploadedImage");
+    const updatedData = await Doctor.findByIdAndUpdate(
+      { _id: _id },
+      {
+        $set: {
+          name: name,
+          age: age,
+          address: address,
+          contact: contact,
+          gender: gender,
+          image: uploadedImage.url,
+          fee:fee,
+          department:department,
+          education:qualification,
+          exp:exp,
+          document:  { } ,
+          
+        },
+      },
+      { new: true }
+    );
+console.log(updatedData,"updatedData---------------276");
+    if (!updatedData) {
+      return res.status(404).json({ error: "User not found" });
+
+    }
+
+    console.log(updatedData, "updatedData");
+    res.status(200).json(updatedData);
+  } catch (error) {
+    
+  }
+}
 
 
 
@@ -262,4 +301,5 @@ module.exports = {
   resetPassword,
   registration,
   deptList,
+  setProfile,
 };
