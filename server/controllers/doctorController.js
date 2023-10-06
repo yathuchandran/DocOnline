@@ -198,6 +198,8 @@ const registration = async (req, res) => {
       return res.status(400).json({ message: "License number already exists" });
     }
 
+
+
     const docprofile = await cloudinary.v2.uploader.upload(profile,);
     const Certificate = await cloudinary.v2.uploader.upload(docs,);
 
@@ -211,7 +213,8 @@ const registration = async (req, res) => {
           exp: exp,
           image:docprofile.url,
           document: Certificate.url,
-          gender:gender
+          gender:gender,
+          isRegister:true,
         },
     },
     { new: true }
@@ -250,11 +253,11 @@ const setProfile = async (req, res) => {
   try {
     console.log("setprofile-------");
 
-    const { name, age, address, contact, gender, _id, qualification, fee, department, profileChange, exp } = req.body;
+    const { name, age, address, contact, gender, _id, qualification, fee, department, profileChange, document } = req.body;
     console.log(req.body, "req.body---------------------256");
 
     const uploadedImage = await cloudinary.v2.uploader.upload(profileChange);
-    console.log(uploadedImage); // Remove quotes around "uploadedImage" to log the actual object.
+    const documents = await cloudinary.v2.uploader.upload(document);
 
     const updatedData = await Doctor.findByIdAndUpdate(
       { _id: _id },
@@ -269,9 +272,7 @@ const setProfile = async (req, res) => {
           fee: fee,
           department: department,
           education: qualification,
-          // exp: exp,
-          // You have an empty document field, you can remove it if not needed.
-          // document: {},
+          document:documents.url,
         },
       },
       { new: true }
@@ -286,7 +287,6 @@ const setProfile = async (req, res) => {
     console.log(docotorData, "updatedData");
     res.status(200).json(docotorData);
   } catch (error) {
-    console.error(error); // Log the error for debugging.
     res.status(500).json({ error: "Internal Server Error" }); // Respond with an appropriate error status.
   }
 };

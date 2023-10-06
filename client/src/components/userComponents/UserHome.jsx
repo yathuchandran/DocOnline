@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import axios from "../../Services/axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap"; // Import Bootstrap components
@@ -10,10 +10,12 @@ function UserHome() {
   const history = useNavigate();
 
   useEffect(() => {
-    async function fetchData() {
+   const  fetchData=async()=> {
       try {
-        const response = await axios.get("departments");
-        setDepartments(response.data);
+        console.log("helooooooooooooooooooo");
+        const res = await axios.get(`/departments`);
+        setDepartments(res.data);
+        console.log(res,"res-17");
       } catch (error) {
         console.error("Error fetching data:", error);
       }

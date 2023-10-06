@@ -5,6 +5,8 @@ const mailSender = require("../config/nodeMailer");
 const { createTokens } = require("../middlewares/jwt");
 const cloudinary = require("cloudinary");
 const randomstring = require("randomstring");
+const Department = require("../models/department");
+
 
 async function securePassword(password) {
   try {
@@ -144,6 +146,25 @@ const setProfilee = async (req, res) => {
   }
 };
 
+
+const department = async (req, res) => {
+  console.log("department");
+  try {
+    const dep = await Department.find();
+    console.log(dep,"dep--",153);
+    res.json(dep);
+  } catch (error) {
+    res.json("error");
+  }
+};
+
+
+
+
+
+
+
+
 const forgotPassword = async (req, res) => {
   console.log("forgotPassword");
   try {
@@ -169,7 +190,6 @@ const forgotPassword = async (req, res) => {
 };
 
 const resetPassword=async(req,res)=>{
-  console.log("resetPassword=============");
  try {
   const {email,password}=req.body
   console.log(email,"-----",password,"email,password");
@@ -187,6 +207,7 @@ module.exports = {
   login,
   userData,
   setProfilee,
+  department,
   forgotPassword,
   resetPassword
 };

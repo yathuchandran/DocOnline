@@ -5,27 +5,29 @@ import { setDoctorData } from '../../redux/doctorData';
 import { useDispatch, useSelector } from 'react-redux';
 
 
+
 function SetProfile() {
     const docData = useSelector((state) => state.doctor.data);
-    console.log(docData,"docData.docData.name");
-
     const [name, setName] = useState(docData.docData?.name||"");
     const [age, setAge] = useState(docData.docData?.age||"");
-    const [qualification, setQualification] = useState(docData.docData.education||"");
+    const [qualification, setQualification] = useState(docData.docData?.education || "");
     const [gender, setGender] = useState(docData.docData.gender||"");
     const [fee, setFee] = useState(docData.docData.fee||"");
     const [contact, setContact] = useState(docData.docData.contact||"");
     const [department, setDepartment] = useState(docData.docData.department||"");
     const [address, setAddress] = useState(docData.docData.address||"");
-    const [selectedImages, setSelectedImages] = useState(docData.docData.documents||"");
+    const [document,setDocument] = useState(docData.docData.document||"");
+    const [preview1, setPreview1] = useState(docData.docData.document||'');
+
     const [profile, setProfile] = useState(docData.docData.image||"");
     const [preview, setPreview] = useState(docData.docData.image||'');
     const [msg, setMsg] = useState('');
-    const [prChange, setPrChange] = useState(false);
-    const [docChange, setDocChange] = useState(false);
     const [departments, setDepartments] = useState([]);
 
+    const [exp,setExp]=useState(docData.docData.exp||"")
     const doctorToken = localStorage.getItem('doctorToken');
+    
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -44,7 +46,6 @@ function SetProfile() {
         fetchDepartments();
     }, [doctorToken]);
 
-    const dispatch = useDispatch();
 
 
  
@@ -62,8 +63,28 @@ function SetProfile() {
         }
       };
 
+
+      const handleDocChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            setDocument(reader.result);
+            setPreview1(reader.result)
+          };
+          reader.readAsDataURL(file); 
+        }
+      };
+
+
+      
     const handlsubmit=async(e)=>{
         e.preventDefault()
+
+        if (!age ||!qualification||!fee) {
+            setMsg("Please fill in all the fields.");
+            return;
+          }
 
         const userform = {
             name: name,
@@ -72,18 +93,25 @@ function SetProfile() {
             gender: gender,
             age: age,
             _id: docData.docData._id,
-            image: profile, 
+            // image: profile, 
             qualification:qualification,
             fee:fee,
             department:department,
             profileChange:profile,
+            document:document,
           };
 
           try {
             const res=await axios.post('/doctor/setprofile',userform)
 
-            console.log(res,"resssssssssssssssssssssssssssssssssssssssssssssssssssss");
+            console.log(res,"ressssssssssssssssssssssssssssssssssssss");
+            if (res.status===200) {
+                setMsg("profile succesfully updated")
+                dispatch(setDoctorData(res.data));
+            }else{
+                setMsg("profile not updated")
 
+            }
           } catch (error) {
             console.error("An error occurred:", error);
         }
@@ -176,37 +204,7 @@ function SetProfile() {
                                 placeholder="Qualification..."
                             />
                             </div>
-                            <label htmlFor="department">Department<span className="text-danger">*</span></label>
-                            <div className="dropdown">
-                                <button
-                                    className="btn btn-outline-success text-dark p-1 text-start dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                    style={{ fontSize: "15px" }}
-                                >
-                                    {  department ? (    Array.isArray(departments) && departments.length > 0 ?  
-                                        departments.find((el) => el._id === department)?.name || "Department"   
-                                           : "No Departments Available"  ) : "Department"}
-
-                                </button>
-                                <ul className="dropdown-menu">
-
-                                <ul className="dropdown-menu">
-                                  {Array.isArray(departments) && departments.length > 0 ? (
-                                    departments.map((dep, index) => (
-                                      <li onClick={() => setDepartment(dep._id)} key={index}>
-                                        {dep.name}
-                                      </li>
-                                    ))
-                                  ) : (
-                                    <li>No Departments Available</li>
-                                  )}
-                                </ul>
-
-                                </ul>
-                            </div>
-
+                            
                             <div className="row item-center justify-content-center">
                                 <div className="col-md-5">
                                     <div className="">Gender<span className="text-danger">*</span></div>
@@ -249,7 +247,22 @@ function SetProfile() {
                                         placeholder="Cons. Fee..."
                                     />
                                 </div>
+                              
+                                
                             </div>
+                            <p>Department:-{docData.docData.department}</p>
+
+                            <div className="col-md-9 text-center mt- mb-0 item-end">
+                                    <label htmlFor="fee">Expirience</label>
+                                    <input
+                                        type="number"
+                                        value={exp}
+                                        onChange={(e) => setExp(e.target.value)}
+                                        id="fee"
+                                        className="form-control w-60 mb-0 form-control-sm"
+                                        placeholder="Expirience..."
+                                    />
+                                </div>
                             
                           
                           
@@ -266,44 +279,45 @@ function SetProfile() {
                             />
                             
                             <p>Please upload your medical qualifications so that your profile can be verified</p>
-                            <label htmlFor="doc" className="mt-2">
-                                Documents
-                            </label>
-                            <br />
-                            <input type="file" name="images" multiple  />
-                            <br />
-                            <div className='d-flex flex-wrap horizontal-scroll-container'>
+                            
+                            {/* <div className='d-flex flex-wrap horizontal-scroll-container'> */}
 
+                            <div className="text-center  mb-1 mt-1">
+                            <h5>Documents</h5>
 
-                                <div className='horizontal-scroll-content flex-raw d-flex'>
-                                {docData && docData.docData && docData.docData.documents ? (
-                                      docData.docData.documents.map((doc, index) => (
-                                        <div key={0 - index} className='d-flex flex-column'>
-                                          <img
-                                            key={index}
-                                            className='me-2 mt-2'
-                                            width={'100px'}
-                                            height={'80px'}
-                                            src={import.meta.env.VITE_BASE_URL + `images/${doc}`}
-                                            alt=''
-                                          />
-                                          <button
-                                            key={index + '.' + index}
-                                            className='me-2 mt-1 btn btn-outline-success p-0'
-                                            value={doc}
-                                            style={{ fontSize: '10px' }}
-                                          >
-                                            Delete
-                                          </button>
+                                {preview1 ? (
+                                    <img width={'250px'} src={preview1} alt="" />
+                                ) : docData.docData.document ? (
+                                    <img
+                                        width={'250px'}
+                                        src={import.meta.env.VITE_BASE_URL + `images/${docData.docData.document}`}
+                                        alt="profile"
+                                    />
+                                ) : (
+                                    <img
+                                        width={'250px'}
+                                        src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+                                        alt="default"
+                                    />
+                                )}
+                                <br />
+                                <input
+                                    className="form-control w-25 m-auto mt-1"
+                                    type="file"
+                                    onChange={(e) =>  handleDocChange(e)}
+                                />
+                                {msg == "Profile updated successfully" ?
+                                    <div className="alert mt-3 alert-success" role="alert">
+                                        Profile updated successfully
+                                    </div>
+                                    : msg ?
+                                        <div className="alert mt-3 alert-danger" role="alert">
+                                            {msg}
                                         </div>
-                                      ))
-                                    ) : (
-                                      "Ooopsie..! No data found."
-                                    )}
-
-
-                                </div>
+                                        : ''
+                                }
                             </div>
+                            {/* </div> */}
 
 
                         </div>

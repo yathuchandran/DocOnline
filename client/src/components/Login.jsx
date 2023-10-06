@@ -29,7 +29,7 @@ function Login({ value }) {
           localStorage.setItem("doctorToken", res.data.token);
           setDoctor(true)
           dispatch(setDoctorData(res.data))          
-          if (res.data.docData.isVerified===true) {
+          if (res.data.docData.isRegister===true) {
             navigate("/doctor/");
 
           }else{

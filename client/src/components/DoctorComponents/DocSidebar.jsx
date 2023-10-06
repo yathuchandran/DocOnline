@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const DocSidebar = () => {
 
   const doctor = useSelector(state => state.doctor.data)
+  console.log(doctor,"doctor---------------------13-DOCTOR SIDEBAR");
   const [nav, setNav] = useState(false)
   const navigate = useNavigate()
 

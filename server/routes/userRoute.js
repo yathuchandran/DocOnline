@@ -14,6 +14,7 @@ userRoute.post("/login", userController.login);
 userRoute.get("/forgotPassword/:email",userController.forgotPassword)
 userRoute.patch("/verifyOtp",userController.verifyOtp)
 userRoute.patch("/resetPassword",userController.resetPassword)
+userRoute.get("/departments", userController.department);
 
 userRoute.get("/userData",validateToken,authUser, userController.userData);
 userRoute.put("/setProfile",validateToken,authUser,userController.setProfilee)

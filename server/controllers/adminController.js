@@ -82,7 +82,6 @@ const managePatients = async (req, res) => {
   console.log("managePatient70");
   try {
     const { isUserBlocked } = req.body;
-    console.log(isUserBlocked, "isuserBlocked");
     const id = req.params.patientId;
     console.log(id, "ID 75");
     if (isUserBlocked == false) {
