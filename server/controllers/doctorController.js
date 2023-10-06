@@ -188,7 +188,6 @@ const registration = async (req, res) => {
       department,
       exp,
       profile, 
-      availability,
       docs,
       docId,
       gender
@@ -210,7 +209,6 @@ const registration = async (req, res) => {
           liceNum: liceNum,
           department: department,
           exp: exp,
-          availability: availability, 
           image:docprofile.url,
           document: Certificate.url,
           gender:gender
@@ -248,14 +246,16 @@ const deptList=async(req,res)=>{
 }
 
 
-const setProfile=async(req,rea)=>{
+const setProfile = async (req, res) => {
   try {
     console.log("setprofile-------");
 
-    const { name, age, address, contact, gender, _id ,qualification,fee,department,profileChange,exp } = req.body;
-    console.log(req.body,"req.body---------------------256");
+    const { name, age, address, contact, gender, _id, qualification, fee, department, profileChange, exp } = req.body;
+    console.log(req.body, "req.body---------------------256");
+
     const uploadedImage = await cloudinary.v2.uploader.upload(profileChange);
-    console.log("uploadedImage");
+    console.log(uploadedImage); // Remove quotes around "uploadedImage" to log the actual object.
+
     const updatedData = await Doctor.findByIdAndUpdate(
       { _id: _id },
       {
@@ -266,31 +266,30 @@ const setProfile=async(req,rea)=>{
           contact: contact,
           gender: gender,
           image: uploadedImage.url,
-          fee:fee,
-          department:department,
-          education:qualification,
-          exp:exp,
-          document:  { } ,
-          
+          fee: fee,
+          department: department,
+          education: qualification,
+          // exp: exp,
+          // You have an empty document field, you can remove it if not needed.
+          // document: {},
         },
       },
       { new: true }
     );
-console.log(updatedData,"updatedData---------------276");
-    if (!updatedData) {
-      return res.status(404).json({ error: "User not found" });
+      const docotorData=await updatedData.save()
+    console.log(docotorData, "updatedData---------------276");
 
+    if (!docotorData) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    console.log(updatedData, "updatedData");
-    res.status(200).json(updatedData);
+    console.log(docotorData, "updatedData");
+    res.status(200).json(docotorData);
   } catch (error) {
-    
+    console.error(error); // Log the error for debugging.
+    res.status(500).json({ error: "Internal Server Error" }); // Respond with an appropriate error status.
   }
-}
-
-
-
+};
 
 module.exports = {
   signup,

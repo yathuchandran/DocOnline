@@ -30,7 +30,7 @@ function DoctorReg() {
   const [department, setDepartment] = useState("");
   const [exp, setExp] = useState("");
   const [profile, setProfile] = useState(null);
-  const [availability, setAvailability] = useState("");
+  // const [availability, setAvailability] = useState("");
   const [docs, setDocs] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [preview, setPreview] = useState("");
@@ -79,7 +79,7 @@ function DoctorReg() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!address ||!liceNum ||!department ||!exp ||!availability ||!docs ||!profile||!gender) {
+    if (!address ||!liceNum ||!department ||!exp ||!docs ||!profile||!gender) {
       setErrorMsg("Please fill in all the fields.");
       return;
     }
@@ -89,7 +89,7 @@ function DoctorReg() {
     }
 
     try {
-      const dataToSend = {address,liceNum,department,exp,profile,availability,docs,docId,gender};
+      const dataToSend = {address,liceNum,department,exp,profile,docs,docId,gender};
       const res = await axios.post(`/doctor/registration`, dataToSend);
 
       console.log(res, "res--------------");
@@ -346,7 +346,7 @@ function DoctorReg() {
                     </div>
 
                     {/* Availability Input */}
-                    <div className="mb-0">
+                    {/* <div className="mb-0">
                       <label
                         htmlFor="availability"
                         className="form-label text-sm text-gray-600 dark:text-gray-200"
@@ -362,8 +362,8 @@ function DoctorReg() {
                         value={availability}
                         onChange={(e) => setAvailability(e.target.value)}
                       />
-                      {/* Submit Button */}
-                    </div>
+                      {/* Submit Button 
+                    </div> */}
                     <br />
                     <div className="mb-5 d-flex justify-content-center">
                       <button

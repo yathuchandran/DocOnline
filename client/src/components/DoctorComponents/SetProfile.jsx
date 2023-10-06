@@ -11,7 +11,7 @@ function SetProfile() {
 
     const [name, setName] = useState(docData.docData?.name||"");
     const [age, setAge] = useState(docData.docData?.age||"");
-    const [qualification, setQualification] = useState(docData.docData.qualification||"");
+    const [qualification, setQualification] = useState(docData.docData.education||"");
     const [gender, setGender] = useState(docData.docData.gender||"");
     const [fee, setFee] = useState(docData.docData.fee||"");
     const [contact, setContact] = useState(docData.docData.contact||"");
@@ -76,7 +76,7 @@ function SetProfile() {
             qualification:qualification,
             fee:fee,
             department:department,
-            profileChange:prChange,
+            profileChange:profile,
           };
 
           try {
@@ -85,8 +85,8 @@ function SetProfile() {
             console.log(res,"resssssssssssssssssssssssssssssssssssssssssssssssssssss");
 
           } catch (error) {
-            console.log(error);
-          }
+            console.error("An error occurred:", error);
+        }
 
 
     }
