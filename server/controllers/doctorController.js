@@ -6,6 +6,7 @@ const mailSender = require("../config/nodeMailer");
 const { createDoctorTokens } = require("../middlewares/jwt");
 const department = require("../models/department");
 const cloudinary = require("cloudinary");
+const Schedule = require("../models/scheduleModel");
 
 
 async function securePassword(password) {
@@ -95,17 +96,13 @@ const verifyOtp = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password, "==email,password 96==DOC");
     const docData = await Doctor.findOne({ email: email });
     if (docData) {
-      console.log(docData, "docdat=============99");
       const passwordMatch = await bcrypt.compare(password, docData?.password);
-      console.log(password,docData?.password,"password,docData?.password============== 101");
       if (passwordMatch) {
         if (docData.isVerified === true) {
           if (!docData.isBlocked) {
             const token = createDoctorTokens(docData._id);
-            console.log(token, "token  106");
             res.json({ docData, token });
           } else {
             res.json("blocked");
@@ -291,6 +288,75 @@ const setProfile = async (req, res) => {
   }
 };
 
+const schedule=async(req,res)=>{
+  try {
+const data=await Schedule.find({doctor:req._id.id}).sort({date:1});
+res.json(data)
+console.log(data,"data----295");
+
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" }); // Respond with an appropriate error status.
+  }
+}
+
+
+const manageSchedule=async(req,res)=>{
+  console.log("manage-dddg");
+  try {
+    const { date, time, action } = req.body;
+    console.log(req.body,"req.body----------307");
+    const docId = req._id.id;
+    
+    const DocData = await Schedule.find({ doctor: docId });
+console.log(docId,"docId=======",DocData,"-----------DocData");
+
+    if (action == 'add') {
+      const exist = DocData.filter((el) => el.date == date);
+
+      if (exist != "") { 
+        const ind = exist[0].time.indexOf(time);
+        if (ind == -1) {
+          let timeData = [...time];
+          const datas = await Schedule.findOneAndUpdate(
+            { doctor: docId, date: date },
+            { $set: { time: timeData } }
+          );
+        }
+      } else {
+        const schedule = new Schedule({
+          doctor: docId,
+          date: date,
+          time: time,
+        });
+        await schedule.save();
+      }
+    } else {
+      const exist = DocData.filter((el) => el.date == date);
+      if (exist != "") {
+        if (exist[0].time.length == 1) {
+          const updated = await Schedule.deleteOne({
+            doctor: docId,
+            date: date,
+          });
+        } else {
+          const updated = await Schedule.findOneAndUpdate(
+            { doctor: docId, date: date },
+            { $pull: { time: time } }
+          );
+        }
+      }
+
+      const data = await Schedule.find({ doctor: docId });
+    }
+
+    const scheduleData = await Schedule.find({ doctor: docId });
+    res.json(scheduleData);
+  } catch (error) {
+    res.json("error");
+  }
+}
+
+
 module.exports = {
   signup,
   verifyOtp,
@@ -301,4 +367,6 @@ module.exports = {
   registration,
   deptList,
   setProfile,
+  schedule,
+  manageSchedule,
 };

@@ -1,0 +1,30 @@
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .dropdown-menu li {
+    padding: 5px;
+  }
+  
+  .dropdown-menu li:hover {
+    background-color: #eeeaea;
+  }
+  
+  .dropd{
+    background-color: rgb(155, 189, 235);
+    color: black!important;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: black;
+  }
+  .dropd:hover{
+    background-color: white;
+    color: black!important;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: black;
+  }
+  

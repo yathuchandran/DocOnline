@@ -30,7 +30,6 @@ const createDoctorTokens = (user) => {
 
 const validateDoctorToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader ,"authHeader-----33=jwt");
   
   if (authHeader) {
     const token = authHeader.split(" ")[1];

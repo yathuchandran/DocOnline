@@ -20,14 +20,12 @@ Navbar.propTypes = {
 function Navbar({ value }) {
   const { doctor, admin, setDoctor, setAdmin, setUser } = useAuth(); // Destructure once
   const { user } = useAuth();
-  console.log(value, "====24 value nav");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     if (value === "doctor") {
-        console.log("doctor========");
 
       localStorage.removeItem("doctorToken");
       dispatch(setDoctorData({}));
@@ -43,7 +41,6 @@ function Navbar({ value }) {
       setUser(false);
     }
   };
-  console.log(value, "value------------------------------------=====41", "/Screenshotfrom.png");
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light"

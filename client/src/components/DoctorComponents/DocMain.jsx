@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import DoctorHome from "./DoctorHome";
 import DocSidebar from './DocSidebar';
 import Navbar from '../Navbar';
+import Schedule from './Schedule';
 
 DocMain.propTypes = {
   value: PropTypes.string,
@@ -19,7 +20,10 @@ function DocMain({ value }) {
            </div>
           <div className="col-md-9 p-0">
             <div style={{ width: "100%" }}>
-              {value == "home" ? <DoctorHome /> : ''}
+              {value == "home" ? 
+              <DoctorHome />
+                :value == 'schedule' ?
+                    <Schedule />: ''}
             </div>
           </div>
         </div>
