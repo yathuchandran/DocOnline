@@ -25,7 +25,10 @@ function UserHome() {
 
   return (
     <>
-      <div className="banner relative">
+    <div className=" mt-0" style={{background: "linear-gradient(to bottom, white, #B0E0E6)", 
+}}>
+
+      <div className="banner relative"  >
         <img
           className="banner-image"
           src="/WhatsApp Image 2023-09-05 at 12.53.17 PM.jpeg"
@@ -46,42 +49,40 @@ function UserHome() {
           </button>
         </div>
       </div>
-      <Container className="mt-5 mb-5 p-4">
+
+            
+           
+      
+      <div className="container card mt-5 mb-5 py-5 "style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)", paddingLeft:'1rem', boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)", 
+}}>
         <h3>Departments Available</h3>
         <p>You can select the department you need to checkout.</p>
-        <Row>
-          {departments &&
-            departments.map((dep) => (
-              <Col md={3} sm={4} xs={6} key={dep._id}>
-                <Card className="mt-3 mb-3">
-                  <Card.Img className="depImage" src={dep.image} alt="" />
-                  <Card.Title className="mt-0">{dep.name}</Card.Title>
-                </Card>
-              </Col>
-            ))}
-        </Row>
-      </Container>
-      <Container>
-        <Row>
-          <Col className="card p-4">
+        <div className=" row " >
+          {departments && departments.map(dep => (
+            <div className="col-md-3 text-center  mx-0 col-sm-4 col-6 h-25" key={dep._id}>
+              <div className='card mt-3  mb-3'style={{  boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)",}} >
+                <img className=' depImage  ' src={dep.image} alt="" />
+                <h4 className='mt-0 '>{dep.name}</h4>
+              </div>
+            </div>
+          ))
+          }
+        </div>
+
+        </div>
+        
+      <div className="container">
+        <div className="row">
+          <div className="col-12 card p-4">
             <h6>We provide you the best services</h6>
-            <p>
-              We consider your entire wellness and we are intended to provide
-              you the best doctors and services.
-            </p>
-            <Card className="docCardImg">
-              <Card.Body>
-                <p className="m-5 par">
-                  <b>
-                    Qualified and experienced doctors are available for each
-                    department. Book a slot for online consult.
-                  </b>
-                </p>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+            <p>We consider your entire wellness and we are intended to provide you the best doctors and services.</p>
+            <div className="card docCardImg">
+              <p className='m-5 par' ><b>Qualified and experienced doctors are available for each department. Book a slot for online consult.</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
     </>
   );
 }

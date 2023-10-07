@@ -54,8 +54,9 @@
     width: 25%;
   }
   .depImage {
-    width: 100%;
+    width: 90%;
     height: 25vh;
+    padding-left: 10px;
   }
   .docCardImg {
     background-repeat: no-repeat;

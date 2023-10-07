@@ -48,18 +48,27 @@ function Departments() {
         status: row.isBlocked,
         id: row._id,
       });
-      setRefresh(!refresh);
-      setDepartList((prevDepartments) =>
-        prevDepartments.map((department) => {
-          if (department._id === row._id) {
-            return {
-              ...department,
-              isBlocked: !department.isBlocked,
-            };
-          }
-          return department;
-        })
-      );
+      if (res == 'error') {
+        setStatus('');
+        setTimeout(() => {
+          setStatus('')
+        }, 4000)
+      }else{
+        setRefresh(!refresh);
+        setDepartList((prevDepartments) =>
+          prevDepartments.map((department) => {
+            if (department._id === row._id) {
+              return {
+                ...department,
+                isBlocked: !department.isBlocked,
+              };
+            }
+            return department;
+          })
+        );
+      }
+
+     
     } catch (error) {
       console.error(error);
       setStatus("Error occurred");
@@ -117,6 +126,8 @@ function Departments() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const isValid = validateCapitalLetter(newDep)
+    if (isValid) {
 
     const res = await axios.post("admin/createDepartment", depform);
     if (res.data) {
@@ -124,6 +135,14 @@ function Departments() {
       setTimeout(() => {
         setStatus("");
       }, 4000);
+      departmentData()
+
+    }else{
+      setStatus("capLetter")
+      setTimeout(() => {
+        setStatus('')
+      }, 4000)
+    }
       setRefresh(!refresh); // Refresh the data after creating a department
     }
   };

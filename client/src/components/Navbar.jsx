@@ -49,9 +49,10 @@ function Navbar({ value }) {
       className="navbar navbar-expand-lg navbar-light"
       style={{ backgroundColor: "#002147", color: "white" }}
     >
-      <div className="container">
+      <div className="container" >
         <div className="d-flex justify-content-between align-items-center">
           <Link className="navbar-brand" to="/">
+            
             <img
               className="small-logo"
               onClick={() => {
@@ -79,7 +80,7 @@ function Navbar({ value }) {
             ""
           )}
 
-          <div className="d-flex navMine">
+          <div className="d-flex navMine" >
             {value === "doctor" ? (
               <button
                 className="btn doc btn-outline-white"
