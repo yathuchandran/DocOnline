@@ -8,7 +8,7 @@ function DoctorSearchPageStructure() {
 const [docData,setDocData ]=useState([])
 const [filteredData, setFilteredData]=useState([])
 const [search,setSearch]=useState('')
-const [isSearch,setIsSearch]=useState([])
+const [isSearch,setIsSearch]=useState(false)
 const [department,setDepartment]=useState([])
 
 useEffect(()=>{
@@ -16,8 +16,8 @@ useEffect(()=>{
         try {
             const res=await axios.get(`/findDoctors`)
             setDocData(res.data.docs)
+
             setDepartment(res.data.deps);
-console.log(res.data.docs,20);
         } catch (error) {
             console.log(error);
         }
@@ -25,7 +25,6 @@ console.log(res.data.docs,20);
     filterDoctors()
 },[])
 
-console.log(docData,28);
 
 const handleSearch=useCallback(async(e)=>{
     e.preventDefault()
@@ -49,7 +48,6 @@ const handleSearch=useCallback(async(e)=>{
 
 
 
-console.log(docData,"docData-----------------52");
 const handleCategory = (e) => {
     const filtered = docData.filter(
         (doc) => doc.doctorData[0] === e.target.value);
@@ -115,6 +113,7 @@ const handleCategory = (e) => {
 
                  />
             )}
+
         </div>
     </div>
 </>

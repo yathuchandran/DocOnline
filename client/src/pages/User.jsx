@@ -11,6 +11,8 @@ import ResetPassword from '../components/ResetPassword'
 import Navbar from '../components/Navbar'
 import UserHome from '../components/userComponents/UserHome'
 import DoctorSearchPageStructure from '../components/userComponents/Pages/DoctorSearchPageStructure'
+// import UserAppointments from '../components/userComponents/UserAppointments/UserAppointments'
+import Appointment from '../components/userComponents/Appointments/Appointment'
 
 function User() {
   return (
@@ -27,6 +29,7 @@ function User() {
   <Route  element={<RequireUser />}>
     <Route path='/profile' element={<ProfilePageStructure user="user" />} />
     <Route path='/findDoctor' element={<DoctorSearchPageStructure />} />
+    <Route path='/appointments' element={<Appointment />} />
 
   </Route>
 </Routes>

@@ -7,6 +7,7 @@ const cloudinary = require("cloudinary");
 const randomstring = require("randomstring");
 const Department = require("../models/department");
 const Doctor = require("../models/doctorModel");
+const Appointment = require("../models/appointmentModel");
 
 
 
@@ -149,41 +150,6 @@ const findDoctors = async (req, res) => {
 
 
 
-
-
-
-const setProfilee = async (req, res) => {
-  try {
-    const { name, age, address, contact, gender, _id, image } = req.body;
-    const uploadedImage = await cloudinary.v2.uploader.upload(image);
-    const updatedData = await User.findOneAndUpdate(
-      { _id: _id },
-      {
-        $set: {
-          userName: name,
-          age: age,
-          address: address,
-          contact: contact,
-          gender: gender,
-          image: uploadedImage.url,
-        },
-      },
-      { new: true }
-    );
-
-    if (!updatedData) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    console.log(updatedData, "updatedData");
-    res.status(200).json(updatedData);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-
 const searchDoc = async (req, res) => {
   console.log("searchDoc=========188");
   try {
@@ -237,6 +203,41 @@ const searchDoc = async (req, res) => {
     console.log(error);
   }
 };
+
+
+
+
+const setProfilee = async (req, res) => {
+  try {
+    const { name, age, address, contact, gender, _id, image } = req.body;
+    const uploadedImage = await cloudinary.v2.uploader.upload(image);
+    const updatedData = await User.findOneAndUpdate(
+      { _id: _id },
+      {
+        $set: {
+          userName: name,
+          age: age,
+          address: address,
+          contact: contact,
+          gender: gender,
+          image: uploadedImage.url,
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log(updatedData, "updatedData");
+    res.status(200).json(updatedData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 
 const department = async (req, res) => {

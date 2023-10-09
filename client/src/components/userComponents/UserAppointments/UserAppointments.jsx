@@ -1,6 +1,29 @@
-import React from "react";
+import axios from "../../../Services/axios";
+import {useCallback, useEffect, useState} from "react";
 
 function UserAppointments() {
+  const [appointments, setAppointments] = useState('');
+  const userToken = localStorage.getItem('userToken');
+
+
+  useEffect(()=>{
+    async function dataCall(){
+      const res=await axios.get(`/appointments`)
+      console.log(res,11,"res");
+    }
+    dataCall()
+  })
+
+
+  // const handleAppointments=useCallback(async(id)=>{
+  //   console.log(id,"id--9");
+  //   try {
+  //     const res=await axios.post
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // })
+
   return (
     <div>
       
