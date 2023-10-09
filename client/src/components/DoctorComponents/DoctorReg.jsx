@@ -18,7 +18,7 @@ function DoctorReg() {
   const docData = useSelector((state) => state.doctor.data);
 
   console.log(docData);
-  const docId = docData.docData._id;
+  
 
 
   const [departments, setDepartments] = useState([]);
@@ -87,6 +87,7 @@ function DoctorReg() {
     }
 
     try {
+      const docId=docData.docData._id
       const dataToSend = {address,liceNum,department,exp,profile,docs,docId,gender};
       const res = await axios.post(`/doctor/registration`, dataToSend);
 

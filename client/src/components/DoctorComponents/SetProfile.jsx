@@ -11,16 +11,17 @@ function SetProfile() {
     const [name, setName] = useState(docData.docData?.name||"");
     const [age, setAge] = useState(docData.docData?.age||"");
     const [qualification, setQualification] = useState(docData.docData?.education || "");
-    const [gender, setGender] = useState(docData.docData.gender||"");
-    const [fee, setFee] = useState(docData.docData.fee||"");
-    const [contact, setContact] = useState(docData.docData.contact||"");
-    const [department, setDepartment] = useState(docData.docData.department||"");
-    const [address, setAddress] = useState(docData.docData.address||"");
-    const [document,setDocument] = useState(docData.docData.document||"");
-    const [preview1, setPreview1] = useState(docData.docData.document||'');
+    const [gender, setGender] = useState(docData.docData?.gender||"");
+    console.log(docData.docData.gender);
+    const [fee, setFee] = useState(docData.docData?.fee||"");
+    const [contact, setContact] = useState(docData.docData?.contact||"");
+    const [department, setDepartment] = useState(docData.docData?.department||"");
+    const [address, setAddress] = useState(docData.docData?.address||"");
+    const [document,setDocument] = useState(docData.docData?.document||"");
+    const [preview1, setPreview1] = useState(docData.docData?.document||'');
 
-    const [profile, setProfile] = useState(docData.docData.image||"");
-    const [preview, setPreview] = useState(docData.docData.image||'');
+    const [profile, setProfile] = useState(docData.docData?.image||"");
+    const [preview, setPreview] = useState(docData.docData?.image||'');
     const [msg, setMsg] = useState('');
     const [departments, setDepartments] = useState([]);
 

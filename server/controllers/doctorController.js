@@ -194,9 +194,6 @@ const registration = async (req, res) => {
     if (exist) {
       return res.status(400).json({ message: "License number already exists" });
     }
-
-
-
     const docprofile = await cloudinary.v2.uploader.upload(profile,);
     const Certificate = await cloudinary.v2.uploader.upload(docs,);
 

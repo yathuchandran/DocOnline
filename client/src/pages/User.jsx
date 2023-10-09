@@ -10,6 +10,7 @@ import ForgotPassword from '../components/ForgotPassword'
 import ResetPassword from '../components/ResetPassword'
 import Navbar from '../components/Navbar'
 import UserHome from '../components/userComponents/UserHome'
+import DoctorSearchPageStructure from '../components/userComponents/Pages/DoctorSearchPageStructure'
 
 function User() {
   return (
@@ -25,6 +26,8 @@ function User() {
   <Route  element={<Navbar />} />
   <Route  element={<RequireUser />}>
     <Route path='/profile' element={<ProfilePageStructure user="user" />} />
+    <Route path='/findDoctor' element={<DoctorSearchPageStructure />} />
+
   </Route>
 </Routes>
     </>

@@ -6,6 +6,8 @@ const { createTokens } = require("../middlewares/jwt");
 const cloudinary = require("cloudinary");
 const randomstring = require("randomstring");
 const Department = require("../models/department");
+const Doctor = require("../models/doctorModel");
+
 
 
 async function securePassword(password) {
@@ -115,6 +117,41 @@ const userData = async (req, res) => {
   } catch (error) {}
 };
 
+
+const findDoctors = async (req, res) => {
+  console.log("findDoctors-------------122");
+  try {
+    const docs = await Doctor.aggregate([
+      {
+        $match: {
+          isRegister: true,
+          isBlocked: false,
+          isVerified: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "departments",
+          localField: "department",
+          foreignField: "_id",
+          as: "doctorData",
+        },
+      },
+    ]);
+
+    const deps = await Department.find({ isBlocked: false });
+    console.log(docs,"docs-----------------------143",deps,"departments---------------------------------143");
+    res.json({ docs, deps });
+  } catch (error) {
+    res.json("error");
+  }
+};
+
+
+
+
+
+
 const setProfilee = async (req, res) => {
   try {
     const { name, age, address, contact, gender, _id, image } = req.body;
@@ -143,6 +180,61 @@ const setProfilee = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+const searchDoc = async (req, res) => {
+  console.log("searchDoc=========188");
+  try {
+    const searchKey = req.params.searchKey;
+    console.log(searchKey);
+    let data = [];
+    if (searchKey == "all") {
+      data = await Doctor.aggregate([
+        {
+          $match: {
+            isRegister: true,
+            isBlocked: false,
+            isVerified: true,
+          },
+        },
+        {
+          $lookup: {
+            from: "departments",
+            localField: "department",
+            foreignField: "_id",
+            as: "doctorData",
+          },
+        },
+      ]);
+      console.log(data,"-------------data 210");
+    } else {
+      data = await Doctor.aggregate([
+        {
+          $match: {
+            isRegister: true,
+            isBlocked: false,
+            isVerified: true,
+            name: { $regex: new RegExp(`^${searchKey}`, "i") },
+          },
+        },
+        {
+          $lookup: {
+            from: "departments",
+            localField: "department",
+            foreignField: "_id",
+            as: "doctorData",
+          },
+        },
+      ]);
+      console.log(data,"++++++++++++++++230");
+    }
+    // const data = await Doctor.find({ name: { $regex: new RegExp(`^${searchKey}`, 'i') } });
+    res.json(data);
+    console.log(data,"data----------------232");
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -206,6 +298,8 @@ module.exports = {
   verifyOtp,
   login,
   userData,
+  findDoctors,
+  searchDoc,
   setProfilee,
   department,
   forgotPassword,
