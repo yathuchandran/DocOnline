@@ -13,8 +13,11 @@ function Schedule() {
   const [freeDate, setFreeDate] = useState('')
   const [freeTime, setFreeTime] = useState([])
   const [msg, setMsg] = useState('')
-  const [scheduleLists,setScheduleLists]=useState('')
 
+
+  const scheduleLists = useSelector(state => state.docSchedule.schedule)
+
+  console.log(scheduleLists,20);
   const dispatch = useDispatch()
 
 
@@ -24,8 +27,7 @@ const dataCall=async ()=>{
 try {
   const res=await axios.get(`/doctor/schedule`,)
   console.log(res.data,"res.data----------------------------------------27");
-  dispatch(setSchedule(res))
-  console.log(res,"res.data.doctorSchedule-------------------------------29");
+  dispatch(setSchedule(res.data))
 
 } catch (error) {
   console.log(error);
@@ -37,7 +39,6 @@ dataCall()
 
 const handleSchedule=async(e)=>{
   e.preventDefault()
-  console.log("res-------------40");
 
   try {
     if(!freeDate||!freeTime){
@@ -54,7 +55,7 @@ const handleSchedule=async(e)=>{
         setMsg("Something went wrong")
       } else {
         setMsg('Slot added successfully')
-        setScheduleLists(res.data)
+        dispatch(setSchedule(res.data))
          setTimeout(() => {
           setMsg('')
         }, 3000)
@@ -77,7 +78,7 @@ const removeSlot = async (e) => {
     setMsg("Something went wrong")
   } else {
     setMsg('Slot removed successfully')
-    dispatch(setSchedule(res))
+    dispatch(setSchedule(res.data))
     setTimeout(() => {
       setMsg('')
     }, 3000)

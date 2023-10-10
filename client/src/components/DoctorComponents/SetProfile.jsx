@@ -12,7 +12,6 @@ function SetProfile() {
     const [age, setAge] = useState(docData.docData?.age||"");
     const [qualification, setQualification] = useState(docData.docData?.education || "");
     const [gender, setGender] = useState(docData.docData?.gender||"");
-    console.log(docData.docData.gender);
     const [fee, setFee] = useState(docData.docData?.fee||"");
     const [contact, setContact] = useState(docData.docData?.contact||"");
     const [department, setDepartment] = useState(docData.docData?.department||"");
@@ -25,7 +24,7 @@ function SetProfile() {
     const [msg, setMsg] = useState('');
     const [departments, setDepartments] = useState([]);
 
-    const [exp,setExp]=useState(docData.docData.exp||"")
+    const [exp,setExp]=useState(docData.docData?.exp||"")
     const doctorToken = localStorage.getItem('doctorToken');
     
     const dispatch = useDispatch();
@@ -93,7 +92,7 @@ function SetProfile() {
             contact: contact,
             gender: gender,
             age: age,
-            _id: docData.docData._id,
+            _id: docData.docData?._id,
             // image: profile, 
             qualification:qualification,
             fee:fee,
@@ -105,7 +104,7 @@ function SetProfile() {
           try {
             const res=await axios.post('/doctor/setprofile',userform)
 
-            console.log(res,"ressssssssssssssssssssssssssssssssssssss");
+            console.log(res.data,"ressssssssssssssssssssssssssssssssssssss");
             if (res.status===200) {
                 setMsg("profile succesfully updated")
                 dispatch(setDoctorData(res.data));
@@ -251,7 +250,7 @@ function SetProfile() {
                               
                                 
                             </div>
-                            <p>Department:-{docData.docData.department}</p>
+                            <p>Department:-{docData.docData?.department}</p>
 
                             <div className="col-md-9 text-center mt- mb-0 item-end">
                                     <label htmlFor="fee">Expirience</label>
@@ -288,10 +287,10 @@ function SetProfile() {
 
                                 {preview1 ? (
                                     <img width={'250px'} src={preview1} alt="" />
-                                ) : docData.docData.document ? (
+                                ) : docData.docData?.document ? (
                                     <img
                                         width={'250px'}
-                                        src={import.meta.env.VITE_BASE_URL + `images/${docData.docData.document}`}
+                                        src={import.meta.env.VITE_BASE_URL + `images/${docData.docData?.document}`}
                                         alt="profile"
                                     />
                                 ) : (

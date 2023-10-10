@@ -8,6 +8,7 @@ const randomstring = require("randomstring");
 const Department = require("../models/department");
 const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
+const Schedule = require("../models/scheduleModel");
 
 
 
@@ -134,15 +135,17 @@ const findDoctors = async (req, res) => {
         $lookup: {
           from: "departments",
           localField: "department",
-          foreignField: "_id",
+          foreignField: "name",
           as: "doctorData",
         },
       },
     ]);
 
     const deps = await Department.find({ isBlocked: false });
-    console.log(docs,"docs-----------------------143",deps,"departments---------------------------------143");
     res.json({ docs, deps });
+
+    console.log(docs.doctorData,"docs-----------------------143");
+
   } catch (error) {
     res.json("error");
   }
@@ -155,7 +158,7 @@ const searchDoc = async (req, res) => {
   try {
     const searchKey = req.params.searchKey;
     console.log(searchKey);
-    let data = [];
+    let data =[]
     if (searchKey == "all") {
       data = await Doctor.aggregate([
         {
@@ -169,7 +172,7 @@ const searchDoc = async (req, res) => {
           $lookup: {
             from: "departments",
             localField: "department",
-            foreignField: "_id",
+            foreignField: "name",
             as: "doctorData",
           },
         },
@@ -189,7 +192,7 @@ const searchDoc = async (req, res) => {
           $lookup: {
             from: "departments",
             localField: "department",
-            foreignField: "_id",
+            foreignField: "name",
             as: "doctorData",
           },
         },
@@ -241,15 +244,76 @@ const setProfilee = async (req, res) => {
 
 
 const department = async (req, res) => {
-  console.log("department");
   try {
     const dep = await Department.find();
-    console.log(dep,"dep--",153);
     res.json(dep);
   } catch (error) {
     res.json("error");
   }
 };
+
+
+
+const docSchedule = async (req, res) => {
+  console.log("docSchedule----------257");
+  try {
+    const docId=req.params.docId;
+    console.log(docId);
+    const data = await Schedule.find({ doctor: docId });
+    console.log(data,"----------262----data",docId);
+
+    const appoint = await Appointment.find(
+      { doctor: docId },
+      { date: 1, time: 1 }
+    );
+    console.log(data,"-------------------267",appoint,"-------appoint--267");
+
+    const availableSlots = data.reduce((result, dataItem) => {
+      const { date, time } = dataItem;scheduleLists
+
+      const existingSlot = result.find((slot) => slot.date === date);
+      const appointTimes = appoint
+        .filter((appointItem) => appointItem.date === date)
+        .map((appointItem) => appointItem.time);
+
+      if (!existingSlot) {
+        result.push({
+          date,
+          time: time.filter((slot) => !appointTimes.includes(slot)),
+        });
+      } else {
+        existingSlot.time = existingSlot.time.filter(
+          (slot) => !appointTimes.includes(slot)
+        );
+      }
+
+      return result;
+    }, []);
+
+    const slot = availableSlots.filter(async (el) => {
+      if (new Date(el.date) < new Date()) {
+        await Schedule.deleteOne({ date: el.date });
+      }
+      return new Date(el.date) >= new Date();
+    });
+    res.json(slot);
+  } catch (error) {
+console.log(error);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -301,8 +365,10 @@ module.exports = {
   userData,
   findDoctors,
   searchDoc,
+  docSchedule,
   setProfilee,
   department,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  
 };

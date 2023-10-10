@@ -9,23 +9,22 @@ DoctorCard.propTypes = {
 }
 
 function DoctorCard({ docData }) {
-    console.log(docData,12);
 
   const dispatch = useDispatch()
   const history = useNavigate()
 
   const handleCheck = (e) => {
-    console.log(e);
     const data = e
     dispatch(setDoc(data))
+    console.log(data,"DOCTORCARD",19);
     history('/appointments')
   }
-  console.log(docData,"-----------------------23");
+  // console.log(docData,"-----------------------23");
 
   return (
     <>
       <div className="d-flex p-3 flex-wrap gap-3">
-        {docData.length > 0 ? (
+        {docData?.length > 0 ? (
           docData.map((el, index) => (
             <div className="m-3 card" style={{ width: '12rem', minHeight: '20rem' }} key={index}>
               <div className='m-auto' style={{ width: '100%', height: '10rem' }}>

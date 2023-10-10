@@ -16,7 +16,6 @@ useEffect(()=>{
         try {
             const res=await axios.get(`/findDoctors`)
             setDocData(res.data.docs)
-
             setDepartment(res.data.deps);
         } catch (error) {
             console.log(error);
@@ -55,6 +54,7 @@ const handleCategory = (e) => {
     setIsSearch(true);
 
 };
+// console.log(docData.doctorData,"docData--58 ");
   return (
     <>
     <div className="row">
