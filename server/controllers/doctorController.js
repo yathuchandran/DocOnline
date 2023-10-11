@@ -302,8 +302,8 @@ const manageSchedule=async(req,res)=>{
   try {
     const { date, time, action } = req.body;
     console.log(req.body,"req.body----------307");
-    const docId = req._id.id;
-    console.log(req._id,"req.body----------306");
+    const docId = req.body.id;
+    console.log(req.body.id,"req.body----------306");
 
     const DocData = await Schedule.find({ doctor: docId });
 console.log(docId,"             ===========docId=======309",DocData,"-----------------------------------------DocData 309");

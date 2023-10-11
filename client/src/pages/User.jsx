@@ -13,6 +13,7 @@ import UserHome from '../components/userComponents/UserHome'
 import DoctorSearchPageStructure from '../components/userComponents/Pages/DoctorSearchPageStructure'
 // import UserAppointments from '../components/userComponents/UserAppointments/UserAppointments'
 import Appointment from '../components/userComponents/Appointments/Appointment'
+import Payment from '../components/userComponents/Payment'
 
 function User() {
   return (
@@ -30,6 +31,7 @@ function User() {
     <Route path='/profile' element={<ProfilePageStructure user="user" />} />
     <Route path='/findDoctor' element={<DoctorSearchPageStructure />} />
     <Route path='/appointments' element={<Appointment />} />
+    <Route path='/payment' element={<Payment />} />
 
   </Route>
 </Routes>

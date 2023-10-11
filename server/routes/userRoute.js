@@ -21,6 +21,7 @@ userRoute.get("/userData",validateToken,authUser, userController.userData);
 userRoute.put("/setProfile",validateToken,authUser,userController.setProfilee)
 userRoute.get("/searchDoc/:searchKey",userController.searchDoc)
 userRoute.get("/docSchedule/:docId", validateToken,authUser, userController.docSchedule);
+userRoute.post('/create-checkout-session',validateToken,authUser, userController.stripeSession);
 
 // userRoute.get("/appointments",validateToken,authUser,userController.loadAppointments)
 

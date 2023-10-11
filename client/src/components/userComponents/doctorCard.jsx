@@ -16,10 +16,10 @@ function DoctorCard({ docData }) {
   const handleCheck = (e) => {
     const data = e
     dispatch(setDoc(data))
-    console.log(data,"DOCTORCARD",19);
+    console.log(data,"DOCTORCARD----",19);
     history('/appointments')
   }
-  // console.log(docData,"-----------------------23");
+ console.log(docData,"---------------DOCTORCARD--------23");
 
   return (
     <>

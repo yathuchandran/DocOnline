@@ -9,6 +9,8 @@ const Department = require("../models/department");
 const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
 const Schedule = require("../models/scheduleModel");
+const stripe = require("stripe")(`${process.env.STRIPE_KEY}`);
+
 
 
 
@@ -82,6 +84,8 @@ const verifyOtp = async (req, res) => {
 const login = async (req, res) => {
   console.log("login");
   try {
+    console.log("login---------------");
+
     const { email, password } = req.body;
     const userData = await User.findOne({ email: email });
     if (userData) {
@@ -144,7 +148,7 @@ const findDoctors = async (req, res) => {
     const deps = await Department.find({ isBlocked: false });
     res.json({ docs, deps });
 
-    console.log(docs.doctorData,"docs-----------------------143");
+    console.log(docs,"docs-----------------------143");
 
   } catch (error) {
     res.json("error");
@@ -255,11 +259,11 @@ const department = async (req, res) => {
 
 
 const docSchedule = async (req, res) => {
-  console.log("docSchedule----------257");
+  console.log("docSchedule----------",257);
   try {
     const docId=req.params.docId;
-    console.log(docId);
-    const data = await Schedule.find({ doctor: docId });
+    console.log(docId,261);
+    const data = await Schedule.find({ doctor: docId }, { _id: 0, doctor: 0 });
     console.log(data,"----------262----data",docId);
 
     const appoint = await Appointment.find(
@@ -269,7 +273,7 @@ const docSchedule = async (req, res) => {
     console.log(data,"-------------------267",appoint,"-------appoint--267");
 
     const availableSlots = data.reduce((result, dataItem) => {
-      const { date, time } = dataItem;scheduleLists
+      const { date, time } = dataItem;
 
       const existingSlot = result.find((slot) => slot.date === date);
       const appointTimes = appoint
@@ -303,6 +307,41 @@ console.log(error);
 }
 
 
+
+
+const stripeSession = async (req, res, next) => {
+  const { doctor, user, slot, doctorName,fee} = req.body;
+  const existAppointment = await Appointment.findOne({ slot: slot });
+  if (existAppointment)
+    return next(createError(409, " Appointment already exist"));
+  const customer = await stripe.customers.create({
+    metadata: {
+      userId: user._id,
+      doctorId: doctor._id,
+      slot: slot,
+    },
+  });
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: `Dr.${doctorName}`,
+          },
+          unit_amount: `${fee * 100}`,
+        },
+        quantity: 1,
+      },
+    ],
+    customer: customer.id,
+    mode: "payment",
+    success_url: `${process.env.CLIENT_URL}booking-success`,
+    cancel_url: `${process.env.CLIENT_URL}`,
+  });
+
+  res.send({ url: session.url });
+};
 
 
 
@@ -368,6 +407,9 @@ module.exports = {
   docSchedule,
   setProfilee,
   department,
+
+  stripeSession,
+
   forgotPassword,
   resetPassword,
   

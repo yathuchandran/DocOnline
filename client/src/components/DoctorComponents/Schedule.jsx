@@ -16,8 +16,10 @@ function Schedule() {
 
 
   const scheduleLists = useSelector(state => state.docSchedule.schedule)
+  const doctorID=useSelector(state=>state.doctor.data)
+  console.log(doctorID.docData._id,20,"doctor id from schedule");
 
-  console.log(scheduleLists,20);
+  // console.log(scheduleLists,20);
   const dispatch = useDispatch()
 
 
@@ -49,7 +51,7 @@ const handleSchedule=async(e)=>{
       return
       }
   
-      const res=await axios.post(`/doctor/setSchedule`, { date: freeDate, time: freeTime, action: e.target.value })
+      const res=await axios.post(`/doctor/setSchedule`, { date: freeDate, time: freeTime, action: e.target.value,id:doctorID.docData._id })
       console.log(res.data,"res-------------50");
       if (res.data == 'error') {
         setMsg("Something went wrong")
