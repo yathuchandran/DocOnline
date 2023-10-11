@@ -67,6 +67,7 @@ const handleDate = (date) => {
 //   }
 // }
 
+console.log(docData,"docData----70");
 
 const handlePayement=async()=>{
  try {
@@ -89,6 +90,7 @@ dispatch(setAppointment(data))
  console.log(res.data,"RES.DATA---PAYEMENT 84");
  if (res.data.url) {
   window.location.href=res.data.url
+//   navigate('/sucess')
  }
 }
  } catch (error) {

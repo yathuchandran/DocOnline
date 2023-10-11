@@ -58,15 +58,15 @@ function UserHome() {
         <h3>Departments Available</h3>
         <p>You can select the department you need to checkout.</p>
         <div className=" row " >
-          {departments && departments.map(dep => (
-            <div className="col-md-3 text-center  mx-0 col-sm-4 col-6 h-25" key={dep._id}>
-              <div className='card mt-3  mb-3'style={{  boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)",}} >
-                <img className=' depImage  ' src={dep.image} alt="" />
-                <h4 className='mt-0 '>{dep.name}</h4>
-              </div>
-            </div>
-          ))
-          }
+        {departments && Array.isArray(departments) && departments.map(dep => (
+  <div className="col-md-3 text-center mx-0 col-sm-4 col-6 h-25" key={dep._id}>
+    <div className='card mt-3 mb-3' style={{ boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)" }}>
+      <img className='depImage' src={dep.image} alt="" />
+      <h4 className='mt-0'>{dep.name}</h4>
+    </div>
+  </div>
+))}
+
         </div>
 
         </div>

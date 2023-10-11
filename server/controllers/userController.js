@@ -264,13 +264,11 @@ const docSchedule = async (req, res) => {
     const docId=req.params.docId;
     console.log(docId,261);
     const data = await Schedule.find({ doctor: docId }, { _id: 0, doctor: 0 });
-    console.log(data,"----------262----data",docId);
 
     const appoint = await Appointment.find(
       { doctor: docId },
       { date: 1, time: 1 }
     );
-    console.log(data,"-------------------267",appoint,"-------appoint--267");
 
     const availableSlots = data.reduce((result, dataItem) => {
       const { date, time } = dataItem;
@@ -311,6 +309,7 @@ console.log(error);
 
 const stripeSession = async (req, res, next) => {
   const { doctor, user, slot, doctorName,fee} = req.body;
+  console.log(req.body,"body",312);
   const existAppointment = await Appointment.findOne({ slot: slot });
   if (existAppointment)
     return next(createError(409, " Appointment already exist"));
@@ -336,7 +335,7 @@ const stripeSession = async (req, res, next) => {
     ],
     customer: customer.id,
     mode: "payment",
-    success_url: `${process.env.CLIENT_URL}booking-success`,
+    success_url: `${process.env.CLIENT_URL}sucess`,
     cancel_url: `${process.env.CLIENT_URL}`,
   });
 
@@ -344,8 +343,63 @@ const stripeSession = async (req, res, next) => {
 };
 
 
+ const webhooks = async (req, res) => {
+  console.log("webhooks--------------347");
+  let signInSecret = `${process.env.STRIPE_WEBHOOK_KEY}`;
+  const payload = req.body;
+
+  const sig = req.headers["stripe-signature"];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(payload, sig, signInSecret);
+    console.log(event,"event");
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ success: true });
+    return;
+  }
+
+  if (event.type === "payment_intent.succeeded") {
+    console.log("payment_intent.succeeded------------------362");
+    stripe.customers.retrieve(event.data.object.customer).then((customer) => {
+      confirmAppointment(customer.metadata, event.data.object, req, res);
+    });
+  }
+
+  // res.end();
+};
 
 
+const confirmAppointment = async (metadata, paymentdata, req, res) => {
+  console.log("confirmAppointment---------373");
+  const { doctorId, slot, userId } = metadata;
+  console.log(metadata,"metadata----------375");
+
+  try {
+    // const existAppointment = await Appointment.findOne({ slot: slot });
+
+    // if (existAppointment) return res.status(409).send("already exist");
+    const appointment = new Appointment({
+      userId,
+      doctorId,
+      slot,
+      appointment_id: Math.floor(Math.random() * 1000000 + 1),
+      payment_mode: paymentdata.payment_method_types,
+      payment_status: paymentdata.status,
+      amount_paid: paymentdata.amount_received / 100,
+    });
+    appointment.save();
+    const doctor = await Doctor.findByIdAndUpdate(
+      doctorId,
+      { $push: { bookedSlots: slot }, $pull: { availableSlots: slot } },
+      { new: true }
+    );
+
+    res.status(201).json({ appointment });
+  } catch (error) {
+    res.status(500).send("something wrong");
+  }
+};
 
 
 
@@ -409,6 +463,7 @@ module.exports = {
   department,
 
   stripeSession,
+  webhooks,
 
   forgotPassword,
   resetPassword,
