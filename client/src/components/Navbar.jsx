@@ -35,7 +35,6 @@ function Navbar({ value }) {
       dispatch(setAdminData({}));
       setAdmin(false);
     } else {
-      console.log("userrrrrrrr========");
       localStorage.removeItem("userToken");
       dispatch(setUserData({}));
       setUser(false);
@@ -66,12 +65,12 @@ function Navbar({ value }) {
 
           {value === "doctor" ? (
             <>
-              <button
+              {/* <button
                 className="btn btn-outline-success text-dark doc_nav"
                 onClick={() => navigate("/doctor/prescriptions")}
               >
                 <BiNotepad style={{ marginTop: "-7px" }} /> Prescriptions
-              </button>
+              </button> */}
             </>
           ) : (
             ""

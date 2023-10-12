@@ -31,6 +31,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 // Middleware
 app.use('/webhook', express.raw({ type: 'application/json' }));
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true,limit:"500mb" }));
 app.use(express.static(path.join(__dirname, "public")));

@@ -7,6 +7,8 @@ const { createDoctorTokens } = require("../middlewares/jwt");
 const department = require("../models/department");
 const cloudinary = require("cloudinary");
 const Schedule = require("../models/scheduleModel");
+const Appointment = require("../models/appointmentModel");
+
 
 
 async function securePassword(password) {
@@ -301,12 +303,9 @@ const manageSchedule=async(req,res)=>{
   console.log("manage-dddg");
   try {
     const { date, time, action } = req.body;
-    console.log(req.body,"req.body----------307");
     const docId = req.body.id;
-    console.log(req.body.id,"req.body----------306");
 
     const DocData = await Schedule.find({ doctor: docId });
-console.log(docId,"             ===========docId=======309",DocData,"-----------------------------------------DocData 309");
 
     if (action == 'add') {
       const exist = DocData.filter((el) => el.date == date);
@@ -357,6 +356,34 @@ console.log(docId,"             ===========docId=======309",DocData,"-----------
 }
 
 
+
+const appointments = async (req, res) => {
+  try {
+    const docId = req.body.docId; 
+    const appointments = await Appointment.find({ doctor: docId }).populate('user').populate("doctor").exec() 
+      if (!appointments || appointments.length === 0) {
+      return res.status(404).json("Appointments not found"); 
+    }
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" }); 
+  }
+};
+
+
+const dash = async(req,res)=>{
+  try {
+    const docId = req.body.docId; 
+    const data = await Appointment.find({ doctor: docId })
+    res.json(data)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+
 module.exports = {
   signup,
   verifyOtp,
@@ -369,4 +396,6 @@ module.exports = {
   setProfile,
   schedule,
   manageSchedule,
+  appointments,
+  dash,
 };

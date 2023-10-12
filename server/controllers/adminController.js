@@ -4,6 +4,8 @@ const User = require("../models/userModel");
 const Departments = require("../models/department");
 const cloudinary = require("cloudinary");
 const Doctor = require("../models/doctorModel");
+const Appointment = require("../models/appointmentModel");
+
 
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -234,6 +236,15 @@ const manageDepartment = async (req, res) => {
   }
 };
 
+const dash = async(req,res)=>{
+  try {
+    const data = await Appointment.find()
+    res.json(data)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   login,
   adminData,
@@ -245,4 +256,5 @@ module.exports = {
   departments,
   createDepartment,
   manageDepartment,
+  dash,
 };

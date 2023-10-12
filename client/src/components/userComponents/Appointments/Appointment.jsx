@@ -70,6 +70,7 @@ const handleDate = (date) => {
 console.log(docData,"docData----70");
 
 const handlePayement=async()=>{
+
  try {
   if (sessionDate == 'Date' || sessionTime == 'Time') {
     setErrMsg('Please select session date and time')
@@ -85,7 +86,7 @@ const handlePayement=async()=>{
 }
 dispatch(setAppointment(data))
 
-
+console.log("--------------------------------------------89");
  const res=await axios.post(`/create-checkout-session`,data)
  console.log(res.data,"RES.DATA---PAYEMENT 84");
  if (res.data.url) {

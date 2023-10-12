@@ -125,7 +125,6 @@ const userData = async (req, res) => {
 
 
 const findDoctors = async (req, res) => {
-  console.log("findDoctors-------------122");
   try {
     const docs = await Doctor.aggregate([
       {
@@ -148,7 +147,6 @@ const findDoctors = async (req, res) => {
     const deps = await Department.find({ isBlocked: false });
     res.json({ docs, deps });
 
-    console.log(docs,"docs-----------------------143");
 
   } catch (error) {
     res.json("error");
@@ -305,102 +303,68 @@ console.log(error);
 }
 
 
+function createError(status, message) {
+  const error = new Error(message);
+  error.status = status;
+  return error;
+}
 
 
 const stripeSession = async (req, res, next) => {
-  const { doctor, user, slot, doctorName,fee} = req.body;
-  console.log(req.body,"body",312);
-  const existAppointment = await Appointment.findOne({ slot: slot });
-  if (existAppointment)
-    return next(createError(409, " Appointment already exist"));
-  const customer = await stripe.customers.create({
-    metadata: {
-      userId: user._id,
-      doctorId: doctor._id,
-      slot: slot,
-    },
-  });
-  const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        price_data: {
-          currency: "inr",
-          product_data: {
-            name: `Dr.${doctorName}`,
-          },
-          unit_amount: `${fee * 100}`,
-        },
-        quantity: 1,
+  console.log("fhehetttttttttttttttttttttttttttttttttttttt");
+  const { doctor, user, doctorName,  issues, fee,  date, time } = req.body;
+    console.log(req.body,"body",312);
+    const existAppointment = await Appointment.findOne({ doctor: doctor, user:user, date:date,time:time});
+    if (existAppointment)
+      return next(createError(409, " Appointment already exist"));
+        const customer = await stripe.customers.create({
+      metadata: {
+        userId: user._id,
+        doctorId: doctor._id,
+        date: date,
+        time:time,
       },
-    ],
-    customer: customer.id,
-    mode: "payment",
-    success_url: `${process.env.CLIENT_URL}sucess`,
-    cancel_url: `${process.env.CLIENT_URL}`,
-  });
+    });
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: {
+            currency: "inr",
+            product_data: {
+              name: `Dr.${doctorName}`,
+            },
+            unit_amount: `${fee * 100}`,
+          },
+          quantity: 1,
+        },
+      ],
+      customer: customer.id,
+      mode: "payment",
+      success_url: `${process.env.CLIENT_URL}sucess`,
+      cancel_url: `${process.env.CLIENT_URL}`,
+    });
 
+    if (session) {
+      const appointment = new Appointment({
+        doctor: doctor,
+        user: user,
+        date: date,
+        time: time,
+        issues: issues,
+        amount: fee,
+      });
+      await appointment.save();
+      console.log(appointment,360);
+
+  
+  }else{
+  res.json({ message: "No session" });
+    
+  }
   res.send({ url: session.url });
+
+
 };
-
-
- const webhooks = async (req, res) => {
-  console.log("webhooks--------------347");
-  let signInSecret = `${process.env.STRIPE_WEBHOOK_KEY}`;
-  const payload = req.body;
-
-  const sig = req.headers["stripe-signature"];
-  let event;
-  try {
-    event = stripe.webhooks.constructEvent(payload, sig, signInSecret);
-    console.log(event,"event");
-  } catch (error) {
-    console.log(error)
-    res.status(400).json({ success: true });
-    return;
-  }
-
-  if (event.type === "payment_intent.succeeded") {
-    console.log("payment_intent.succeeded------------------362");
-    stripe.customers.retrieve(event.data.object.customer).then((customer) => {
-      confirmAppointment(customer.metadata, event.data.object, req, res);
-    });
-  }
-
-  // res.end();
-};
-
-
-const confirmAppointment = async (metadata, paymentdata, req, res) => {
-  console.log("confirmAppointment---------373");
-  const { doctorId, slot, userId } = metadata;
-  console.log(metadata,"metadata----------375");
-
-  try {
-    // const existAppointment = await Appointment.findOne({ slot: slot });
-
-    // if (existAppointment) return res.status(409).send("already exist");
-    const appointment = new Appointment({
-      userId,
-      doctorId,
-      slot,
-      appointment_id: Math.floor(Math.random() * 1000000 + 1),
-      payment_mode: paymentdata.payment_method_types,
-      payment_status: paymentdata.status,
-      amount_paid: paymentdata.amount_received / 100,
-    });
-    appointment.save();
-    const doctor = await Doctor.findByIdAndUpdate(
-      doctorId,
-      { $push: { bookedSlots: slot }, $pull: { availableSlots: slot } },
-      { new: true }
-    );
-
-    res.status(201).json({ appointment });
-  } catch (error) {
-    res.status(500).send("something wrong");
-  }
-};
-
 
 
 
@@ -461,10 +425,7 @@ module.exports = {
   docSchedule,
   setProfilee,
   department,
-
   stripeSession,
-  webhooks,
-
   forgotPassword,
   resetPassword,
   

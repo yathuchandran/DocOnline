@@ -18,6 +18,8 @@ doctorRoute.get("/department",validateDoctorToken,doctorController.deptList);
 doctorRoute.post("/setprofile",validateDoctorToken,doctorController.setProfile);
 doctorRoute.get('/schedule',validateDoctorToken,doctorController.schedule)
 doctorRoute.post('/setSchedule',validateDoctorToken,doctorController.manageSchedule)
+doctorRoute.post('/appointments',validateDoctorToken,doctorController.appointments)
+doctorRoute.post('/dash',validateDoctorToken,doctorController.dash)
 
 
 

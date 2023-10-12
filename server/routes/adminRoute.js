@@ -18,4 +18,8 @@ adminRoute.put("/blockDoctor/:docId",validateAdminToken, adminController.blockDo
 adminRoute.get("/departments",validateAdminToken, adminController.departments);
 adminRoute.post("/createDepartment",validateAdminToken,adminController.createDepartment);
 adminRoute.patch("/manageDepartment",validateAdminToken,adminController.manageDepartment);
+adminRoute.get("/dash",validateAdminToken,adminController.dash);
+
+
+
 module.exports = adminRoute;

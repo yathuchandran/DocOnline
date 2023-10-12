@@ -54,7 +54,6 @@ const handleCategory = (e) => {
     setIsSearch(true);
 
 };
-console.log(docData.doctorData,"docData--58 ");
   return (
     <>
     <div className="row">

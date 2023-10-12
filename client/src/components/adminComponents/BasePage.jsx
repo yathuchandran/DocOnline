@@ -1,4 +1,3 @@
-import AdminHome from "./AdminHome";
 import { Suspense } from 'react'
 
 import AdminSidebar from "./AdminSidebar";
@@ -7,6 +6,8 @@ import Doctors from "./Doctors";
 import Patients from "./Patients";
 import Loader from "../loader";
 import Navbar from '../Navbar'
+import AdminHome from "./AdminHome";
+
 
 function BasePage({ value }) {
   return (
@@ -23,7 +24,7 @@ function BasePage({ value }) {
               <div className="col-12 m-1" style={{
           background: "linear-gradient(to bottom, rgb(190, 181, 199), #002147)",
           borderRadius: "10px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", // Add this line for box shadow
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", 
           
         }}>
                 <Suspense fallback={<Loader />}>
@@ -33,11 +34,13 @@ function BasePage({ value }) {
                     <Patients />
                   ) : value == "departments" ? (
                     <Departments />
+                  ) :value == "home" ?(
+                    <AdminHome />
                   ) : (
                     ""
                   )}
                 </Suspense>
-                {value}
+               
               </div>
             </div>
           </div>

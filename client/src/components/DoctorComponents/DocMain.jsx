@@ -4,6 +4,7 @@ import DoctorHome from "./DoctorHome";
 import DocSidebar from './DocSidebar';
 import Navbar from '../Navbar';
 import Schedule from './Schedule';
+import DocAppointments from './DocAppointments';
 
 DocMain.propTypes = {
   value: PropTypes.string,
@@ -23,7 +24,9 @@ function DocMain({ value }) {
               {value == "home" ? 
               <DoctorHome />
                 :value == 'schedule' ?
-                    <Schedule />: ''}
+                    <Schedule />
+                    :value == 'appointments' ?
+                    <DocAppointments/>: ''}
             </div>
           </div>
         </div>
