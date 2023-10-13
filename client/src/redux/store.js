@@ -7,9 +7,9 @@ import selectedDocReducer from "./selectedDoc";
 import appointmentReducer from "./appointment";
 
 import storage from "redux-persist/lib/storage"
-// import {persistReducer}from 'redux-persist'
 import { combineReducers } from "@reduxjs/toolkit";
-import persistReducer from "redux-persist/es/persistReducer";
+import { persistReducer } from "redux-persist";
+
 
 const persistConfig={
   key:'root',
@@ -31,3 +31,4 @@ const store=configureStore({
 })
 
 export default store;
+

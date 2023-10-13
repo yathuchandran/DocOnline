@@ -10,15 +10,17 @@ import AuthProvider from "./context/authContext";
 import { PersistGate } from "redux-persist/integration/react";
 import persistStore from "redux-persist/es/persistStore";
 
-let persistor=persistStore(store)
+let persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-      <AuthProvider>
+    <AuthProvider>
       <Provider store={store}>
-        <App />
-        </Provider>
-      </AuthProvider>
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </AuthProvider>
   </React.StrictMode>
 );

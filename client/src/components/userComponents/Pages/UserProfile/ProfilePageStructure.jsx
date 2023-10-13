@@ -1,54 +1,130 @@
 import React, { useState } from "react";
+import { IoIosContact } from "react-icons/io";
+
 import Profile from "../../Profile";
 import './lists.css'
 import UserAppointments from "../../UserAppointments/UserAppointments";
+import { Link, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-function ProfilePageStructure() {
+
+
+ProfilePageStructure.propTypes = {
+  value: PropTypes.string,
+};
+function ProfilePageStructure({value}) {
   const [profile, setProfile] = useState(true);
-  const [appointments, setAppointments] = useState(false)
-  const [prescriptions, setPrescriptions] = useState(false)
+  const [appointments, setAppointments] = useState(false);
+  const [prescriptions, setPrescriptions] = useState(false);
+
+  const navigate = useNavigate();
+
+  const [activeTab, setActiveTab] = useState('profile');
 
   const profileHandle = () => {
+    setActiveTab('profile');
     setProfile(true);
-    setAppointments(false)
-    setPrescriptions(false)
+    setAppointments(false);
+    setPrescriptions(false);
   };
+
   const appointHandle = () => {
-    setProfile(false)
-    setAppointments(true)
-    setPrescriptions(false)
-}
+    setActiveTab('appointments');
+    setProfile(false);
+    setAppointments(true);
+    setPrescriptions(false);
+  };
+
   return (
-    <div className="row" style={{ backgroundColor: "#002147" }}>
-      <div className="col-12 col-md-3 ">
-        <div className="row text-center" >
-          <div
-            className="list-group p-4 mt-5"
-           
-          >
-            <div className="list-group-item btn btn-color-grey btn-outline-dark lists list-group-item-action text-wrap text-break" onClick={profileHandle}>
-              {" "}
-              profile
-            </div>{" "}
-            <br />
-            <div className="list-group-item btn btn-color-grey btn-outline-dark lists list-group-item-action text-wrap text-break" onClick={appointHandle}>
-              {" "}
-              Appointments
-            </div>{" "}
-            <br />
-            <div className="list-group-item btn btn-color-grey btn-outline-dark lists list-group-item-action text-wrap text-break">
-              Prescriptions{" "}
-            </div>{" "}
-            <br />
+    <>
+  <nav
+      className="navbar navbar-expand-lg navbar-light"
+      style={{ backgroundColor: "#002147", color: "white" }}
+    >
+     <div className="container ">
+  <div className="d-flex justify-content-between align-items-center">
+    <Link className="navbar-brand" to="/">
+      <img
+        className="small-logo"
+        src="/Screenshotfrom.png"
+        alt=""
+      />
+    </Link>
+
+    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+  </div>
+
+
+
+
+  <div className="dropdown">
+    <ul
+      className="dropdown-menu right-0"
+      style={{
+        marginLeft: "0px",
+        width: "100px",
+        textAlign: "center",
+      }}
+    >
+      <li>
+        <Link className="link" to="/profile">
+          <IoIosContact size={40} />
+          Profile
+        </Link>
+      </li>
+      <li>
+        <Link className="link" to="/logout">
+          <IoIosContact size={40} />
+          Logout
+        </Link>
+      </li>
+    </ul>
+  </div>
+  <div className="text-end ms-auto">
+  <ul className="navbar-nav text-end">
+    <li className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}>
+      <span className="nav-link text-white" onClick={profileHandle}>Profile</span>
+    </li>
+    <li className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}>
+      <span className="nav-link text-white" onClick={profileHandle}>Profile</span>
+    </li>
+    <li className={`nav-item ${activeTab === 'appointments' ? 'active' : ''}`}>
+      <span className="nav-link text-white" onClick={appointHandle}>Appointments</span>
+    </li>
+    <li className={`nav-item ${activeTab === 'prescriptions' ? 'active' : ''}`}>
+      <span className="nav-link text-white">Prescriptions</span>
+    </li>
+  </ul>
+</div>
+</div>
+
+
+      </nav>
+      <div className="col-12 m-0 mt-0 col-md-12"style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
+            {activeTab === 'profile' && <Profile />}
+            {activeTab === 'appointments' && <UserAppointments />}
           </div>
+       <div className="container mt-3">
+        <div className="row">
+          <div className="col-12 col-md-2">
+
+    
+
+  
+
+   
+          </div>
+          
         </div>
       </div>
-      <div className="col-12 col-md-9 bg-light">
-        {profile && <Profile />}
-      {appointments && <UserAppointments />}
-</div>
-    </div>
+      
+    </>
   );
 }
 
 export default ProfilePageStructure;
+
+
+

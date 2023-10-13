@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux'
 function DoctorHome() {
   const [income, setIncome] = useState('')
   const [patients, setPatients] = useState('')
+  const [patientss, setPatientss] = useState('')
+
   const [docAppoint, setDocAppoint] = useState([])
   const docData = useSelector((state) => state.doctor.data);
 
@@ -25,6 +27,8 @@ function DoctorHome() {
       console.log(res.data,"dataaaaaaaaaaaaaaa",16); 
       setDocAppoint(res.data)
       setPatients(res.data.length)
+      setPatientss(res.data.length)
+
       const inc=res.data.reduce((total,amount)=>{
         return total=total+amount.amount
       },0)
@@ -40,16 +44,22 @@ function DoctorHome() {
     <>
     <div className="col-md-8 col-lg-9 m-5 mt-0 " style={{ width:'96%', height:'110vh'}}>
     <div className='row m-auto justify-content-center align-items-center pl'>
-  <div className="col-lg-5">
-    <div className='dataButton m-3 text-center'>
+  <div className="col-lg-4">
+    <div className='dataButton m-3 text-center '>
       <h5><BiRupee /> Total Income</h5>
       <h4 className='m-auto'>{income && income}</h4>
     </div>
   </div>
-  <div className="col-lg-5">
+  <div className="col-lg-4">
     <div className='dataButton m-3 text-center'>
-      <h5><FaIdCard /> Total Appointments</h5>
+      <h5><FaIdCard />  Appointments</h5>
       <h4 className='m-auto'>{patients && patients}</h4>
+    </div>
+  </div>
+  <div className="col-lg-4">
+    <div className='dataButton m-3 text-center'>
+      <h5><FaIdCard />  patients</h5>
+      <h4 className='m-auto'>{patientss && patientss}</h4>
     </div>
   </div>
 </div>
