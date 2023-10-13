@@ -51,30 +51,20 @@ const signup = async (req, res) => {
           string: token,
         };
         res.json(data);
-        console.log(data, "data 48");
       }
     }
   } catch (error) {
-    console.log(error.message, "52");
     res.json("error");
   }
 };
 
 const verifyOtp = async (req, res) => {
-  console.log("verifyOtp===58");
   try {
     const { token } = req.params;
-    console.log(req.params, "req.params==61");
-
-    // Find the doctor using the provided token
     const doctor = await Doctor.findOne({ token: token });
-    console.log(doctor, "doctor 69");
-
     if (!doctor) {
-      // If the doctor with the provided token is not found, respond with "invalid"
       res.json("invalid");
     } else {
-      // Check if the OTP from the request body matches the doctor's OTP
       if (doctor.otp != req.body.otp) {
         // If OTP doesn't match, respond with "invalid"
         res.json("invalid otp");
@@ -91,7 +81,6 @@ const verifyOtp = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    // Handle errors and respond appropriately (e.g., res.status(500).json({ error: "Internal server error" }))
   }
 };
 
@@ -120,7 +109,6 @@ const login = async (req, res) => {
     }
   } catch (error) {
     res.json("error");
-    console.log(error, "error--129");
   }
 };
 
@@ -179,7 +167,7 @@ const resetPassword = async (req, res) => {
 };
 
 const registration = async (req, res) => {
-  console.log("registration");
+  console.log("registration ",170);
   try {
     const {
       address,
@@ -191,6 +179,7 @@ const registration = async (req, res) => {
       docId,
       gender
     } = req.body;
+    console.log(req.body,"182",182);
     const exist = await Doctor.findOne({ liceNum: liceNum });
 
     if (exist) {
@@ -216,7 +205,7 @@ const registration = async (req, res) => {
     { new: true }
     );
     const docData = await doctor.save();
-    console.log(docData, "docData------------");
+    console.log(docData, "docData------------",207);
 
     res.status(200).json({docData, message: "Registration successful" });
   } catch (error) {
@@ -358,10 +347,14 @@ const manageSchedule=async(req,res)=>{
 
 
 const appointments = async (req, res) => {
+  console.log("appoint");
   try {
     const docId = req.body.docId; 
+    console.log(req.body.docId,353);
     const appointments = await Appointment.find({ doctor: docId }).populate('user').populate("doctor").exec() 
-      if (!appointments || appointments.length === 0) {
+    console.log(appointments,355);
+
+      if (!appointments ) {
       return res.status(404).json("Appointments not found"); 
     }
     res.status(200).json(appointments);

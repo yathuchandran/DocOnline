@@ -203,7 +203,6 @@ const searchDoc = async (req, res) => {
     }
     // const data = await Doctor.find({ name: { $regex: new RegExp(`^${searchKey}`, 'i') } });
     res.json(data);
-    console.log(data,"data----------------232");
   } catch (error) {
     console.log(error);
   }
@@ -257,7 +256,6 @@ const department = async (req, res) => {
 
 
 const docSchedule = async (req, res) => {
-  console.log("docSchedule----------",257);
   try {
     const docId=req.params.docId;
     console.log(docId,261);
@@ -311,12 +309,12 @@ function createError(status, message) {
 
 
 const stripeSession = async (req, res, next) => {
-  console.log("fhehetttttttttttttttttttttttttttttttttttttt");
   const { doctor, user, doctorName,  issues, fee,  date, time } = req.body;
     console.log(req.body,"body",312);
     const existAppointment = await Appointment.findOne({ doctor: doctor, user:user, date:date,time:time});
     if (existAppointment)
-      return next(createError(409, " Appointment already exist"));
+      // return next(createError(409, " Appointment already exist"));
+      return res.status(409).json("Appointment already exist")
         const customer = await stripe.customers.create({
       metadata: {
         userId: user._id,

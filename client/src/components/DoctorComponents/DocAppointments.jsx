@@ -57,7 +57,8 @@ console.log(appointments,"appointments==",14);
   ];
 
   useEffect(() => {
-    const getAppointments = async () => {
+    try {
+      const getAppointments = async () => {
         console.log("getAppointments--------------");
       const res = await axios.post('/doctor/appointments',{docId});
       console.log(res.data,"dataaaaaaaaaaaaaaaaa");
@@ -65,6 +66,10 @@ console.log(appointments,"appointments==",14);
       setAppointments(res.data);
     };
     getAppointments();
+    } catch (error) {
+      console.error("An error occurred:", error);
+
+    }
   }, []);
 
 

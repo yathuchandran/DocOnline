@@ -32,7 +32,7 @@ try {
   dispatch(setSchedule(res.data))
 
 } catch (error) {
-  console.log(error);
+  console.error("An error occurred:", error);
 }
 }
 dataCall()

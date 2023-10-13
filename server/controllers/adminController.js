@@ -12,22 +12,17 @@ require("dotenv").config();
 const { createAdminTokens } = require("../middlewares/jwt");
 
 const login = async (req, res) => {
-  console.log("login");
   try {
     const { email, password } = req.body;
-    console.log(req.body, "req.body 12");
 
     const adminData = await Admin.findOne({ email: email });
 
-    console.log(adminData, "adminData =15");
 
     if (adminData) {
       if (password === adminData.password) {
         // Direct password comparison
-        console.log(password, adminData.password, "passwordMatch21");
         if (!adminData.isBlocked) {
           const token = createAdminTokens(adminData._id);
-          console.log(token, "token==25");
           res
             .status(200)
             .json({ token, name: adminData.name, email: adminData.email });
@@ -49,7 +44,6 @@ const login = async (req, res) => {
 };
 
 const adminData = async (req, res) => {
-  console.log("adminData===40");
   try {
     const data = await Admin.findOne({ _id: req._id.id });
     res.json(data);
@@ -59,10 +53,8 @@ const adminData = async (req, res) => {
 };
 
 const patientsss = async (req, res) => {
-  console.log("patients controll");
   try {
     const patients = await Patients.find();
-    console.log(patients, "patients 59");
     res.status(200).json(patients); // Send status 200 (OK) and the JSON data
   } catch (error) {
     console.error("Error in fetching patients:", error);
@@ -81,18 +73,15 @@ const Doctors = async (req, res) => {
 };
 
 const managePatients = async (req, res) => {
-  console.log("managePatient70");
   try {
     const { isUserBlocked } = req.body;
     const id = req.params.patientId;
-    console.log(id, "ID 75");
     if (isUserBlocked == false) {
       const user = await User.findOneAndUpdate(
         { _id: id },
         { $set: { isBlocked: true } }
       );
       res.json("blocked");
-      console.log("blocked");
     } else {
       const user = await User.findOneAndUpdate(
         { _id: id },
@@ -137,7 +126,6 @@ const manageDoctor = async (req, res) => {
 
 const blockDoctor = async (req, res) => {
   try {
-    console.log(req.body);
     const { isDocBlocked } = req.body;
     const id = req.params.docId;
 
@@ -147,7 +135,6 @@ const blockDoctor = async (req, res) => {
         { $set: { isBlocked: true } }
       );
       res.json("blocked");
-      console.log("blocked------------148");
     } else {
       const doctor = await Doctor.findOneAndUpdate(
         { _id: id },

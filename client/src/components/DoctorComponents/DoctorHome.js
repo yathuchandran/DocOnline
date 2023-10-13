@@ -14,7 +14,7 @@ function DoctorHome() {
   const docData = useSelector((state) => state.doctor.data);
 
   console.log(docAppoint,"docData--------------------HOME------------------docData",15);
-  const docId=docData.docData._id
+  const docId=docData.docData?._id
 
 
   useEffect(()=>{

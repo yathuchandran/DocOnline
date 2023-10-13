@@ -13,7 +13,7 @@ doctorRoute.patch("/verifyOtp",doctorController.verifyOtpp)
 doctorRoute.patch("/resetPassword",doctorController.resetPassword)
 
 
-doctorRoute.post("/registration",validateDoctorToken,doctorController.registration);
+doctorRoute.post("/registration",doctorController.registration);
 doctorRoute.get("/department",validateDoctorToken,doctorController.deptList);
 doctorRoute.post("/setprofile",validateDoctorToken,doctorController.setProfile);
 doctorRoute.get('/schedule',validateDoctorToken,doctorController.schedule)

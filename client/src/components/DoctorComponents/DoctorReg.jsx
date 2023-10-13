@@ -17,12 +17,12 @@ import {
 function DoctorReg() {
   const docData = useSelector((state) => state.doctor.data);
 
-  console.log(docData);
+  console.log(docData,"20");
   
 
 
   const [departments, setDepartments] = useState([]);
-  const [gender, setGender] = useState(docData?.gender || "");
+  const [gender, setGender] = useState("");
 
   const [address, setAddress] = useState("");
   const [liceNum, setLiceNum] = useState("");
@@ -86,9 +86,10 @@ function DoctorReg() {
       return;
     }
 
+    const docId=docData.docData._id
+    const dataToSend = {address,liceNum,department,exp,profile,docs,docId,gender};
     try {
-      const docId=docData.docData._id
-      const dataToSend = {address,liceNum,department,exp,profile,docs,docId,gender};
+      console.log("EFEEFR");
       const res = await axios.post(`/doctor/registration`, dataToSend);
 
       console.log(res, "res--------------");
@@ -104,8 +105,8 @@ function DoctorReg() {
       }
       console.log("kerita");
     } catch (error) {
-      console.error(error);
-    }
+      setErrorMsg("An error occurred")
+        }
   };
 
   return (
@@ -374,6 +375,17 @@ function DoctorReg() {
                         Sign in
                       </button>
                     </div>
+                    {errorMsg ? (
+                      <div
+                        className="alert alert-danger"
+                        role="alert"
+                        style={{ textAlign: "center" }}
+                      >
+                        {errorMsg}
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </form>
                 </div>
 

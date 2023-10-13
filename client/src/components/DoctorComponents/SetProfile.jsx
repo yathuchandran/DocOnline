@@ -113,7 +113,7 @@ function SetProfile() {
 
             }
           } catch (error) {
-            console.error("An error occurred:", error);
+            setMsg("An error occurred:");
         }
 
 
