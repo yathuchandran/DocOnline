@@ -22,7 +22,6 @@ function BasePage({ value }) {
           <div className="col-md-9 p-0">
             <div className="row mt-4 ps-5 pe-2 ">
               <div className="col-12 m-1" style={{
-          background: "linear-gradient(to bottom, rgb(190, 181, 199), #002147)",
           borderRadius: "10px",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", 
           

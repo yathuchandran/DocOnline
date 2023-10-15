@@ -23,16 +23,16 @@ function DoctorCard({ docData }) {
 
   return (
     <>
-      <div className="d-flex p-3 flex-wrap gap-3">
+      <div className="d-flex  flex-wrap d-flex align-items-center justify-content-center ">
         {docData?.length > 0 ? (
           docData.map((el, index) => (
             <div className="m-3 card" style={{ width: '12rem', minHeight: '20rem' }} key={index}>
               <div className='m-auto' style={{ width: '100%', height: '10rem' }}>
                 <img style={{ width: '100%', height: '10rem' }}    src={el.image}                     className="card-img-top" alt="..." />
               </div>
-              <div className="card-body mb-0 ps-2" style={{ textAlign: "left", maxWidth: "13rem", left: 0 }}>
+              <div className="card-body mb-0 ps-0" style={{ textAlign: "left", maxWidth: "13rem", left: 0 }}>
                 <h5 className='text-dark'>{el.name}</h5>
-                <p className='ms' style={{ fontSize: "13px", color: "black", opacity: "80%" }}>{el?.doctorData[0]?.name} <br />{el.qualification}</p>
+                <p className='ms' style={{ fontSize: "10px", color: "black", opacity: "80%" }}>{el?.doctorData[0]?.name} <br />{el.education}</p>
               </div>
               <div className="row">
                 <div className="col-12 mb-2 d-flex justify-content-between">

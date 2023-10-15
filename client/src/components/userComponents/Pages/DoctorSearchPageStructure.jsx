@@ -56,15 +56,17 @@ const handleCategory = (e) => {
 };
   return (
     <>
+          <div className="col-12 m-0 mt-0 col-md-12"style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
+
     <div className="row">
-        <div className="col-4 col-md-3 bg-light p-1 text-center">
-            <div className="outline-success mt-5">
+        <div className="col-5 col-md-3 text-white p-0 text-center" style={{backgroundColor: "#002147"}}>
+            <div className="outline-success mt-5 ">
                 <h3>Departments</h3>
-                <div className="text-start m-auto " style={{ maxWidth: '300px' }}>
-                    <ul className="list-group ms-auto ">
+                <div className="  m-auto " style={{ maxWidth: '349px' }}>
+                    <ul className=" ms-auto ">
                         {department ? (
                             department.map((dep) => (
-                                <li className="list-group-item ps-1  pt-2 pb-2 p-0" key={dep._id}>
+                                <li className="list-group-item  ps-3  pt-4 pb-4 p-4" key={dep._id}>
                                     <input
                                         className="form-check-input me-1"
                                         type="radio"
@@ -87,8 +89,14 @@ const handleCategory = (e) => {
                 </div>
             </div>
         </div>
-        <div className="col-8 col-md-9">
-            <div className="d-flex p-4 pb-0">
+        <div className="col-9  mt-0  col-md-9 ">
+            <div className=" mt-4 d-flex align-items-center justify-content-center ">            
+            <h1 style={{ fontFamily: "Times New Roman, serif" ,marginBottom:'0%' }}>Your home for health</h1>
+
+                </div>
+                <h3 style={{ fontFamily: "Times New Roman, serif" ,paddingLeft:'450px', marginTop:'0%'}}>Find and Book</h3>
+
+            <div className="d-flex  pb-0  d-flex align-items-center justify-content-center">
                 <input
                     type="text"
                     className="my-auto  bg-light form-control"
@@ -100,7 +108,9 @@ const handleCategory = (e) => {
                 <button className='btn pt-0 ms-2 btn-success' 
                 onClick={handleSearch}
                 ><BsSearch /></button>
+
             </div>
+<div className="m-1 ">
             {isSearch ? (
                 <DoctorCard
                  docData={filteredData}
@@ -112,11 +122,31 @@ const handleCategory = (e) => {
 
                  />
             )}
+</div>
+<div>
+    
+      <div className="youtub m-3">
+        <img src="/Banner-1.png" alt="" 
+          width="982"
+          height="300"
+          style={{ borderRadius: '1rem' }}
+        />
+      
+      </div>
+    </div>
 
         </div>
     </div>
+    </div>
+
+
 </>
   )
 }
 
 export default DoctorSearchPageStructure
+
+
+
+
+

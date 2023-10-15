@@ -39,13 +39,13 @@ const handleAdmins = () => {
 
   return (
     <>
-            <div className='bg-black z-10 docSide ' >
+            <div className=' z-10 docSide ' >
                 <div className='sidebar   fixed top-0 right-0 h-100 z-10 'style={{backgroundColor: "#002147"}}>
-                    <h2 className='  text-white text-center' style={{backgroundColor: "#002147",width:'28vw',height:'20vh'}}>
+                    <h2 className='  text-white text-center' style={{backgroundColor: "#002147",width:'19vw',height:'20vh'}}>
                         Welcome<br /><span className='text-white'><h1>{doctor.docData?.name}</h1></span>
                     </h2>
                     <nav >
-                        <div className='flex flex-col  text-white ps-2 text-center'style={{backgroundColor: "#002147",width:'29vw'}}>
+                        <div className='flex flex-col  text-white ps-2 text-center'style={{backgroundColor: "#002147",width:'20vw'}}>
                             <div className='text-xl sideItem py-4 flex' onClick={handleDashboard}  ><button className='btn buttons'><MdPerson size={25} className='mr-4' /> Dashboard</button></div>
                             <div className='text-xl sideItem py-4 flex' onClick={handleDoctor}><button className='btn buttons'><FaStethoscope size={25} className='mr-4' /> Appointments</button></div>
                             <div className='text-xl sideItem py-4 flex' onClick={handlePayments}><button className='btn buttons'><MdCalendarMonth size={25} className='mr-4' /> My Schedule</button></div>

@@ -167,7 +167,6 @@ const resetPassword = async (req, res) => {
 };
 
 const registration = async (req, res) => {
-  console.log("registration ",170);
   try {
     const {
       address,
@@ -179,7 +178,6 @@ const registration = async (req, res) => {
       docId,
       gender
     } = req.body;
-    console.log(req.body,"182",182);
     const exist = await Doctor.findOne({ liceNum: liceNum });
 
     if (exist) {
@@ -205,7 +203,6 @@ const registration = async (req, res) => {
     { new: true }
     );
     const docData = await doctor.save();
-    console.log(docData, "docData------------",207);
 
     res.status(200).json({docData, message: "Registration successful" });
   } catch (error) {

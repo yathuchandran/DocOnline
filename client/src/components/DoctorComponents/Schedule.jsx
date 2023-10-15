@@ -18,7 +18,7 @@ function Schedule() {
   const scheduleLists = useSelector(state => state.docSchedule.schedule)
   const doctorID=useSelector(state=>state.doctor.data)
   console.log(doctorID.docData._id,20,"doctor id from schedule");
-
+  
   // console.log(scheduleLists,20);
   const dispatch = useDispatch()
 

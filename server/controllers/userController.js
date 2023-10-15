@@ -3,6 +3,8 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const mailSender = require("../config/nodeMailer");
 const { createTokens } = require("../middlewares/jwt");
+const { dateTime } = require("../config/dateAndTime");
+
 const cloudinary = require("cloudinary");
 const randomstring = require("randomstring");
 const Department = require("../models/department");
@@ -43,6 +45,7 @@ const signup = async (req, res) => {
         password: hashedPassword,
         otp: otp,
         token: string,
+        timeStamp: dateTime,
       });
       console.log(user,"user----------");
 
@@ -350,6 +353,7 @@ const stripeSession = async (req, res, next) => {
         time: time,
         issues: issues,
         amount: fee,
+        createdAt: dateTime,
       });
       await appointment.save();
       console.log(appointment,360);

@@ -13,18 +13,18 @@ DocMain.propTypes = {
 function DocMain({ value }) {
   return (
     <>
-      <div className="docCont"   style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
+      <div className="docConts"   style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",height:'112vh'}}>
               <Navbar value='doctor' />
         <div className="row">
-          <div className="col-md-3 text-center bg-white side col-lg-3"> 
+          <div className="col-md-2 text-center bg-white side col-lg-2"> 
               <DocSidebar />
            </div>
-          <div className="col-md-9 p-0">
+          <div className="col-md-10">
             <div style={{ width: "100%" }}>
               {value == "home" ? 
               <DoctorHome />
                 :value == 'schedule' ?
-                    <Schedule />
+                    <Schedule/>
                     :value == 'appointments' ?
                     <DocAppointments/>: ''}
             </div>

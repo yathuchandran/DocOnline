@@ -42,14 +42,20 @@ function AdminHome() {
     <div className="col-md-8 col-lg-9 m-5 mt-0 " style={{ width:'96%', height:'110vh'}}>
     <div className='row m-auto justify-content-center align-items-center pl'>
   <div className="col-lg-5">
-    <div className='dataButton m-3 text-center'>
-      <h5><BiRupee /> Total Income</h5>
+  <div className=' bg-light  m-3 text-center 'style={{
+                border: "1px solid rgb(219, 217, 217)",
+                borderRadius: "15px",
+                boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)", // Add box shadow
+              }}>      <h5><BiRupee /> Total Income</h5>
       <h4 className='m-auto'>{income && income}</h4>
     </div>
   </div>
   <div className="col-lg-5">
-    <div className='dataButton m-3 text-center'>
-      <h5><FaIdCard /> Total Appointments</h5>
+  <div className=' bg-light  m-3 text-center 'style={{
+                border: "1px solid rgb(219, 217, 217)",
+                borderRadius: "15px",
+                boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)", // Add box shadow
+              }}>      <h5><FaIdCard /> Total Appointments</h5>
       <h4 className='m-auto'>{patients && patients}</h4>
     </div>
   </div>
@@ -58,12 +64,7 @@ function AdminHome() {
         
 
      
-      <div style={{
-          background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)",
-          borderRadius: "10px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", 
-          paddingRight:"35px",
-        }}>
+      <div >
         <BarChart appoints={Appoint}/>
         </div>
     </div>

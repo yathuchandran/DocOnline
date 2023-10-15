@@ -1,22 +1,46 @@
 import Chart from 'react-apexcharts'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
 
+BarChart.propTypes = {
+    appoints: PropTypes.array
+}
 
-function BarChart() {
+function BarChart({ appoints }) {
+    console.log(appoints,"appoints-----------10",10);
+    const [year, setYear] = useState(new Date().getFullYear())
 
+    let monthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    const distinctYears = Array.from(new Set(
+        appoints
+          .filter(el => el.createdAt) // Filter out elements with undefined or falsy createdAt
+          .map(el => el.createdAt.split(' ')[0].split('-')[2])
+      ));
+      
+      appoints.forEach((el) => {
+        if (el.createdAt && typeof el.createdAt === 'string' && el.createdAt.split(' ')[0]) {
+            const month = el.createdAt.split(' ')[0].split('-')[1];
+            if (month >= '1' && month <= '12') {
+                monthCount[parseInt(month) - 1] += 1;
+            }
+        }
+    });
+    
 
     return (
         <>
             <div className="container-fluid mb-5">
                 <div className="dropdown mb-4">
                     <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        
+                        {year}
                     </button>
                     <ul className="dropdown-menu">
-                        <li ><button className="dropdown-item btn" >2022</button></li>
+                        <li ><button className="dropdown-item btn" onClick={() => setYear('2022')}>2022</button></li>
                         {
-                           
-                                <li><button className="dropdown-item btn" ></button></li>
-                            
+                            distinctYears && distinctYears.map((el, index) => (
+                                <li key={index}><button className="dropdown-item btn" onClick={() => setYear(el)}>{el}</button></li>
+                            ))
                         }
 
                     </ul>
@@ -29,7 +53,7 @@ function BarChart() {
                     series={[
                         {
                             name: 'Revenue',
-                            
+                            data: monthCount
                         }
                     ]}
                     options={{
@@ -70,7 +94,7 @@ function BarChart() {
                         },
                         dataLabels: {
                             formatter: (val) => {
-                                return 
+                                return `${val}`
                             },
                             style: {
                                 colors: [`#f4f4f40`],
