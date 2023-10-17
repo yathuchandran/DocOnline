@@ -28,10 +28,10 @@ function User() {
   <Route path='/forgotpassword' element={<ForgotPassword />} />
   <Route path='/newPassword/:email' element={<ResetPassword />}/>
   <Route path='/sucess' element={<Success />} />
+  <Route path='/profile' element={<ProfilePageStructure user="user" />} />
 
   <Route  element={<Navbar />} />
   <Route  element={<RequireUser />}>
-    <Route path='/profile' element={<ProfilePageStructure user="user" />} />
     <Route path='/findDoctor' element={<DoctorSearchPageStructure />} />
     <Route path='/appointments' element={<Appointment />} />
     <Route path='/payment' element={<Payment />} />

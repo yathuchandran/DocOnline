@@ -45,7 +45,6 @@ function Login({ value }) {
 
       } else if (value === "admin") {
         const res = await axios.post("/admin/login", input);
-        console.log("====ADMIN======");
 
         if (res.status === 401) {
           setErrorMsg("Invalid email or password");
@@ -58,7 +57,6 @@ function Login({ value }) {
 
           navigate("/admin/");
         } else {
-          // Handle other status codes if needed
           setErrorMsg("An error occurred while logging in.");
         }
       } else {
@@ -67,7 +65,6 @@ function Login({ value }) {
 
         console.log("user");
         const res = await axios.post("/login", input);
-        console.log(res, "res15=============");
 
         if (res.data === 'unauthorized') {
           setErrorMsg('Invalid email or password...!');
@@ -79,7 +76,6 @@ function Login({ value }) {
           localStorage.setItem("userToken", res.data.token);
           setUser(true)
           dispatch(setUserData(res.data.userData))
-          console.log(res.data.userData,"login chyeyumbo ");
           navigate("/");
         } else {
           setErrorMsg("An error occurred while logging in."); // Handle other status codes or error messages from the server

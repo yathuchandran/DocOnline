@@ -7,7 +7,6 @@ const createTokens = (user) => {
 
 const validateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader);
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     verify(token, process.env.JWT_SECRET, (err, decoded) => {

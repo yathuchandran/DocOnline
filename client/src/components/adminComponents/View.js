@@ -8,6 +8,12 @@ function View({ user, setSelected, value }) {
   const [blockButton, setBlockButton] = useState(
     user.isBlocked ? "Unblock" : "Block"
   );
+
+  const [blockButtonDoc, setBlockButtonDoc] = useState(
+    user.isBlocked ? "unblocked" : "blocked"
+  );
+  
+  console.log(blockButtonDoc,1);
   const [verify, setVerify] = useState(
     user.isVerified ? "Verified" : "Verify Reject"
   );
@@ -38,20 +44,21 @@ function View({ user, setSelected, value }) {
   const handleDoctor = async () => {
     const isDocVerify = !user.isVerified;
 
+    console.log(!user.isVerified,"!user.isVerified;",46);
     try {
       const res = await axios.put(`admin/manageDoctor/${user._id}`, {
         isDocVerify,
       });
-
+  
       if (res.data === "Verify Reject" || res.data === "Verified") {
-        const action =
-          res.data === "Verify Reject" ? "Verify Reject" : "Verified";
+        const action = res.data === "Verify Reject" ? "Verify Reject" : "Verified";
         const newMsg = `This account has been ${action} successfully.`;
         setSelected({ ...user, isVerified: isDocVerify });
         setMsg(newMsg);
       } else {
         throw new Error("There was an unexpected error.");
       }
+  
       setTimeout(() => {
         setMsg("");
       }, 4000);
@@ -61,6 +68,10 @@ function View({ user, setSelected, value }) {
     }
   };
 
+
+
+  
+  
   const handlePatient = async () => {
     const adminToken = localStorage.getItem("adminToken");
     const isUserBlocked = !user.isBlocked;
@@ -92,8 +103,15 @@ function View({ user, setSelected, value }) {
   };
 
   useEffect(() => {
-    if (user.isBlocked === true) setBlockButton("Block");
-    else setBlockButton("Unblock");
+    if (user.isBlocked === true){ 
+      setBlockButton("Block");
+      setBlockButtonDoc("Block");
+
+   } else{ 
+    setBlockButton("Unblock");
+    setBlockButtonDoc("Unblock");
+
+  }
     if (user.isVerified === true) {
       setVerify("Verify Reject");
     } else {
@@ -191,17 +209,17 @@ function View({ user, setSelected, value }) {
                       <br />
                       {value === "doctor" && (
                         <>
-                          <b>
+                          {/* <b>
                             Is-Approved:{" "}
                             {!user.isVerified ? "Verify Reject" : "Verified"}
-                          </b>
+                          </b> */}
                           <br />
                         </>
                       )}
-                      <b>
+                      {/* <b>
                         Is-Blocked:{" "}
                         {!user.isBlocked ? "Not Blocked" : "Blocked"}
-                      </b>
+                      </b> */}
                       <br />
                     </div>
                     <div className="col-lg-6 text-center">
@@ -247,64 +265,16 @@ function View({ user, setSelected, value }) {
                   <div className="mt-2 text-center">
                     {value === "doctor" ? (
                       <>
-                        {/* {!user.isApproved && (
-                        <button
-                          className="btn btn-success me-2"
-                          value={user._id}
-                          onClick={(e) => handleDoctor(e, "approve")}
-                        >
-                          Approve
-                        </button>
-                      )} */}
-                        {/* {!user.isApproved && (
-                        <button
-                          className="btn btn-danger me-2"
-                          value={user._id}
-                          onClick={(e) => handleDoctor(e, "reject")}
-                        >
-                          Reject
-                        </button>
-                      )} */}
-                        {/* {!user.isBlocked  && (
-                        <button
-                          className="btn block btn-danger"
-                          data-bs-toggle="modal"
-                          ref={docIdRef}
-                          data-bs-target="#exampleModal"
-                          value={user._id}
-                        >
-                          {blockButton}
-                        </button>
-                      )} */}
-                        {/* {user.isBlocked &&  (
-                        // <button
-                        //   className="btn block btn-danger"
-                        //   ref={docIdRef}
-                        //   onClick={(e) => handleDoctor(e, "block")}
-                        //   value={user._id}
-                        // >
-                        //   {blockButton}
-                        // </button>
-                      )} */}
-                        {/* {user.isApproved === "rejected" && "Rejected"} */}
+
 
                         <button
                           type="button"
                           className="btn btn-danger"
                           onClick={(e) => blockDoctor(e, "block")}
                         >
-                          {blockButton}
+                         {blockButtonDoc}
                         </button>
-                      </>
-                    ) : (
-                      <button
-                        className="btn block btn-danger"
-                        value={user._id}
-                        onClick={handlePatient}
-                      >
-                        {blockButton}
-                      </button>
-                    )}
+
 
                     <button
                       type="button"
@@ -313,6 +283,20 @@ function View({ user, setSelected, value }) {
                     >
                       {verify}
                     </button>
+                      </>
+                    ) :''}
+
+                   
+                      {value === "user" ?  (
+                      <button
+                        className="btn block btn-danger"
+                        value={user._id}
+                        onClick={handlePatient}
+                      >
+                        {blockButton}
+                      </button>
+                    ):''}
+
                   </div>
                 </div>
               </div>

@@ -369,10 +369,37 @@ const stripeSession = async (req, res, next) => {
 };
 
 
+const loadAppointments = async (req, res) => {
+  try {
+    const id = req.body.data
+    const appointments = await Appointment.find({ user: id })
+      .populate('doctor')
+      .sort({ date: -1, time: 1 });
+
+      
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.json("error");
+  }
+};
 
 
 
+const cancelAppointments=async(req,res)=>{
+  try {
+    const id=req.body.id
+    console.log(req.body.id,391);
+   const cancel= await Appointment.findByIdAndUpdate(
+      { _id: id },
+      { $set: { isCancelled: true } }
+    );
+    res.json("cancelled");
+console.log(cancel,397);
+  } catch (error) {
+    res.json("error");
 
+  }
+}
 
 
 
@@ -428,6 +455,11 @@ module.exports = {
   setProfilee,
   department,
   stripeSession,
+  loadAppointments,
+cancelAppointments,
+
+
+
   forgotPassword,
   resetPassword,
   

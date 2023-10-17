@@ -93,7 +93,7 @@ function Patients() {
   return (
     <div>
        {
-        selectedPatient ? <View user={selectedPatient} setSelected={setSelectedPatient} value="patient" /> :
+        selectedPatient ? <View user={selectedPatient} setSelected={setSelectedPatient} value="user" /> :
         (
         <div>
           <h1>Patient</h1>

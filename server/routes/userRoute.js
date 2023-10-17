@@ -22,6 +22,10 @@ userRoute.put("/setProfile",validateToken,authUser,userController.setProfilee)
 userRoute.get("/searchDoc/:searchKey",userController.searchDoc)
 userRoute.get("/docSchedule/:docId", validateToken,authUser, userController.docSchedule);
 userRoute.post('/create-checkout-session',validateToken,authUser, userController.stripeSession);
+userRoute.post("/appointments", validateToken,authUser, userController.loadAppointments);
+userRoute.post("/cancelAppoint", validateToken,authUser, userController.cancelAppointments);
+
+
 // userRoute.post('/webhook',express.raw({type:'application/json'}),userController.webhooks);
 
 

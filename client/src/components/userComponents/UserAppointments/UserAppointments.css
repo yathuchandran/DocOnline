@@ -3,6 +3,7 @@
     border-style: solid;
     border-width: 1px;
     border-color: black;
+    padding: 60px;
   }
   .appointCard {
     border-radius: 10px;
