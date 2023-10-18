@@ -5,16 +5,18 @@ import { BsSearch } from 'react-icons/bs'
 
 
 function DoctorSearchPageStructure() {
-const [docData,setDocData ]=useState([])
+const [docData,setDocData ]=useState('')
 const [filteredData, setFilteredData]=useState([])
 const [search,setSearch]=useState('')
 const [isSearch,setIsSearch]=useState(false)
 const [department,setDepartment]=useState([])
 
+console.log(docData,14);
 useEffect(()=>{
     const filterDoctors=async()=>{
         try {
             const res=await axios.get(`/findDoctors`)
+            console.log(res.data.docs,18);
             setDocData(res.data.docs)
             setDepartment(res.data.deps);
         } catch (error) {
@@ -30,12 +32,10 @@ const handleSearch=useCallback(async(e)=>{
     try {
         if (!search) {
         const res= await axios.get(`/searchDoc/all`)
-        console.log(res.data,"---------------------------33");
         setFilteredData(res.data)
 
         }else{
             const res= await axios.get(`/searchDoc/${search}`)
-            console.log(res.data,"=========================================38");
             setFilteredData(res.data)
         }
         
@@ -49,24 +49,30 @@ const handleSearch=useCallback(async(e)=>{
 
 const handleCategory = (e) => {
     const filtered = docData.filter(
-        (doc) => doc.doctorData[0] === e.target.value);
+     
+        (doc) => {
+            if( doc.doctorData[0].name===e.target.value ){
+
+                return  doc.doctorData[0] 
+            }
+        });
     setFilteredData(filtered);
     setIsSearch(true);
-
+console.log(filtered,55);
 };
   return (
     <>
           <div className="col-12 m-0 mt-0 col-md-12"style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
 
     <div className="row">
-        <div className="col-5 col-md-3 text-white p-0 text-center" style={{backgroundColor: "#002147"}}>
+        <div className="col-5 col-md-2 text-white p-0 text-center " style={{backgroundColor: "#002147",height:'135vh'}}>
             <div className="outline-success mt-5 ">
                 <h3>Departments</h3>
-                <div className="  m-auto " style={{ maxWidth: '349px' }}>
+                <div className="  m-auto " style={{ maxWidth: '240px'  }}>
                     <ul className=" ms-auto ">
                         {department ? (
                             department.map((dep) => (
-                                <li className="list-group-item  ps-3  pt-4 pb-4 p-4" key={dep._id}>
+                                <li className="list-group-item  ps-0  pt-4 pb-0 p-5" key={dep._id}>
                                     <input
                                         className="form-check-input me-1"
                                         type="radio"

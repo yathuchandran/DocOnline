@@ -16,17 +16,15 @@ function DoctorCard({ docData }) {
   const handleCheck = (e) => {
     const data = e
     dispatch(setDoc(data))
-    console.log(data,"DOCTORCARD----",19);
     history('/appointments')
   }
- console.log(docData,"---------------DOCTORCARD--------23");
 
   return (
     <>
-      <div className="d-flex  flex-wrap d-flex align-items-center justify-content-center ">
+      <div className="d-flex  d-flex align-items-center justify-content-center ">
         {docData?.length > 0 ? (
           docData.map((el, index) => (
-            <div className="m-3 card" style={{ width: '12rem', minHeight: '20rem' }} key={index}>
+            <div className="m-3 card" style={{ width: '14rem', minHeight: '20rem' }} key={index}>
               <div className='m-auto' style={{ width: '100%', height: '10rem' }}>
                 <img style={{ width: '100%', height: '10rem' }}    src={el.image}                     className="card-img-top" alt="..." />
               </div>

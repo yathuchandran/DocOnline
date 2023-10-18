@@ -9,18 +9,21 @@ import store from "./redux/store.js";
 import AuthProvider from "./context/authContext";
 import { PersistGate } from "redux-persist/integration/react";
 import persistStore from "redux-persist/es/persistStore";
+import { SocketProvider } from "./context/SocketProvider";
 
 let persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <App />
-        </PersistGate>
-      </Provider>
-    </AuthProvider>
+    <SocketProvider>
+      <AuthProvider>
+        <Provider store={store}>
+          <PersistGate persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </AuthProvider>
+    </SocketProvider>
   </React.StrictMode>
 );

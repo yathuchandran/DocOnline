@@ -15,6 +15,7 @@ import DoctorSearchPageStructure from '../components/userComponents/Pages/Doctor
 import Appointment from '../components/userComponents/Appointments/Appointment'
 import Payment from '../components/userComponents/Payment'
 import Success from '../components/userComponents/sucess'
+import VedioCall from '../components/VedioCall'
 
 function User() {
   return (
@@ -28,13 +29,16 @@ function User() {
   <Route path='/forgotpassword' element={<ForgotPassword />} />
   <Route path='/newPassword/:email' element={<ResetPassword />}/>
   <Route path='/sucess' element={<Success />} />
+
   <Route path='/profile' element={<ProfilePageStructure user="user" />} />
+  <Route path='/call/:room' element={<VedioCall value='user' />} />
 
   <Route  element={<Navbar />} />
   <Route  element={<RequireUser />}>
     <Route path='/findDoctor' element={<DoctorSearchPageStructure />} />
     <Route path='/appointments' element={<Appointment />} />
     <Route path='/payment' element={<Payment />} />
+
 
 
   </Route>

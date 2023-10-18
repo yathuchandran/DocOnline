@@ -9,15 +9,15 @@ const path = require("path");
 const connectDB = require("./config/config");
 const cloudinary =require ('cloudinary') ;
 const bodyParser=require('body-parser')
-
+const {Server}=require('socket.io')
+const socketManager=require('./config/socket')
 
 // MongoDB connection
 connectDB();
 
 // Dotenv config
 dotenv.config();
-
-          
+      
 cloudinary.v2.config({ 
   cloud_name: 'dyvmqs56r', 
   api_key: '662229676537357', 
@@ -60,6 +60,9 @@ app.use("/admin", adminRoute);
 
 const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, function () {
+const server= app.listen(PORT, function () {
   console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
+
+const io = new Server(server, { cors: true });
+socketManager(io);

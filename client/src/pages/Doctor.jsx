@@ -11,6 +11,7 @@ import RequireDoctor from '../context/auth/RequireDoctor';
 import Navbar from '../components/Navbar';
 import SetProfile from '../components/DoctorComponents/SetProfile';
 import Slot from '../components/DoctorComponents/Slot';
+import VedioCall from '../components/VedioCall';
 
 function Doctor() {
 
@@ -31,6 +32,7 @@ function Doctor() {
      <Route path='/setprofile' element={<SetProfile />} />
      <Route path='/schedule' element={<DocMain value={'schedule'} />} />
      <Route path='/appointments' element={<DocMain value={'appointments'} />} />
+     <Route path='/call/:room' element={<VedioCall value="doctor" />} />
 
 
      </Route>
