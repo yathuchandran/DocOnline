@@ -372,6 +372,23 @@ const dash = async(req,res)=>{
 }
 
 
+const consult=async(req,res)=>{
+try {
+  const id=req.body.id
+  const appointment = await Appointment.find({ doctor: id })
+  .populate(
+    'user')
+  .sort({ date: -1, time: 1 });
+  const data = appointment.filter((app) => new Date(app.date) != new Date());
+
+  console.log(appointment,387);
+  res.json(data);
+} catch (error) {
+  console.log(error);
+
+}
+}
+
 
 
 module.exports = {
@@ -388,4 +405,5 @@ module.exports = {
   manageSchedule,
   appointments,
   dash,
+  consult,
 };

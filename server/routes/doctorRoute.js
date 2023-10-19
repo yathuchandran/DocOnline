@@ -20,6 +20,7 @@ doctorRoute.get('/schedule',validateDoctorToken,doctorController.schedule)
 doctorRoute.post('/setSchedule',validateDoctorToken,doctorController.manageSchedule)
 doctorRoute.post('/appointments',validateDoctorToken,doctorController.appointments)
 doctorRoute.post('/dash',validateDoctorToken,doctorController.dash)
+doctorRoute.post('/consult',validateDoctorToken,doctorController.consult)
 
 
 

@@ -26,12 +26,16 @@ function Doctor() {
      <Route path='/forgotPassword' element={<ForgotPassword value={'doctor'} />} />
      <Route path='/newPassword/:email' element={<ResetPassword value={'doctor'} />} />
 
+     <Route path='/consult' element={<DocMain value={'consult'} />} />
+
+
      <Route  element={<RequireDoctor />}>
 
      <Route path='/' element={<DocMain value={'home'}/>} />
      <Route path='/setprofile' element={<SetProfile />} />
      <Route path='/schedule' element={<DocMain value={'schedule'} />} />
      <Route path='/appointments' element={<DocMain value={'appointments'} />} />
+
      <Route path='/call/:room' element={<VedioCall value="doctor" />} />
 
 

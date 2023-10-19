@@ -9,7 +9,7 @@ import store from "./redux/store.js";
 import AuthProvider from "./context/authContext";
 import { PersistGate } from "redux-persist/integration/react";
 import persistStore from "redux-persist/es/persistStore";
-import { SocketProvider } from "./context/SocketProvider";
+import { SocketProvider } from "./context/socket/SocketProvider";
 
 let persistor = persistStore(store);
 

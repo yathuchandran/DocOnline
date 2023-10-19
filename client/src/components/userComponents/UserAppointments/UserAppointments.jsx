@@ -1,13 +1,19 @@
 import {useCallback, useEffect, useState} from "react";
 import { useSelector } from 'react-redux'
 import axios from "../../../Services/axios";
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
+import { useSocket } from "../../../context/socket/SocketProvider";
 
 function UserAppointments() {
 
   const  doctor=useSelector((state)=>state.selectedDoc.doc)
   const user=useSelector((state)=>state.user.data)
+  const email = useSelector(state => state.user.data.email)
+ 
+  console.log(email,13);
 
+  const socket = useSocket()
+    const navigate = useNavigate()
 
   const [appointments, setAppointments] = useState('');
   const userToken = localStorage.getItem('userToken');
@@ -20,7 +26,7 @@ function UserAppointments() {
       if (res.status===200) {
         setAppointments(res.data)
       }else{
-        Navigate('/findDoctor')
+        navigate('/findDoctor')
       }
     }
     dataCall()
@@ -38,6 +44,24 @@ function UserAppointments() {
       console.log(error);
     }
   })
+
+
+  const handleJoin = useCallback((roomId) => {
+    const room = roomId
+    socket.emit("room:join", { email, room })
+}, [socket, email])
+
+const handleJoinRoom = useCallback((data) => {
+    const { room } = data
+    navigate(`/call/${room}`)
+}, [navigate])
+
+useEffect(() => {
+  socket.on('room:join', handleJoinRoom)
+  return () => {
+      socket.off('room:join', handleJoinRoom)
+  }
+}, [socket, handleJoinRoom])
 
   return (
     <div className=" container   d-flex justify-content-center ">
@@ -67,7 +91,7 @@ function UserAppointments() {
                                         <>
                                             { } <br />
                                             {new Date(el.date) < new Date() ? 'Unavailable' : el?.isAttended ? "Attended" : !el?.isCancelled ? <><button className='btn bg-danger text-white ps-2 pe-2 ' onClick={() => handleAppointments(el?._id)} style={{ fontSize: "15px" }}>Cancel</button>
-                                             <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success' >Join</button></> : 'cancelled'}
+                                             <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success'onClick={() => handleJoin(el._id + el.user)} >Join</button></> : 'cancelled'}
                                         </>
                                     }
 
