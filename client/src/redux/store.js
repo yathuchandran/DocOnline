@@ -6,6 +6,7 @@ import scheduleReducer from "./doctorSchedule";
 import selectedDocReducer from "./selectedDoc";
 import appointmentReducer from "./appointment";
 import consultReducer from "./consult";
+import prescriptionData from "./prescriptionData";
 
 import storage from "redux-persist/lib/storage"
 import { combineReducers } from "@reduxjs/toolkit";
@@ -25,6 +26,7 @@ const reducer=combineReducers({
   selectedDoc: selectedDocReducer,
   appointment: appointmentReducer,
   consult: consultReducer,
+  prescription: prescriptionData,
 
 })
 

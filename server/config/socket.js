@@ -3,12 +3,18 @@ module.exports = function (io) {
     const socketIdToEmailMap = new Map();
   
     io.on("connection", (socket) => {
-      console.log("connected soket");
+      console.log(`connected socket`,socket.id);
+
       socket.on("room:join", (data) => {
+        console.log(data,"data socket",`connected socket`,socket.id,9);
+
         const { email, room } = data;
+        
+
         emailToSocketIdMap.set(email, socket.id);
         socketIdToEmailMap.set(socket.id, email);
-        io.to(room).emit("user:joined", { email, id: socket.id });
+        io.to(room).emit("user:joined", { id:socket.id ,email, });
+        console.log(room,11,"socket----------");
         socket.join(room);
         io.to(socket.id).emit("room:join", data);
       });
@@ -42,5 +48,4 @@ module.exports = function (io) {
         }
       });
     })
-
 }

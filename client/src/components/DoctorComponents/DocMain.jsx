@@ -6,6 +6,7 @@ import Navbar from '../Navbar';
 import Schedule from './Schedule';
 import DocAppointments from './DocAppointments';
 import Consult from './Consult';
+import CreatePrescription from './CreatePrescription';
 
 DocMain.propTypes = {
   value: PropTypes.string,
@@ -30,6 +31,8 @@ function DocMain({ value }) {
                     <DocAppointments/>
                     : value == 'consult' ?
                     <Consult />
+                    : value == 'createPrescription' ?
+                        <CreatePrescription />
                     :''}
             </div>
           </div>

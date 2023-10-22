@@ -21,7 +21,6 @@ function AdminHome() {
     async function dataCall() {
       console.log("-----------------------------------------------------------------");
       const res=await axios.get(`/admin/dash`)
-      console.log(res.data,"dataaaaaaaaaaaaaaa",16); 
       setAppoint(res.data)
       setPatients(res.data.length)
       const inc=res.data.reduce((total,amount)=>{

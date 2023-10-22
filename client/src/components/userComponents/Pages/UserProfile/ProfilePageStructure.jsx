@@ -6,6 +6,7 @@ import './lists.css'
 import UserAppointments from "../../UserAppointments/UserAppointments";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import Prescription from "../../Prescription";
 
 
 
@@ -35,6 +36,12 @@ function ProfilePageStructure({value}) {
     setPrescriptions(false);
   };
 
+  const prescriptHandle = () => {
+    setActiveTab('prescriptions');
+    setProfile(false)
+    setAppointments(false)
+    setPrescriptions(true)
+}
   return (
     <>
   <nav
@@ -94,7 +101,7 @@ function ProfilePageStructure({value}) {
       <span className="nav-link text-white" onClick={appointHandle}>Appointments</span>
     </li>
     <li className={`nav-item ${activeTab === 'prescriptions' ? 'active' : ''}`}>
-      <span className="nav-link text-white">Prescriptions</span>
+      <span className="nav-link text-white" onClick={prescriptHandle}>Prescriptions</span>
     </li>
   </ul>
 </div>
@@ -105,6 +112,7 @@ function ProfilePageStructure({value}) {
       <div className="col-12 m-0 mt-0 col-md-12"style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
             {activeTab === 'profile' && <Profile />}
             {activeTab === 'appointments' && <UserAppointments />}
+            {activeTab === 'prescriptions'&& <Prescription />}
           </div>
        <div className="container mt-3">
         <div className="row">

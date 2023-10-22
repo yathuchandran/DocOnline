@@ -12,6 +12,7 @@ import Navbar from '../components/Navbar';
 import SetProfile from '../components/DoctorComponents/SetProfile';
 import Slot from '../components/DoctorComponents/Slot';
 import VedioCall from '../components/VedioCall';
+import Success from '../components/userComponents/sucess';
 
 function Doctor() {
 
@@ -27,6 +28,7 @@ function Doctor() {
      <Route path='/newPassword/:email' element={<ResetPassword value={'doctor'} />} />
 
      <Route path='/consult' element={<DocMain value={'consult'} />} />
+     <Route path='/createPrscription' element={<DocMain value="createPrescription" />} />
 
 
      <Route  element={<RequireDoctor />}>
@@ -37,6 +39,7 @@ function Doctor() {
      <Route path='/appointments' element={<DocMain value={'appointments'} />} />
 
      <Route path='/call/:room' element={<VedioCall value="doctor" />} />
+     <Route path='/success' element={<Success />} />
 
 
      </Route>

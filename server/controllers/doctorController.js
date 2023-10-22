@@ -381,13 +381,49 @@ try {
   .sort({ date: -1, time: 1 });
   const data = appointment.filter((app) => new Date(app.date) != new Date());
 
-  console.log(appointment,387);
   res.json(data);
 } catch (error) {
   console.log(error);
 
 }
 }
+
+
+const endAppointment = async (req, res) => {
+  console.log("docControl");
+  try {
+    const appId = req.params.appId;
+    const deleteAppoint = await Appointment.findOneAndUpdate(
+      { _id: appId },
+      { isAttended: true }
+    );
+    res.json("success");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const addPrescription = async (req, res) => {
+  try {
+    const data = req.body;
+    const id = req.body.id;
+    const update = await Appointment.findOneAndUpdate(
+      { _id: id }, // Correct the filter conditions here
+      { medicines: data },
+      { new: true }
+    );
+
+    console.log(update, 416);
+
+    res.json('done');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
 
 
 
@@ -406,4 +442,6 @@ module.exports = {
   appointments,
   dash,
   consult,
+  endAppointment,
+  addPrescription
 };

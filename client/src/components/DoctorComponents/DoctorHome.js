@@ -24,7 +24,6 @@ function DoctorHome() {
     async function dataCall() {
       console.log("-----------------------------------------------------------------");
       const res=await axios.post(`/doctor/dash`,{docId})
-      console.log(res.data,"dataaaaaaaaaaaaaaa",16); 
       setDocAppoint(res.data)
       setPatients(res.data.length)
       setPatientss(res.data.length)

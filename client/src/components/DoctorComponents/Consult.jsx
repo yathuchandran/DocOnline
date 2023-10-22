@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSlot } from '../../redux/consult'
 import axios from "../../Services/axios";
+import { setData } from '../../redux/prescriptionData'
+
 
 function Consult() {
   const [consult, setConsult] = useState([]);
@@ -15,31 +17,30 @@ function Consult() {
   const email = useSelector((state) => state.doctor.data.docData.email);
   const id = useSelector((state) => state.doctor.data.docData._id);
 
-  console.log(id,18,"---------------------------------------------",email);
 
   useEffect(()=>{
     const fetchData = async () => {
-      console.log("helooo");
       try {
         const res = await axios.post(`/doctor/consult`,{id});
-        console.log(res.data,25,"-----");
         setConsult(res.data)
-
       } catch (error) {
         console.log(error);
       }
     };
-  
     fetchData();
   },[])
 
 
-
+  const handlePrescribe = useCallback((el) => {
+    console.log(el);
+    dispatch(setData(el))
+    navigate('/doctor/createPrscription')
+}, [dispatch, navigate])
 
 
     const handleJoin = useCallback((id, room) => {
+
       dispatch(setSlot(id))
-      console.log(room);
       socket.emit("room:join", { email, room })
   }, [dispatch, socket, email])
 
@@ -52,9 +53,9 @@ function Consult() {
   );
 
   useEffect(() => {
-    socket.on("room:join", handleJoinRoom);
+    socket.on("room:join" , (data)=>{handleJoinRoom(data)});
     return () => {
-      socket.off("room:join", handleJoinRoom);
+      socket.off("room:join",  (data)=>{handleJoinRoom(data)});
     };
   }, [socket, handleJoinRoom]);
 
@@ -72,13 +73,17 @@ function Consult() {
       >
         <div className="row m-auto p-4 ">
           <h1>Consult</h1>
+
           <div className="bg-white p-3">
             {consult.length !== 0 ? (
               consult.map((el) => (
+
                 <div className="card mt-3 p-1" key={el.id}>
                   <div className="row text-center">
                     <div className="col-sm-6 mt-1">
+
                     <b>
+                      
                         <h3>{el.user.userName}</h3>
                     </b>
                     </div>
@@ -90,8 +95,8 @@ function Consult() {
                     {
                         <>
                     
-                            {new Date(el.date) < new Date() ? 'Unavailable' : el.isAttended ? "Attended" : !el.isCancelled ? <> <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success' onClick={() => handleJoin(el._id, el._id + el.user)}>Join</button></> : 'cancelled'}
-                            {!el.medicines ? <button className='btn btn-success p-2 mt-1' style={{ fontSize: '14px' }} >Prescribe</button> : "Presciption added"}
+                            {new Date(el.date) < new Date() ? 'Unavailable' : el.isAttended ? "Attended" : !el.isCancelled ? <> <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success' onClick={() => handleJoin(el._id, el._id + el.user._id)}>Join</button></> : 'cancelled'}
+                            {!el.medicines ? <button className='btn btn-success p-2 mt-1' style={{ fontSize: '14px' }} onClick={() => handlePrescribe(el)} >Prescribe</button> : "Presciption added"}
                         </>
                     }
                     </div>

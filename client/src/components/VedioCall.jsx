@@ -17,66 +17,137 @@ function VedioCall({value}) {
   const navigate = useNavigate()
   const socket = useSocket()
   const remoteRef = useRef()
-  const [remoteSocketId, setRemoteSocketId] = useState()
+  const [remoteSocketIds, setRemoteSocketIds] = useState([])
   const docToken = localStorage.getItem('doctorToken')
-  const [myStream, setMyStream] = useState(null)
+  const [myStreams, setMyStream] = useState()
   const [remoteStream, setRemoteStream] = useState()
   const [callActive, setCallActive] = useState(false)
   const appoint = useSelector(state => state.consult.slot)
-  console.log(appoint,26,"vedio");
   const [muted, setMuted] = useState(true)
   const [accepted, setAccepted] = useState(false)
 
+  
   const handleUserJoined = useCallback(({ email, id }) => {
-    console.log(`${email} joined`);
-    console.log("joined");
-    setRemoteSocketId(id)
-  }, [])
+    // console.log("User joined:", email, "with ID:", id);
+    setRemoteSocketIds(prevIds => [...prevIds, id]);
+  }, []);
+
+console.log(myStreams,"setMyStream-----------------35");
+  
+
+
+  const handleCallUser = useCallback(async () => {
+    if (callActive) {
+      myStreams?.getTracks().forEach((track) => track.stop());
+      setMyStream(null);
+      socket.emit('call:end', { to: remoteSocketIds })
+      setCallActive(false)
+      setRemoteStream('')
+      if (value==='doctor') {
+        console.log("appointment");
+       const res= await axios.patch(`doctor/endAppointment/${appoint}`)
+       console.log(res.data,46,"vedicall");
+      }
+      socket.emit('socket:disconnect', { socketId: remoteSocketIds });
+      if (value == 'doctor') {
+        navigate('/doctor/success')
+      } else if (value == "user") {
+        navigate('/feedback')
+      }
+
+    } else {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      const offer = await peer.getOffer()
+      console.log(offer,"offer",66);
+      socket.emit('user:call', { to: remoteSocketIds, offer })
+      setMyStream(stream)
+      setCallActive(true)
+    }
+  }, [appoint, callActive, docToken, myStreams, navigate, remoteSocketIds, socket, value])
+
 
 
   const handleIncomingCall = useCallback(async ({ from, offer }) => {
-    setRemoteSocketId(from)
-    setCallActive(true)
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-    setMyStream(stream)
-    const ans = await peer.getAnswer(offer)
-    socket.emit('call:accepted', { to: from, ans })
-  }, [socket])
+    console.log(from, "from, offer",77);
+    setRemoteSocketIds(from);
+    setCallActive(true);
+    try {
+     
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      console.log(stream,"str-----------",81);
+
+      setMyStream(stream);
+      const ans = await peer.getAnswer(offer);
+      console.log(ans,"str-----------",85);
+
+      socket.emit('call:accepted', { to: from, ans });
+    } catch (error) {
+      console.error(error);
+    }
+  }, [socket]);
+  
 
   const sendStreams = useCallback(() => {
     setAccepted(true)
-    for (const track of myStream.getTracks()) {
-      peer.peer.addTrack(track, myStream);
+    for (const track of myStreams.getTracks()) {
+      peer.peer.addTrack(track, myStreams);
     }
     setCallActive(true)
-  }, [myStream]);
+  }, [myStreams]);
 
 
-  const handleCallAccepted = useCallback(
-    async ({ ans }) => {
-      await peer.setLocalDescription(ans);
-      console.log("Call Accepted!");
+  const handleCallAccepted = useCallback((from,ans)=>{
+    peer.setLocalDescription(ans);
+    console.log("Call Accepted!----------------------- ",90);
       setCallActive(true)
       sendStreams()
-    },
-    [sendStreams]
+
+  },[sendStreams]
+  // const handleCallAccepted = useCallback(
+  //   async ({ ans }) => {
+
+  //     await peer.setLocalDescription(ans);
+  //     console.log("Call Accepted!",90);
+  //     setCallActive(true)
+  //     sendStreams()
+  //   },
+  //   [sendStreams]
   );
 
   const handleNegoNeeded = useCallback(async () => {
+    try {
     const offer = await peer.getOffer()
-    socket.emit('peer:nego:needed', { offer, to: remoteSocketId })
-  }, [remoteSocketId, socket])
+    console.log(offer,"offer-----------",120);
+    socket.emit('peer:nego:needed', { offer, to: remoteSocketIds })
+  } catch (error) {
+    console.error(error);
+  }
+  }, [remoteSocketIds, socket])
 
   const handleNegoIncoming = useCallback(async ({ from, offer }) => {
-    const ans = await peer.getAnswer(offer)
+    try {
+      
+      const ans = await peer.getAnswer(offer)
+      console.log(ans,"from------ ",129);
+  
+      socket.emit('peer:nego:done', { to: from, ans })
+    } catch (error) {
+      console.error( error);
 
-    socket.emit('peer:nego:done', { to: from, ans })
+    }
   }, [socket])
 
 
   const handleNegoFinal = useCallback(async ({ ans }) => {
-    await peer.setLocalDescription(ans)
-  }, [])
+    console.log(ans,"from------ ",139);
+
+    try {
+      await peer.setLocalDescription(ans);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   const handleMute = useCallback(() => {
     setMuted(!muted)
@@ -94,49 +165,54 @@ function VedioCall({value}) {
   useEffect(() => {
     peer.peer.addEventListener('track', async ev => {
       const remoteStream = ev.streams
+      console.log("GOT TRACKS [[[[[[[[[]]]]]]]]]");
       setRemoteStream(remoteStream[0])
     })
   }, [])
 
   useEffect(() => {
-    socket.on('user:joined', handleUserJoined)
-       socket.on('incoming:call', handleIncomingCall)
-       socket.on('call:accepted', handleCallAccepted)
-       socket.on('peer:nego:needed', handleNegoIncoming)
-       socket.on('peer:nego:final', handleNegoFinal)
-
-
-
+    socket.on('user:joined', (data) => {
+      console.log('Received user:joined event:', data);
+      handleUserJoined(data);
+    });
+       socket.on('incoming:call',(data)=>{ handleIncomingCall(data)})
+       socket.on('call:accepted',(data)=>{ handleCallAccepted(data)})
+       
+       socket.on('peer:nego:needed', (data)=>{ handleNegoIncoming(data)})
+       socket.on('peer:nego:final', (data)=>{handleNegoFinal(data)})
 
     return () => {
-      socket.off('user:joined', handleUserJoined)
-      socket.off('incoming:call', handleIncomingCall)
-      socket.off('call:accepted', handleCallAccepted)
-      socket.off('peer:nego:needed', handleNegoIncoming)
-      socket.off('peer:nego:final', handleNegoFinal)
-
+      socket.off('user:joined', (data) => {
+        console.log('Received user:joined event:', data);
+        handleUserJoined(data)})
+      console.log("off145");
+      socket.off('incoming:call', (data)=>{ handleIncomingCall(data)})
+      socket.off('call:accepted', (data)=>{ handleCallAccepted(data)})
+      socket.off('peer:nego:needed', (data)=>{ handleNegoIncoming(data)})
+      socket.off('peer:nego:final', (data)=>{ handleNegoFinal(data)})
 
     }
-  }, [socket, handleUserJoined,handleIncomingCall,handleCallAccepted,handleNegoIncoming,handleNegoFinal,])
+  }, [socket, handleUserJoined, handleIncomingCall, handleNegoFinal, handleNegoIncoming, handleCallAccepted])
 
   return (
     <>
       <div className="text-center  p-2">
         <h3><b>CONSULTING STATION</b></h3>
         {
-          value == 'user' ? (!remoteSocketId && 'Please wait till the call arrives') : (
-            !callActive && <h5>{remoteSocketId ? 'Patient online' : 'No one in room'}</h5>)
+          value == 'user' ? (!remoteSocketIds && 'Please wait till the call arrives') : (
+            !callActive && <h5>{remoteSocketIds ? 'Patient online' : 'No one in room'}</h5>)
         }
+        {/* {myStream&&<ReactPlayer url={myStream}/>} */}
+        <h6>ihef</h6>
         <div className="container">
-
           <div className="row text-start">
             <div className="col-md-6">
               {
-                myStream &&
+                myStreams &&
                 <h1>My stream</h1>}
               {
 
-                myStream && <ReactPlayer style={{ backgroundColor: 'black' }} url={myStream} playing muted width={'80%'} height={'80%'} />
+                myStreams && <ReactPlayer style={{ backgroundColor: 'black' }} url={myStreams} playing muted width={'80%'} height={'80%'} />
               }
             </div>
             <div className="col-md-6">
@@ -152,21 +228,20 @@ function VedioCall({value}) {
           </div>
 
           <br />
-          {callActive && <button className='btn bg-danger text-white' ><BsFillTelephoneXFill /></button>}
+          {callActive && <button className='btn bg-danger text-white' onClick={handleCallUser}><BsFillTelephoneXFill /></button>}
           {
-            myStream && <>
+            myStreams && <>
               <button className={!muted ? 'btn btn-primary ms-3' : 'btn btn-dark ms-3'} onClick={handleMute}>{muted ? <BsMicMuteFill /> : <BsMicFill />}</button>
             </>
           }
 
 
-          {value == 'user' && myStream && <><button className={accepted ? 'd-none' : 'btn btn-success ms-3'} onClick={sendStreams}><BsFillTelephoneFill /></button></>}
+          {value == 'user' && myStreams && <><button className={accepted ? 'd-none' : 'btn btn-success ms-3'} onClick={sendStreams}><BsFillTelephoneFill /></button></>}
           {
-            !callActive ? (value === 'doctor' && (remoteSocketId && <button className='btn btn-outline-success' >Call</button>)) : ''
+            !callActive ? (value === 'doctor' && (remoteSocketIds && <button className='btn btn-outline-success' onClick={handleCallUser}>Call</button>)) : ''
           }
         </div>
       </div>
-
     </>
   )
 }

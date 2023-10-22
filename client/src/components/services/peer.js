@@ -16,8 +16,12 @@ class PeerService {
     async getAnswer(offer) {
         if (this.peer) {
           await this.peer.setRemoteDescription(offer);
+          console.log(offer,"offerrrrrrrrrrr ",19);
+
           const ans = await this.peer.createAnswer();
           await this.peer.setLocalDescription(new RTCSessionDescription(ans));
+          console.log(ans,23);
+
           return ans;
         }
       }
@@ -25,6 +29,8 @@ class PeerService {
       async setLocalDescription(ans) {
         if (this.peer) {
           await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+          return ans;
+
         }
       }
 
@@ -37,5 +43,5 @@ class PeerService {
           return offer;
         }
       }
-    
 }
+export default new PeerService();

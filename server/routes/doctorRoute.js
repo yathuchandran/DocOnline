@@ -21,6 +21,8 @@ doctorRoute.post('/setSchedule',validateDoctorToken,doctorController.manageSched
 doctorRoute.post('/appointments',validateDoctorToken,doctorController.appointments)
 doctorRoute.post('/dash',validateDoctorToken,doctorController.dash)
 doctorRoute.post('/consult',validateDoctorToken,doctorController.consult)
+doctorRoute.patch('/endAppointment/:appId',validateDoctorToken,doctorController.endAppointment)
+doctorRoute.patch('/addPrescription',validateDoctorToken,doctorController.addPrescription)
 
 
 

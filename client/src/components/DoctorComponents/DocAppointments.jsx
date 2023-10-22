@@ -61,7 +61,6 @@ console.log(appointments,"appointments==",14);
       const getAppointments = async () => {
         console.log("getAppointments--------------");
       const res = await axios.post('/doctor/appointments',{docId});
-      console.log(res.data,"dataaaaaaaaaaaaaaaaa");
       setFilteredData(res.data)
       setAppointments(res.data);
     };
