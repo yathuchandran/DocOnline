@@ -90,7 +90,7 @@ function Profile() {
                 border: "1px solid rgb(219, 217, 217)",
                 borderRadius: "15px",
                 boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)", // Add box shadow
-              }}>
+              } }>
           <div className="text-center text-bold mb-3 mt-3">SET PROFILE</div>
           <div className="text-center  mb-3 mt-2">
             {preview != [] ? (

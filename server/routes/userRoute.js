@@ -24,6 +24,7 @@ userRoute.get("/docSchedule/:docId", validateToken,authUser, userController.docS
 userRoute.post('/create-checkout-session',validateToken,authUser, userController.stripeSession);
 userRoute.post("/appointments", validateToken,authUser, userController.loadAppointments);
 userRoute.post("/cancelAppoint", validateToken,authUser, userController.cancelAppointments);
+userRoute.post("/priscriptions",validateToken,authUser,userController.prescriptions)
 
 
 // userRoute.post('/webhook',express.raw({type:'application/json'}),userController.webhooks);

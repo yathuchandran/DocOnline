@@ -405,7 +405,8 @@ const endAppointment = async (req, res) => {
 
 const addPrescription = async (req, res) => {
   try {
-    const data = req.body;
+    const data = req.body.playload;
+    console.log(data,409);
     const id = req.body.id;
     const update = await Appointment.findOneAndUpdate(
       { _id: id }, // Correct the filter conditions here

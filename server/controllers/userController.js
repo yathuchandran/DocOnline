@@ -402,7 +402,16 @@ console.log(cancel,397);
 }
 
 
-
+const prescriptions=async(req,res)=>{
+  console.log("prescriptions");
+try {
+  const id=req.body._id
+  const data = await Appointment.find({ user:id }).populate('doctor');
+ res.json(data)
+} catch (error) {
+  console.log(error);
+}
+}
 
 
 
@@ -457,6 +466,7 @@ module.exports = {
   stripeSession,
   loadAppointments,
 cancelAppointments,
+prescriptions,
 
 
 

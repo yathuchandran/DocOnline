@@ -16,6 +16,7 @@ import Appointment from '../components/userComponents/Appointments/Appointment'
 import Payment from '../components/userComponents/Payment'
 import Success from '../components/userComponents/sucess'
 import VedioCall from '../components/VedioCall'
+import FeedBack from '../components/userComponents/feedBack'
 
 function User() {
   return (
@@ -29,6 +30,7 @@ function User() {
   <Route path='/forgotpassword' element={<ForgotPassword />} />
   <Route path='/newPassword/:email' element={<ResetPassword />}/>
   <Route path='/sucess' element={<Success />} />
+  <Route path='/feedBack' element={<FeedBack />} />
 
   <Route path='/profile' element={<ProfilePageStructure user="user" />} />
   <Route path='/call/:room' element={<VedioCall value='user' />} />
