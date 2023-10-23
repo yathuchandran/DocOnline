@@ -12,7 +12,8 @@ import Navbar from '../components/Navbar';
 import SetProfile from '../components/DoctorComponents/SetProfile';
 import Slot from '../components/DoctorComponents/Slot';
 import VedioCall from '../components/VedioCall';
-import Success from '../components/userComponents/sucess';
+import Success from '../components/DoctorComponents/Success';
+import RoomPage from '../components/RoomPage';
 
 function Doctor() {
 
@@ -38,8 +39,10 @@ function Doctor() {
      <Route path='/schedule' element={<DocMain value={'schedule'} />} />
      <Route path='/appointments' element={<DocMain value={'appointments'} />} />
 
-     <Route path='/call/:room' element={<VedioCall value="doctor" />} />
-     <Route path='/success' element={<Success />} />
+     {/* <Route path='/call/:room' element={<VedioCall value="doctor" />} /> */}
+     <Route path='/call/:room' element={<RoomPage value="doctor" />} />
+
+     <Route path='/success' element={<Success  />} />
 
 
      </Route>

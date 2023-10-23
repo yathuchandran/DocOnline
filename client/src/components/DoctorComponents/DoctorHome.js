@@ -15,7 +15,6 @@ function DoctorHome() {
   const [docAppoint, setDocAppoint] = useState([])
   const docData = useSelector((state) => state.doctor.data);
 
-  console.log(docAppoint,"docData--------------------HOME------------------docData",15);
   const docId=docData.docData?._id
 
 

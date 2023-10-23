@@ -79,8 +79,8 @@ useEffect(() => {
                             <div className="row">
                                 <div className="col-md-4 text-start">
                                     <h4>{el?.doctor.name}</h4>
-                                    <h6 className='subText p-0 m-0'>zsfg</h6>
-                                    <h6 className='subText'>sd</h6>
+                                    <h6 className='subText p-0 m-0'>Bachelor of Medicine, Bachelor of Surgery (MBBS)</h6>
+                                    <h6 className='subText'>New Delhi, UPDATED: Oct 3, 2021 14:26 IST The Ayushman Bharat Digital Mission (ABDM)</h6>
                                 </div>
                                 <div className="col-md-4">
                                     <h6>Date : {el?.date}</h6>

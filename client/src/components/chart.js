@@ -7,7 +7,6 @@ BarChart.propTypes = {
 }
 
 function BarChart({ appoints }) {
-    console.log(appoints,"appoints-----------10",10);
     const [year, setYear] = useState(new Date().getFullYear())
 
     let monthCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

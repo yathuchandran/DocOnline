@@ -17,6 +17,7 @@ import Payment from '../components/userComponents/Payment'
 import Success from '../components/userComponents/sucess'
 import VedioCall from '../components/VedioCall'
 import FeedBack from '../components/userComponents/feedBack'
+import RoomPage from '../components/RoomPage'
 
 function User() {
   return (
@@ -33,7 +34,9 @@ function User() {
   <Route path='/feedBack' element={<FeedBack />} />
 
   <Route path='/profile' element={<ProfilePageStructure user="user" />} />
-  <Route path='/call/:room' element={<VedioCall value='user' />} />
+  {/* <Route path='/call/:room' element={<VedioCall value='user' />} /> */}
+  <Route path='/call/:room' element={<RoomPage value='user' />} />
+
 
   <Route  element={<Navbar />} />
   <Route  element={<RequireUser />}>
