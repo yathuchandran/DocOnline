@@ -7,6 +7,7 @@ import Schedule from './Schedule';
 import DocAppointments from './DocAppointments';
 import Consult from './Consult';
 import CreatePrescription from './CreatePrescription';
+import Review from './Review';
 
 DocMain.propTypes = {
   value: PropTypes.string,
@@ -15,7 +16,7 @@ DocMain.propTypes = {
 function DocMain({ value }) {
   return (
     <>
-      <div className="docConts"   style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",height:'112vh'}}>
+      <div className="docConts"   style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",height:'126vh'}}>
               <Navbar value='doctor' />
         <div className="row">
           <div className="col-md-2 text-center bg-white side col-lg-2"> 
@@ -33,7 +34,9 @@ function DocMain({ value }) {
                     <Consult />
                     : value == 'createPrescription' ?
                         <CreatePrescription />
-                    :''}
+                        : value == 'review' ?
+                        <Review />
+                        :''}
             </div>
           </div>
         </div>

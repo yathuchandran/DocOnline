@@ -5,6 +5,8 @@ import { FaStethoscope } from 'react-icons/fa';
 import { BiNotepad, BiRupee } from 'react-icons/bi';
 import { MdPerson, MdOutlineSick, MdCalendarMonth } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { FaStar } from "react-icons/fa";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 const DocSidebar = () => {
@@ -36,7 +38,9 @@ const handlePayments = () => {
 const handleAdmins = () => {
   navigate('/doctor/payments')
 }
-
+const handleReview=()=>{
+  navigate('/doctor/review')
+}
   return (
     <>
             <div className=' z-10 docSide ' >
@@ -51,6 +55,8 @@ const handleAdmins = () => {
                             <div className='text-xl sideItem py-4 flex' onClick={handlePayments}><button className='btn buttons'><MdCalendarMonth size={25} className='mr-4' /> My Schedule</button></div>
                             <div className='text-xl sideItem py-4 flex' onClick={handlePatient}><button className='btn buttons'><MdOutlineSick size={25} className='mr-4' /> Patients</button></div>
                             <div className='text-xl sideItem py-4 flex' onClick={handleDepartment}><button className='btn buttons'><BiNotepad size={25} className='mr-4' /> Prescriptions</button></div>
+                            <div className='text-xl sideItem py-4 flex' onClick={handleReview}><button className='btn buttons'><FaStar size={25} className='mr-4' /> Reviews</button></div>
+
                             <div className='text-xl sideItem py-4 flex' onClick={handleAdmins}><button className='btn buttons'><BiRupee size={25} className='mr-4' /> Payments</button></div>
                         </div>
                     </nav>

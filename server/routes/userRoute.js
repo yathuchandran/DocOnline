@@ -25,6 +25,7 @@ userRoute.post('/create-checkout-session',validateToken,authUser, userController
 userRoute.post("/appointments", validateToken,authUser, userController.loadAppointments);
 userRoute.post("/cancelAppoint", validateToken,authUser, userController.cancelAppointments);
 userRoute.post("/priscriptions",validateToken,authUser,userController.prescriptions)
+userRoute.post("/rating" ,validateToken,authUser,userController.rating)
 
 
 // userRoute.post('/webhook',express.raw({type:'application/json'}),userController.webhooks);

@@ -23,6 +23,7 @@ doctorRoute.post('/dash',validateDoctorToken,doctorController.dash)
 doctorRoute.post('/consult',validateDoctorToken,doctorController.consult)
 doctorRoute.patch('/endAppointment/:appId',validateDoctorToken,doctorController.endAppointment)
 doctorRoute.patch('/addPrescription',validateDoctorToken,doctorController.addPrescription)
+doctorRoute.post('/reviews',validateDoctorToken,doctorController.review)
 
 
 

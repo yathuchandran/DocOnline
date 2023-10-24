@@ -8,6 +8,7 @@ const department = require("../models/department");
 const cloudinary = require("cloudinary");
 const Schedule = require("../models/scheduleModel");
 const Appointment = require("../models/appointmentModel");
+const Review=require("../models/reviewModel")
 
 
 
@@ -422,7 +423,19 @@ const addPrescription = async (req, res) => {
   }
 };
 
+const review=async(req,res)=>{
+  try {
+    console.log("review");
+    const id=req.body.id
+    console.log(id,428);
+    const data=await Review.find({doctorId:id})
+    console.log(data,432);
+    res.json(data)
 
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -444,5 +457,6 @@ module.exports = {
   dash,
   consult,
   endAppointment,
-  addPrescription
+  addPrescription,
+  review,
 };

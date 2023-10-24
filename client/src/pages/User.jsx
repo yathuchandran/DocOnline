@@ -18,6 +18,7 @@ import Success from '../components/userComponents/sucess'
 import VedioCall from '../components/VedioCall'
 import FeedBack from '../components/userComponents/feedBack'
 import RoomPage from '../components/RoomPage'
+// import Ratings from '../components/Ratings'
 
 function User() {
   return (
@@ -36,6 +37,8 @@ function User() {
   <Route path='/profile' element={<ProfilePageStructure user="user" />} />
   {/* <Route path='/call/:room' element={<VedioCall value='user' />} /> */}
   <Route path='/call/:room' element={<RoomPage value='user' />} />
+
+  {/* <Route path="/feedbacks" element={<Ratings />} /> */}
 
 
   <Route  element={<Navbar />} />

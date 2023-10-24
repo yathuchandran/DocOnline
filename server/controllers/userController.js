@@ -10,6 +10,7 @@ const randomstring = require("randomstring");
 const Department = require("../models/department");
 const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
+const Review=require("../models/reviewModel")
 const Schedule = require("../models/scheduleModel");
 const stripe = require("stripe")(`${process.env.STRIPE_KEY}`);
 
@@ -413,17 +414,33 @@ try {
 }
 }
 
+const rating = async (req, res) => {
+  try {
+    console.log("rating");
+    const data = req.body;
+console.log(data,421);
+    const ratings = new Review({
+      userId: data.userId,
+      doctorId: data.docId,
+      feedback: data.review,
+      rating: data.rating, // Assign the rating from the request body
+    });
 
+    const datas= await ratings.save();
+   res.json(datas)
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 
 const forgotPassword = async (req, res) => {
-  console.log("forgotPassword");
   try {
     const email = req.params.email;
     const emailData = await User.find({ email: email });
 
-    console.log(emailData, "emailData====",);
     if (emailData) {
       const otp = Math.floor(1000 + Math.random() * 9000);
       console.log(otp,"otp+++++++++++++++++++++++++++");
@@ -431,7 +448,6 @@ const forgotPassword = async (req, res) => {
       await mailSender(email,otp,"forgotpassword")
       console.log(email,"=======emailData.email");
 
-      console.log(mailupdated,"mailupdated----------");
       res.status(200).json("success");
     }else{
       res.status(404).json("Not Found")
@@ -467,6 +483,7 @@ module.exports = {
   loadAppointments,
 cancelAppointments,
 prescriptions,
+rating,
 
 
 
