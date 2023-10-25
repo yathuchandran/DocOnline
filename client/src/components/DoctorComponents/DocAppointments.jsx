@@ -74,7 +74,7 @@ console.log(appointments,"appointments==",14);
 
   return (
 <>
-<div className=" container mt-5 ms-auto " style={{ width:'57%',paddingLeft:'0', background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)", borderRadius: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",}}>
+<div className=" container mt-5 ms-auto " style={{ width:'77%',paddingLeft:'0', background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)", borderRadius: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",}}>
 <div className='row m-auto' >
 
 

@@ -34,7 +34,6 @@ function UserAppointments() {
 
 
   const handleAppointments=useCallback(async(id)=>{
-    console.log(id,"id--9");
     try {
       const res=await axios.post(`/cancelAppoint`,{id})
       console.log(res.data,34);
@@ -70,34 +69,39 @@ useEffect(() => {
                 border: "1px solid rgb(219, 217, 217)",
                 borderRadius: "15px",
                 boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)",
-                width:'80%'
+                width:'100%'
               }}>
                <h2>Appointments</h2>
                   {appointments ? (appointments?.length != 0 &&
                     appointments.map(el => (
-                        <div className="appointCard text-center  m-5    " key={el._id}>
-                            <div className="row">
-                                <div className="col-md-4 text-start">
-                                    <h4>{el?.doctor.name}</h4>
-                                    <h6 className='subText p-0 m-0'>Bachelor of Medicine, Bachelor of Surgery (MBBS)</h6>
-                                    <h6 className='subText'>New Delhi, UPDATED: Oct 3, 2021 14:26 IST The Ayushman Bharat Digital Mission (ABDM)</h6>
-                                </div>
-                                <div className="col-md-4">
-                                    <h6>Date : {el?.date}</h6>
-                                    <h6>Time : {el?.time}</h6>
-                                </div>
-                                <div className="col-md-4">
-                                    {
-                                        <>
-                                            { } <br />
-                                            {new Date(el.date) < new Date() ? 'Unavailable' : el?.isAttended ? "Attended" : !el?.isCancelled ? <><button className='btn bg-danger text-white ps-2 pe-2 ' onClick={() => handleAppointments(el?._id)} style={{ fontSize: "15px" }}>Cancel</button>
-                                             <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success'onClick={() => handleJoin(el._id + el.user)} >Join</button></> : 'cancelled'}
-                                        </>
-                                    }
-
-                                </div>
-                            </div>
-                        </div>
+                      <div className="card text-center m-3" key={el._id}>
+      <div className="card-body">
+        <div className="row">
+          <div className="col-md-3 text-start">
+            <h4>Dr.{el?.doctor.name}</h4>
+            <h6 className='subText '>Bachelor of Medicine, Bachelor of Surgery (MBBS)</h6>
+            <h6 className='subText'>New Delhi, 2021 14:26 IST The Ayushman Bharat Digital Mission (ABDM)</h6>
+          </div>
+          <div className="col-md-3 mt-4 p-4">
+            <h6>Date : {el?.date}</h6>
+            <h6>Time : {el?.time}</h6>
+          </div>
+          <div className="col-md-3 mt-4 p-4">
+            {new Date(el.date) < new Date() ? 'Unavailable' : el?.isAttended ? "Attended" : !el?.isCancelled ? (
+              <>
+                <button className='btn bg-danger text-white ps-2 pe-2' onClick={() => handleAppointments(el?._id)} style={{ fontSize: "15px" }}>Cancel</button>
+                {el.time === new Date(el.time) ? (
+                  <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success' onClick={() => handleJoin(el._id + el.user)}>Join</button>
+                ) : ''}
+              </>
+            ) : 'Cancelled'}
+          </div>
+          <div className="col-md-3  ">
+            <img src="online-doctor-consultation-via-smartphone-concept-medical-application-websites-vector-flat-illustration-254988566.webp" alt=""                 style={{ height: '200px' }}/>
+          </div>
+        </div>
+      </div>
+    </div>
                     ))
                 ) : (
                     <p>No appointments found.</p>

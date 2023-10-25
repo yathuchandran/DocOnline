@@ -34,18 +34,20 @@ function User() {
   <Route path='/sucess' element={<Success />} />
   <Route path='/feedBack' element={<FeedBack />} />
 
+  
+  {/* <Route path="/feedbacks" element={<Ratings />} /> */}
   <Route path='/profile' element={<ProfilePageStructure user="user" />} />
   {/* <Route path='/call/:room' element={<VedioCall value='user' />} /> */}
   <Route path='/call/:room' element={<RoomPage value='user' />} />
 
-  {/* <Route path="/feedbacks" element={<Ratings />} /> */}
-
+  
 
   <Route  element={<Navbar />} />
   <Route  element={<RequireUser />}>
     <Route path='/findDoctor' element={<DoctorSearchPageStructure />} />
     <Route path='/appointments' element={<Appointment />} />
     <Route path='/payment' element={<Payment />} />
+   
 
 
 

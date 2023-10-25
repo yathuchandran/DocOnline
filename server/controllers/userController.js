@@ -418,12 +418,13 @@ const rating = async (req, res) => {
   try {
     console.log("rating");
     const data = req.body;
-console.log(data,421);
+console.log(req.body,421);
     const ratings = new Review({
       userId: data.userId,
       doctorId: data.docId,
       feedback: data.review,
-      rating: data.rating, // Assign the rating from the request body
+      rating: data.rating, 
+      userName:data.userName
     });
 
     const datas= await ratings.save();

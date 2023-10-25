@@ -9,13 +9,17 @@ function CreatePrescription() {
   const descriptionRef = useRef()
   const [medicines, setMedicines] = useState()
   const [dose, setDose] = useState('')
+  const [description, setdescription] = useState('')
+
+  
   const [medDetails, setMedDetails] = useState(new Map())
+  console.log(medDetails,"medDetails",16);
   const navigate = useNavigate()
   const [mor, setMor] = useState(false)
   const [aft, setAft] = useState(false)
   const [evg, setEvg] = useState(false)
 
-console.log(medicines,"medicines-----------",dose,"dose---------------------",18);
+// console.log(medicines,"medicines-----------",dose,"dose---------------------",18,description);
 
   useEffect(() => {
     if(!userData){
@@ -34,9 +38,10 @@ console.log(medicines,"medicines-----------",dose,"dose---------------------",18
 const handleUpload = useCallback(async () => {
     const id=userData._id
     console.log(id,'id ----36');
-    const playload = Array.from(medDetails).map(([medicine, selectedDose]) => ({
+    const playload = Array.from(medDetails).map(([medicine, selectedDose,description]) => ({
         medicine,
         selectedDose,
+        description,
       }));
     console.log(playload,41);
      const res= await axios.patch('/doctor/addPrescription', {playload,id:id})
@@ -66,17 +71,21 @@ const handleAddClick = useCallback(() => {
       med = med + '-' + '0'
   }
  
-  if (medicines && dose) {
+  if (medicines && dose&&description) {
+    console.log(description,"description==============",75);
     setMedDetails(prev => {
         const updated = new Map(prev)
-        updated.set(medicines, dose + 'mg ' + med + ' ' + descriptionRef.current.value)
+
+        updated.set(medicines+' ' ,dose + ' ' + med + ' '+description )
+
         return updated
     })
     setMedicines('');
     setDose('');
+    setdescription('')
 }
 
-}, [aft, dose, evg, mor, medicines])
+}, [aft, dose, evg, mor, medicines,description])
 
 
 
@@ -130,7 +139,8 @@ const handleAddClick = useCallback(() => {
                 <div className="col-md-11  m-5 mt-0">
 
                    <span>Description</span>
-                <input className='form-control mt-2 ' ref={descriptionRef} placeholder='Description...' type="text" />
+                <input className='form-control mt-2 '  placeholder='Description...' type="text" value={description}
+                onChange={(e) => setdescription(e.target.value)} />
                 </div>
 
 
@@ -169,9 +179,10 @@ const handleAddClick = useCallback(() => {
 
                     </div>
                     <h4>Prescription</h4>
-                {Array.from(medDetails).map(([medicine, selectedDose]) => (
+                {Array.from(medDetails).map(([medicine, selectedDose,description]) => (
                     <div key={medicine}>
-                        <p>{medicine}: {selectedDose}</p>
+                        <p>{medicine}: {selectedDose}:{description}</p>
+                        {/* <p>hai{description}</p> */}
                     </div>
                 ))}
                 <div className="row">

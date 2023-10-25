@@ -8,7 +8,7 @@ import axios from '../../Services/axios'
 
 function Schedule() {
 
-  const timeSlots = ['8.00 AM', '8.30 AM', '9.00 AM', '9.30 AM', '10.00 AM', '10.30 AM', "11.00 AM", "11.30 AM", "12.00 PM", '12.30 PM', '1.00 PM', '1.30 PM', '2.00 PM', '2.30 PM', '3.00 PM', '3.30 PM', '4.00 PM', '4.30 PM', '5.00 PM', '5.30 PM', '6.00 PM', '6.30 PM', '7.00 PM', '7.30 PM', '8.00 PM', '8.30 PM', '9.00 PM', '9.30 PM', '10.00 PM']
+  const timeSlots = ['8.00 AM', '8.30 AM', '9.00 AM', '9.30 AM', '10.00 AM', '10.30 AM', "11.00 AM", "11.30 AM", "12.00 PM", '12.30 PM', '13.00 PM', '13.30 PM', '14.00 PM', '14.30 PM', '15.00 PM', '15.30 PM', '16.00 PM', '16.30 PM', '17.00 PM', '17.30 PM', '18.00 PM', '18.30 PM', '19.00 PM', '19.30 PM', '20.00 PM', '21.30 PM', '22.00 PM', '22.30 PM', '23.00 PM']
   const days = ["Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const [freeDate, setFreeDate] = useState('')
   const [freeTime, setFreeTime] = useState([])

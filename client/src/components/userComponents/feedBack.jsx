@@ -12,24 +12,28 @@ function FeedBack() {
   const [rating, setRating] = useState(0);
 
   const data = useSelector((state) => state.appointment.appointment);
-  console.log(data.user, 10,review);
+  const user=useSelector((state)=>state.user.data)
+  console.log(data.user, 10,review,);
   const docId = data.doctor;
   const userId = data.user;
-
+const userName=user.userName
   const handleRatingClick = (value) => {
     setRating(value);
   };
 
   const navigate = useNavigate();
 
-const datas={review,
-  rating,
-  docId,
-  userId,}
-  console.log(datas);
+const datas={review:review,
+             rating:rating,
+             docId,
+             userId,
+             userName}
   const handleHome = useCallback(async () => {
     try {
+      console.log(datas,33);
+
       const res = await axios.post(`/rating`,datas);
+
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -94,7 +98,7 @@ const datas={review,
           </Row>
         </Container>
         <br />
-        <button className="btn btn-success" onClick={handleHome}>
+        <button className="btn btn-success" onClick={handleHome} >
           Submit
         </button>
       </div>
