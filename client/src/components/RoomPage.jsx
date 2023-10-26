@@ -33,13 +33,15 @@ const RoomPage = ({value}) => {
 
   const handleCallUser = useCallback(async () => {
     if (callActive) {
+      console.log("callActive ----",36);
+
         myStream?.getTracks().forEach((track) => track.stop());
         setMyStream(null);
         socket.emit('call:end', { to: remoteSocketId })
         setCallActive(false)
         setRemoteStream('')
         if (value==='doctor') {
-          console.log("appointment");
+          console.log("appointment ----",42);
          const res= await axios.patch(`doctor/endAppointment/${appoint}`)
          console.log(res.data,46,"vedicall");
         }
@@ -164,24 +166,61 @@ const RoomPage = ({value}) => {
           value == 'user' ? (!remoteSocketId && 'Please wait till the call arrives') : (
             !callActive && <h5>{remoteSocketId ? 'Patient online' : 'No one in room'}</h5>)
         }
+        <img src="/medical-conference-23-2148901289.jpg" alt="" />
                 <div className="container">
-                <div className="row text-start">
-                <div className="col-md-6">
+                <div className="row text-start"style={{ paddingLeft:'230px'}} >
+                <div className="col-md-10 m-0 "style={{ paddingLeft:'40px'}}>
+                {
+  myStream && (
+    <>
+      <h1>My stream</h1>
+      <ReactPlayer
+        style={{ backgroundColor: 'black' }}
+        url={myStream}
+        playing
+        muted
+        width={'30%'}
+        height={'30%'}
+      />
+    </>
+  )
+}
+{
+  remoteStream && (
+    <>
+      <h1>Remote stream</h1>
+      <ReactPlayer
+        style={{ backgroundColor: 'black' }}
+        ref={remoteRef}
+        url={remoteStream}
+        playing
+        muted={muted}
+        width={'100%'}
+        height={'100%'}
+      />
+    </>
+  )
+}
+
+
+
+
+
                 {
                 myStream &&
                 <h1>My stream</h1>}
               {
 
-                myStream && <ReactPlayer style={{ backgroundColor: 'black' }} url={myStream} playing muted width={'80%'} height={'80%'} />
+                myStream && <ReactPlayer style={{ backgroundColor: 'black' }} url={myStream} playing muted width={'30%'} height={'30%'} />
               }
-                </div>
-                <div className="col-md-6">
+                {/* </div>
+                <div className="col-md-9"> */}
                 {remoteStream &&
                 <h1>Remote stream</h1>
               }
               {
 
-                remoteStream && <ReactPlayer style={{ backgroundColor: 'black' }} ref={remoteRef} url={remoteStream} playing muted={muted} width={'80%'} height={'80%'} />
+                remoteStream && <ReactPlayer style={{ backgroundColor: 'black'}} ref={remoteRef} url={remoteStream} playing muted={muted} width={'100%'} height={'100%'} />
               }
                 </div>
                 </div>

@@ -390,12 +390,14 @@ const cancelAppointments=async(req,res)=>{
   try {
     const id=req.body.id
     console.log(req.body.id,391);
-   const cancel= await Appointment.findByIdAndUpdate(
+   const data= await Appointment.findByIdAndUpdate(
       { _id: id },
       { $set: { isCancelled: true } }
     );
-    res.json("cancelled");
-console.log(cancel,397);
+    res.json(data);
+    // res.status(200).json({data:data,message: "cancelled"});
+
+console.log(data,397);
   } catch (error) {
     res.json("error");
 
