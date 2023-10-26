@@ -33,15 +33,13 @@ const RoomPage = ({value}) => {
 
   const handleCallUser = useCallback(async () => {
     if (callActive) {
-      console.log("callActive ----",36);
-
         myStream?.getTracks().forEach((track) => track.stop());
         setMyStream(null);
         socket.emit('call:end', { to: remoteSocketId })
         setCallActive(false)
         setRemoteStream('')
         if (value==='doctor') {
-          console.log("appointment ----",42);
+          console.log("appointment");
          const res= await axios.patch(`doctor/endAppointment/${appoint}`)
          console.log(res.data,46,"vedicall");
         }
@@ -160,86 +158,56 @@ const RoomPage = ({value}) => {
   ]);
 
   return (
-    <div className="text-center  p-2">
+    <>
+    
+    
+    {value=='user'? (
+    <div className="text-center  p-2 bg-">
         <h3><b>CONSULTING STATION</b></h3>
         {
           value == 'user' ? (!remoteSocketId && 'Please wait till the call arrives') : (
             !callActive && <h5>{remoteSocketId ? 'Patient online' : 'No one in room'}</h5>)
         }
-        <img src="/medical-conference-23-2148901289.jpg" alt="" />
-                <div className="container">
-                <div className="row text-start"style={{ paddingLeft:'230px'}} >
-                <div className="col-md-10 m-0 "style={{ paddingLeft:'40px'}}>
-                {
-  myStream && (
-    <>
-      <h1>My stream</h1>
-      <ReactPlayer
-        style={{ backgroundColor: 'black' }}
-        url={myStream}
-        playing
-        muted
-        width={'30%'}
-        height={'30%'}
-      />
-    </>
-  )
-}
-{
-  remoteStream && (
-    <>
-      <h1>Remote stream</h1>
-      <ReactPlayer
-        style={{ backgroundColor: 'black' }}
-        ref={remoteRef}
-        url={remoteStream}
-        playing
-        muted={muted}
-        width={'100%'}
-        height={'100%'}
-      />
-    </>
-  )
-}
+               {callActive?' ':<img src="/medical-conference-23-2148901289.jpg" alt="" />} 
+               
+               <div className="container">
+               <div className="row text-center d-flex justify-content-center">
+               <div className="col-md-6">
+               {
+               myStream &&
+               <h6>My stream</h6>}
+             {
+
+               myStream && <ReactPlayer style={{ backgroundColor: 'white' }} url={myStream} playing muted width={'20%'} height={'20%'} />
+             }
+               {/* </div>
+               <div className="col-md-6"> */}
+               {remoteStream &&
+               <h3>Remote stream</h3>
+             }
+             {
+
+               remoteStream && <ReactPlayer style={{ backgroundColor: 'black' }} ref={remoteRef} url={remoteStream} playing muted={muted} width={'80%'} height={'70%'} />
+             }
+               </div>
+               </div>
 
 
+         <br />
+         {callActive && <button className='btn bg-danger text-white' onClick={handleCallUser}><BsFillTelephoneXFill /></button>}
+         {
+           myStream && <>
+             <button className={!muted ? 'btn btn-primary ms-3' : 'btn btn-dark ms-3'} onClick={handleMute}>{muted ? <BsMicMuteFill /> : <BsMicFill />}</button>
+           </>
+         }
 
 
-
-                {
-                myStream &&
-                <h1>My stream</h1>}
-              {
-
-                myStream && <ReactPlayer style={{ backgroundColor: 'black' }} url={myStream} playing muted width={'30%'} height={'30%'} />
-              }
-                {/* </div>
-                <div className="col-md-9"> */}
-                {remoteStream &&
-                <h1>Remote stream</h1>
-              }
-              {
-
-                remoteStream && <ReactPlayer style={{ backgroundColor: 'black'}} ref={remoteRef} url={remoteStream} playing muted={muted} width={'100%'} height={'100%'} />
-              }
-                </div>
-                </div>
-
-
-          <br />
-          {callActive && <button className='btn bg-danger text-white' onClick={handleCallUser}><BsFillTelephoneXFill /></button>}
-          {
-            myStream && <>
-              <button className={!muted ? 'btn btn-primary ms-3' : 'btn btn-dark ms-3'} onClick={handleMute}>{muted ? <BsMicMuteFill /> : <BsMicFill />}</button>
-            </>
-          }
-
-
-          {value == 'user' && myStream && <><button className={accepted ? 'd-none' : 'btn btn-success ms-3'} onClick={sendStreams}><BsFillTelephoneFill /></button></>}
-          {
-            !callActive ? (value === 'doctor' && (remoteSocketId && <button className='btn btn-outline-success' onClick={handleCallUser}>Call</button>)) : ''
-          }
-                </div>
+         {value == 'user' && myStream && <><button className={accepted ? 'd-none' : 'btn btn-success ms-3'} onClick={sendStreams}><BsFillTelephoneFill /></button></>}
+         {
+           !callActive ? (value === 'doctor' && (remoteSocketId && <button className='btn btn-outline-success' onClick={handleCallUser}>Call</button>)) : ''
+         }
+               </div>
+               
 
       {/* <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
       {myStream && <button onClick={sendStreams}>Send Stream</button>}
@@ -269,6 +237,82 @@ const RoomPage = ({value}) => {
         </>
       )} */}
     </div>
+    ):(
+<div className="text-center    bg-light ">
+  {callActive? ''  
+  :
+  <div class="position-absolute text-white    m-5 justify-content-center align-items-center "style={{paddingLeft:'360px'}}>
+  <div className="position-absolute m-4" width={'100%'} style={{ left: '200px' ,width:'800px'}}>
+  <div className="card bg-transparent text-white" style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' ,border: "1px solid rgb(219, 217, 217)",
+                  borderRadius: "15px",
+                  boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)",}}>
+      <div className="card-body">
+        <h2 className="card-title"><b>CONSULTING STATION</b></h2>
+        {value === 'user' ? (!remoteSocketId && 'Please wait till the call arrives') : (
+          !callActive && <h3>{remoteSocketId ? 'Patient online' : 'No one in the room'}</h3>)
+        }
+  
+           {
+             !callActive ? (value === 'doctor' && (remoteSocketId && <button className='btn btn-outline-success' onClick={handleCallUser}>Call</button>)) : ''
+           }  
+      </div>
+    </div>
+  </div>
+  </div>
+  }
+
+
+        
+               {callActive?' ':<img src="/medical-teleconsultation_23-2149328983.jpg" alt="" width={'100%'} 
+               
+               
+               />} 
+               
+           
+                {!callActive?'':<h2 ><b>CONSULTING STATION</b></h2>}
+               <div className="container">
+               <div className="row text-center d-flex justify-content-center">
+               <div className="col-md-6">
+               {
+               myStream &&
+               <h6>My stream</h6>}
+             {
+
+               myStream && <ReactPlayer style={{ backgroundColor: 'white' }} url={myStream} playing muted width={'20%'} height={'20%'} />
+             }
+               {/* </div>
+               <div className="col-md-6"> */}
+               {remoteStream &&
+               <h3>Remote stream</h3>
+             }
+             {
+
+               remoteStream && <ReactPlayer style={{ backgroundColor: 'black' }} ref={remoteRef} url={remoteStream} playing muted={muted} width={'80%'} height={'70%'} />
+             }
+               </div>
+               </div>
+
+
+         <br />
+         {callActive && <button className='btn bg-danger text-white' onClick={handleCallUser}><BsFillTelephoneXFill /></button>}
+         {
+           myStream && <>
+             <button className={!muted ? 'btn btn-primary ms-3' : 'btn btn-dark ms-3'} onClick={handleMute}>{muted ? <BsMicMuteFill /> : <BsMicFill />}</button>
+           </>
+         }
+
+
+         {value == 'user' && myStream && <><button className={accepted ? 'd-none' : 'btn btn-success ms-3'} onClick={sendStreams}><BsFillTelephoneFill /></button></>}
+         
+               </div>
+          
+
+      
+    </div>
+
+      )} 
+
+    </>
   );
 };
 

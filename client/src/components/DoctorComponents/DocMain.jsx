@@ -16,7 +16,7 @@ DocMain.propTypes = {
 function DocMain({ value }) {
   return (
     <>
-      <div className="docConts"   style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",height:'126vh'}}>
+      <div className="docConts bg-light"   >
               <Navbar value='doctor' />
         <div className="row">
           <div className="col-md-2 text-center bg-white side col-lg-2"> 

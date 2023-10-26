@@ -62,44 +62,45 @@ function Consult() {
   return (
     <div>
       <div
-        className=" container mt-4 ms-auto bg-dark "
+        className=" container mt-4 ms-auto  "
         style={{
           width: "87%",
           paddingLeft: "0",
-          background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)",
+          // background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)",
           borderRadius: "10px",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
         }}
       >
-        <div className="row m-auto p-4 ">
-          <h1>Consult</h1>
+        <div className="row m-auto p-4 text-center ">
+          <h1 style={{ fontFamily: "Times New Roman, serif" }}>Consult</h1>
 
           <div className="bg-white p-3">
             {consult.length !== 0 ? (
               consult.map((el) => (
 
                 <div className="card mt-3 p-1" key={el.id}>
-                  <div className="row text-center">
-                    <div className="col-sm-6 mt-1">
-
-                    <b>
-                      
-                        <h3>{el.user.userName}</h3>
-                    </b>
+                  <div className="row text-start m-0">
+                    <div className="col-sm-3 mt-5">
+                    <b> <h3>{el.user.userName}</h3></b>
                     </div>
                     <div className="col-sm-3 mt-4">
                         <p>{el.date}</p>
                         <p>{el.time}</p>
                     </div>
-                    <div className="col-sm-3 mt-4">                                 
+                    <div className="col-sm-3 mt-5">                                 
                     {
                         <>
                     
-                            {new Date(el.date) < new Date() ? 'Unavailable' : el.isAttended ? "Attended" : !el.isCancelled ? <> <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success' onClick={() => handleJoin(el._id, el._id + el.user._id)}>Join</button></> : 'cancelled'}
+                            {new Date(el.date) < new Date() ? 'Unavailable' : el.isAttended ? "Attended" : !el.isCancelled ? <> <button style={{ fontSize: "15px" }} className='btn ps-2 pe-2 btn-outline-success' onClick={() => handleJoin(el._id, el._id + el.user._id)}>Join</button><span>{' '}</span></> : 'cancelled'}
                             {!el.medicines ? <button className='btn btn-success p-2 mt-1' style={{ fontSize: '14px' }} onClick={() => handlePrescribe(el)} >Prescribe</button> : "Presciption added"}
                         </>
                     }
                     </div>
+                    <div className="col-sm-3 ">
+                      <img src="/medical-conference-23-2148901289.jpg" width={'200px'} alt="" />
+                      </div>                           
+
+
                   </div>
                 </div>
               ))
