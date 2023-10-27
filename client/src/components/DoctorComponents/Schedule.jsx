@@ -13,13 +13,13 @@ function Schedule() {
   const [freeDate, setFreeDate] = useState('')
   const [freeTime, setFreeTime] = useState([])
   const [msg, setMsg] = useState('')
+  const [rfrsh,setRfrsh]=useState(false)
 
 
-  const scheduleLists = useSelector(state => state.docSchedule.schedule)
+  const scheduleLists = useSelector(state => state.schedule.schedule)
   const doctorID=useSelector(state=>state.doctor.data)
-  console.log(doctorID.docData._id,20,"doctor id from schedule");
   
-  // console.log(scheduleLists,20);
+  console.log(scheduleLists,20);
   const dispatch = useDispatch()
 
 
@@ -28,7 +28,6 @@ useEffect(()=>{
 const dataCall=async ()=>{
 try {
   const res=await axios.get(`/doctor/schedule`,)
-  console.log(res.data,"res.data----------------------------------------27");
   dispatch(setSchedule(res.data))
 
 } catch (error) {
@@ -57,6 +56,7 @@ const handleSchedule=async(e)=>{
         setMsg("Something went wrong")
       } else {
         setMsg('Slot added successfully')
+        setRfrsh(!rfrsh)
         dispatch(setSchedule(res.data))
          setTimeout(() => {
           setMsg('')
@@ -79,11 +79,12 @@ const removeSlot = async (e) => {
   if (res.data == 'error') {
     setMsg("Something went wrong")
   } else {
-    setMsg('Slot removed successfully')
     dispatch(setSchedule(res.data))
     setTimeout(() => {
       setMsg('')
     }, 3000)
+    setMsg('Slot removed successfully')
+
     return
   }
   } catch (error) {
@@ -92,13 +93,14 @@ const removeSlot = async (e) => {
   }
   
 }
-
+console.log(scheduleLists,"scheduleLists",98);
     
   return (
 <>
-      <div className=" container  ms-auto " style={{ width:'86%',paddingLeft:'10px'}}>
-        <h2>My Schedule</h2>
-        <div className=' text-center 'style={{   background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)", borderRadius: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",}}>
+      <div className=" container text-center ms-auto " style={{ width:'86%',paddingLeft:'10px'}}>
+        <h1 style={{ fontFamily: "Times New Roman, serif" }}>My Schedule</h1>
+        <div className=' text-center bg-light'style={{ backgroundColor: 'lightblue',  borderRadius: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.8)",}}>
+          <img src="/WhatsApp Image.jpeg" width={'100%'} alt=""  />
           {msg == 'Please fill date and time' || msg == 'error' ?
             <div className='alert alert-danger'>{msg}</div>
             : !msg ? '' : <div className='alert alert-success'>{msg}</div>
@@ -161,7 +163,8 @@ const removeSlot = async (e) => {
   <div style={{ maxWidth: "200px" }}>Selected Time:<br /> {freeTime.map((el, index) => (
     <span key={index}>{el}, </span>
   ))}</div>
-  {scheduleLists && scheduleLists.map((el, index) => (
+  {scheduleLists.length !== 0 ? (
+     scheduleLists.map((el, index) => (
     <div key={index} className="card text-start m-3 p-3">
       <div>
         <b style={{ fontSize: '20px' }}>Date : </b>{el.date}
@@ -178,7 +181,10 @@ const removeSlot = async (e) => {
         <br />
       </div>
     </div>
-  ))}
+  ))
+):(
+  <p>No data available</p>
+)}
 </div>
 
         </div>

@@ -76,7 +76,7 @@ function DoctorHome() {
 
      
       <div style={{
-          background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)",
+          // background: "linear-gradient(to bottom, rgb(220, 210, 225), #66a3ff)",
           borderRadius: "10px",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", // Add this line for box shadow
           paddingRight:"35px",

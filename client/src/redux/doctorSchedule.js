@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const scheduleSlice = createSlice({
-  name: "schedule",
+  name: "docSchedule",
   initialState: {
     schedule: "",
   },
