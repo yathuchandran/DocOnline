@@ -25,6 +25,7 @@ doctorRoute.patch('/endAppointment/:appId',validateDoctorToken,doctorController.
 doctorRoute.patch('/addPrescription',validateDoctorToken,doctorController.addPrescription)
 doctorRoute.post('/reviews',validateDoctorToken,doctorController.review)
 
+doctorRoute.post('/payments',validateDoctorToken,doctorController.payments)
 
 
 

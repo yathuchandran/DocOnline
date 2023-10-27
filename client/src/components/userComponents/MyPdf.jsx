@@ -35,8 +35,6 @@ MyPDF.propTypes = {
 }
 
 function MyPDF({ data, user }) {
-    console.log(data,"--------PDF-----",user,38);
-   console.log(Object.entries(data.medicines).map((el, index) => (  `${el[0]}: ${el[1]}`)),"=====pdf========",39);
   return (
     <Document>
       <Page size="A4" style={styles.page}>

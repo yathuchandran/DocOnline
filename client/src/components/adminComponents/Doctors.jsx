@@ -10,12 +10,10 @@ function Doctors() {
   const [selectedDoctor, setSelectedDoctor] = useState('')
 
   const adminToken = localStorage.getItem("adminToken");
-  console.log(doctorList,"doctorList-20");
 
 
   const viewDoctor = (row) => {
     const doc = doctorList.filter((el) => el._id == row._id);
-    console.log(row, "row-------------------------------------doctorList");
     setSelectedDoctor(doc[0])
   };
 
@@ -26,7 +24,6 @@ function Doctors() {
 
     doctor.name.toLowerCase().startsWith(searchValue)
     );
-    console.log(filtered,"filtered------28");
     setFilteredData(filtered);
   };
 

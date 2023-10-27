@@ -28,7 +28,7 @@ const handlePatient = () => {
 }
 
 const handleDepartment = () => {
-  navigate('/doctor/prescriptions')
+  navigate('/doctor/createPrscription')
 }
 
 const handlePayments = () => {

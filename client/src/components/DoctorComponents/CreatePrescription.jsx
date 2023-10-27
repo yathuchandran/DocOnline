@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom'
 
 function CreatePrescription() {
   const userData = useSelector(state => state.prescription.data)
-  console.log(userData._id, "userData", 8)
   const descriptionRef = useRef()
   const [medicines, setMedicines] = useState()
   const [dose, setDose] = useState('')
@@ -13,13 +12,11 @@ function CreatePrescription() {
 
   
   const [medDetails, setMedDetails] = useState(new Map())
-  console.log(medDetails,"medDetails",16);
   const navigate = useNavigate()
   const [mor, setMor] = useState(false)
   const [aft, setAft] = useState(false)
   const [evg, setEvg] = useState(false)
 
-// console.log(medicines,"medicines-----------",dose,"dose---------------------",18,description);
 
   useEffect(() => {
     if(!userData){
@@ -27,25 +24,17 @@ function CreatePrescription() {
     }
   }, [navigate, userData])
 
-//   useEffect(() => {
-//     if (medicineRef.current && doseRef.current) {
-//       medicineRef.current.innerHTML = selectedMed.name
-//       doseRef.current.innerHTML = dose
-//     }
-//   }, [dose, navigate, selectedMed, userData])
+
 
 
 const handleUpload = useCallback(async () => {
     const id=userData._id
-    console.log(id,'id ----36');
     const playload = Array.from(medDetails).map(([medicine, selectedDose,description]) => ({
         medicine,
         selectedDose,
         description,
       }));
-    console.log(playload,41);
      const res= await axios.patch('/doctor/addPrescription', {playload,id:id})
-        console.log(res.data,43,"resssssssssssssssssss");
         if (res.data == 'done') {
             navigate('/doctor/consult')
         }
@@ -72,7 +61,6 @@ const handleAddClick = useCallback(() => {
   }
  
   if (medicines && dose&&description) {
-    console.log(description,"description==============",75);
     setMedDetails(prev => {
         const updated = new Map(prev)
 

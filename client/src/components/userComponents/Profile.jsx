@@ -20,7 +20,6 @@ function Profile() {
 
   useEffect(() => {
     async function dataCall() {
-      console.log("dataCall");
       if (userToken) {
         await axios
           .get(`/userData`)

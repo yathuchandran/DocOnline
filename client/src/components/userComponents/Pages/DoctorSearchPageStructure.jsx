@@ -11,12 +11,10 @@ const [search,setSearch]=useState('')
 const [isSearch,setIsSearch]=useState(false)
 const [department,setDepartment]=useState([])
 
-console.log(docData,14);
 useEffect(()=>{
     const filterDoctors=async()=>{
         try {
             const res=await axios.get(`/findDoctors`)
-            console.log(res.data.docs,18);
             setDocData(res.data.docs)
             setDepartment(res.data.deps);
         } catch (error) {
@@ -58,11 +56,10 @@ const handleCategory = (e) => {
         });
     setFilteredData(filtered);
     setIsSearch(true);
-console.log(filtered,55);
 };
   return (
     <>
-          <div className="col-12 m-0 mt-0 col-md-12"style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
+          <div className="col-12 m-0 mt-0 col-md-12">
 
     <div className="row">
         <div className="col-5 col-md-2 text-white p-0 text-center " style={{backgroundColor: "#002147",height:'135vh'}}>
@@ -131,15 +128,16 @@ console.log(filtered,55);
 </div>
 <div>
     
-      <div className="youtub m-3">
-        <img src="/Banner-1.png" alt="" 
-          width="982"
+      
+    </div>
+    <div className="youtub m-3 mt-0 mb-0 ">
+        <img src="/WhatsApp Image.jpeg" alt="" 
+          width="1000"
           height="300"
           style={{ borderRadius: '1rem' }}
         />
       
       </div>
-    </div>
 
         </div>
     </div>

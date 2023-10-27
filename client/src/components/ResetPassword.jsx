@@ -40,7 +40,6 @@ function ResetPassword({ value }) {
               password: password,
               email: email,})
               if (res.status === 200) {
-                console.log("success");
                 setSuccess(true);
                 setErrorMsg("Password changed successfully.");
                 setTimeout(() => {
@@ -58,7 +57,6 @@ function ResetPassword({ value }) {
             email: email,
           });
           if (res.status === 200) {
-            console.log("success");
             setSuccess(true);
             setErrorMsg("Password changed successfully.");
             setTimeout(() => {

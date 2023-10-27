@@ -19,7 +19,6 @@ function AdminHome() {
   useEffect(()=>{
    try {
     async function dataCall() {
-      console.log("-----------------------------------------------------------------");
       const res=await axios.get(`/admin/dash`)
       setAppoint(res.data)
       setPatients(res.data.length)

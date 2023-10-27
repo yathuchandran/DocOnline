@@ -9,7 +9,6 @@ DownloadButton.propTypes = {
 }
 
 function DownloadButton({ el, user }) {
-console.log(el,"--------DownloadButton-------",user,12);
     return (
         <>
             <PDFDownloadLink document={<MyPdf data={el} user={user} />} fileName="Prescription.pdf">

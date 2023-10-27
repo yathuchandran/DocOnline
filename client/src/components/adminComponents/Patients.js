@@ -14,7 +14,6 @@ function Patients() {
 
   const viewPatient = (row) => {
     const doc = patientsList.filter((el) => el._id == row._id);
-    console.log(doc, "patientsList");
      setSelectedPatient(doc[0])
   };
 
@@ -24,7 +23,6 @@ function Patients() {
     const filtered = patientsList.filter((patient) =>
       patient.userName.toLowerCase().startsWith(searchValue)
     );
-    console.log(filtered);
     setFilteredData(filtered);
   };
 
@@ -80,7 +78,6 @@ function Patients() {
           console.log("patient failed");
         }
       } catch (error) {
-        console.log("An error occurred");
         console.error("An error occurred:", error);
       }
     };

@@ -34,7 +34,6 @@ async function mailSender(mail, data, operation) {
         text: `Congratulations.Your request for enrolling as doctor has been apporved. Now you can login to you account and can save thosands.Happy consulting`,
       };
     } else if (operation == "forgotPassword") {
-      console.log(1)
       details = {
         from: process.env.MAIL_ID,
         to: mail,

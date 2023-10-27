@@ -12,10 +12,8 @@ function UserHome() {
   useEffect(() => {
    const  fetchData=async()=> {
       try {
-        console.log("helooooooooooooooooooo");
         const res = await axios.get(`/departments`);
         setDepartments(res.data);
-        console.log(res,"res-17");
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -25,17 +23,18 @@ function UserHome() {
 
   return (
     <>
-    <div className=" mt-0" style={{background: "linear-gradient(to bottom, white, #B0E0E6)", 
-}}>
+    <div className=" mt-0">
 
       <div className="banner relative"  >
         <img
           className="banner-image"
-          src="/WhatsApp Image 2023-09-05 at 12.53.17 PM.jpeg"
+          src="/WhatsApp Image .jpeg"
           alt=""
+          style={{height:'90vh'}}
         />
-        <div className="hero-text">
-          <p className="text-bold font-bold">RELAX FIND YOUR DOCTOR</p>
+        
+        <div className="hero-text ">
+          <p className="text-bold mt-0 font-bold"style={{paddingRight:'90px'}}>RELAX FIND YOUR DOCTOR</p>
           <button
             type="button"
             className="btn btn-success btn-lg btn-md"

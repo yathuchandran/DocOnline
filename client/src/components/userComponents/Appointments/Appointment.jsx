@@ -27,7 +27,6 @@ useEffect(()=>{
      try {
       async function dataCall() {
       const res= await axios.get(`/docSchedule/${docData._id}`)
-      console.log(res.data,"ressssssssssssssssssssssss----27")
       if (res.data=='blocked') {
         navigate("/login")
         localStorage.removeItem('userToken')
@@ -45,29 +44,9 @@ useEffect(()=>{
 const handleDate = (date) => {
   setSessionDate(date)
   const list = schedule.filter(el => el.date == date)
-  console.log(list[0].time);
   setTimeList(list[0].time)
 }
 
-// const handleSubmit = async () => {
-//   if (sessionDate == 'Date' || sessionTime == 'Time') {
-//       setErrMsg('Please select session date and time')
-//   } else {
-
-//       const data = {
-//           doctor: docData._id,
-//           user: userData._id,
-//           date: sessionDate,
-//           time: sessionTime,
-//           issues: issues,
-//           fee: docData.fee
-//       }
-//       dispatch(setAppointment(data))
-//       navigate('/payment')
-//   }
-// }
-
-console.log(docData,"docData----70");
 
 const handlePayement=async()=>{
 
@@ -85,13 +64,10 @@ const handlePayement=async()=>{
     doctorName:docData.name
 }
 dispatch(setAppointment(data))
-
-console.log("--------------------------------------------89");
  const res=await axios.post(`/create-checkout-session`,data)
- console.log(res.data,"RES.DATA---PAYEMENT 84");
  if (res.data.url) {
   window.location.href=res.data.url
-//   navigate('/sucess')
+  navigate('/sucess')
  }
 }
  } catch (error) {

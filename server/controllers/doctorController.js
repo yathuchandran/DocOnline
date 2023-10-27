@@ -25,7 +25,6 @@ const signup = async (req, res) => {
   try {
     //AGE KALANJ
     const { Name, Email, Mobile, Password } = req.body;
-    console.log(req.body, "===DOCTOR SIGNUP=== Name,Email,Mobile,Password 22");
 
     const exist = await Doctor.findOne({ email: Email });
     if (exist) {
@@ -33,7 +32,6 @@ const signup = async (req, res) => {
     } else {
       const hashedPassword = await securePassword(Password);
       const otp = Math.floor(1000 + Math.random() * 9000);
-      console.log(otp, "otp 32");
       const token = randomString.generate();
       const doctor = new Doctor({
         name: Name,
@@ -45,7 +43,6 @@ const signup = async (req, res) => {
       });
       const docData = await doctor.save();
       if (docData) {
-        console.log(docData, "41 docData ");
         await mailSender(Email, otp, "signup");
         const data = {
           message: "Check mail",
@@ -70,7 +67,6 @@ const verifyOtp = async (req, res) => {
         // If OTP doesn't match, respond with "invalid"
         res.json("invalid otp");
       } else {
-        console.log("inside else");
 
         // If OTP is correct, clear the token, OTP, and set isVerified to true
         await Doctor.findOneAndUpdate(
@@ -117,7 +113,6 @@ const forgotPassword = async (req, res) => {
   try {
     const email = req.params.email;
     const emailData = await Doctor.find({ email: email });
-    console.log(email, "------", emailData);
 
     if (emailData) {
       const otp = Math.floor(1000 + Math.random() * 9000);
@@ -127,9 +122,7 @@ const forgotPassword = async (req, res) => {
         { $set: { otp: otp } }
       );
       await mailSender(email, otp, "forgotpassword");
-      console.log(email, "=======emailData.email");
 
-      console.log(mailupdated, "mailupdated--docto--------");
       res.status(200).json("success");
     } else {
       res.status(404).json("Not Found");
@@ -140,26 +133,21 @@ const forgotPassword = async (req, res) => {
 };
 
 const verifyOtpp = async (req, res) => {
-  console.log("otpppppppppppp");
   try {
     const { otp } = req.body;
     const doctor = await Doctor.findOne({ otp });
     if (doctor.otp != otp) {
       res.json("invalid");
     } else {
-      console.log("inside else");
       await Doctor.findOneAndUpdate({ $set: { otp: "" } });
       res.status(200).json({ message: "user otp correct" });
     }
-    console.log(doctor, "Doctor 107");
   } catch (error) {}
 };
 
 const resetPassword = async (req, res) => {
-  console.log("reset doct");
   try {
     const { email, password } = req.body;
-    console.log(email, "-----", password, "email,password");
     await Doctor.findByIdAndUpdate(
       { email: email },
       { $set: { password: password } }
@@ -234,10 +222,8 @@ const deptList=async(req,res)=>{
 
 const setProfile = async (req, res) => {
   try {
-    console.log("setprofile-------");
 
     const { name, age, address, contact, gender, _id, qualification, fee, department, profileChange, document } = req.body;
-    console.log(req.body, "req.body---------------------256");
 
     const uploadedImage = await cloudinary.v2.uploader.upload(profileChange);
     const documents = await cloudinary.v2.uploader.upload(document);
@@ -261,13 +247,10 @@ const setProfile = async (req, res) => {
       { new: true }
     );
       const docotorData=await updatedData.save()
-    console.log(docotorData, "updatedData---------------276");
 
     if (!docotorData) {
       return res.status(404).json({ error: "User not found" });
     }
-
-    console.log(docotorData, "updatedData");
     res.status(200).json(docotorData);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" }); // Respond with an appropriate error status.
@@ -278,7 +261,6 @@ const schedule=async(req,res)=>{
   try {
 const data=await Schedule.find({doctor:req._id.id}).sort({date:1});
 res.json(data)
-console.log(data,"data----295");
 
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" }); // Respond with an appropriate error status.
@@ -287,7 +269,6 @@ console.log(data,"data----295");
 
 
 const manageSchedule=async(req,res)=>{
-  console.log("manage-dddg");
   try {
     const { date, time, action } = req.body;
     const docId = req.body.id;
@@ -335,8 +316,6 @@ const manageSchedule=async(req,res)=>{
 
     const scheduleData = await Schedule.find({ doctor: docId });
     res.json(scheduleData);
-
-    console.log(scheduleData,353);
   } catch (error) {
     res.json("error");
   }
@@ -345,13 +324,9 @@ const manageSchedule=async(req,res)=>{
 
 
 const appointments = async (req, res) => {
-  console.log("appoint");
   try {
     const docId = req.body.docId; 
-    console.log(req.body.docId,353);
     const appointments = await Appointment.find({ doctor: docId }).populate('user').populate("doctor").exec() 
-    console.log(appointments,355);
-
       if (!appointments ) {
       return res.status(404).json("Appointments not found"); 
     }
@@ -377,8 +352,7 @@ const consult=async(req,res)=>{
 try {
   const id=req.body.id
   const appointment = await Appointment.find({ doctor: id })
-  .populate(
-    'user')
+  .populate('user')
   .sort({ date: -1, time: 1 });
   const data = appointment.filter((app) => new Date(app.date) != new Date());
 
@@ -391,7 +365,6 @@ try {
 
 
 const endAppointment = async (req, res) => {
-  console.log("docControl");
   try {
     const appId = req.params.appId;
     const deleteAppoint = await Appointment.findOneAndUpdate(
@@ -407,7 +380,6 @@ const endAppointment = async (req, res) => {
 const addPrescription = async (req, res) => {
   try {
     const data = req.body.playload;
-    console.log(data,409);
     const id = req.body.id;
     const update = await Appointment.findOneAndUpdate(
       { _id: id }, // Correct the filter conditions here
@@ -415,7 +387,6 @@ const addPrescription = async (req, res) => {
       { new: true }
     );
 
-    console.log(update, 416);
 
     res.json('done');
   } catch (error) {
@@ -425,11 +396,8 @@ const addPrescription = async (req, res) => {
 
 const review=async(req,res)=>{
   try {
-    console.log("review");
     const id=req.body.id
-    console.log(id,428);
     const data=await Review.find({doctorId:id})
-    console.log(data,432);
     res.json(data)
 
   } catch (error) {
@@ -437,7 +405,16 @@ const review=async(req,res)=>{
   }
 }
 
+const payments=async(req,res)=>{
+  try {
+    const id=req.body.docData._id
+    const pay=await Appointment.find({ doctor: id }).populate('user')
 
+    res.json(pay)
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -459,4 +436,5 @@ module.exports = {
   endAppointment,
   addPrescription,
   review,
+  payments,
 };

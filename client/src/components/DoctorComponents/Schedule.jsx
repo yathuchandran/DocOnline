@@ -14,12 +14,12 @@ function Schedule() {
   const [freeTime, setFreeTime] = useState([])
   const [msg, setMsg] = useState('')
   const [rfrsh,setRfrsh]=useState(false)
+  const [schedule,setSchedule]=useState([])
 
 
   const scheduleLists = useSelector(state => state.schedule.schedule)
   const doctorID=useSelector(state=>state.doctor.data)
   
-  console.log(scheduleLists,20);
   const dispatch = useDispatch()
 
 
@@ -51,7 +51,6 @@ const handleSchedule=async(e)=>{
       }
   
       const res=await axios.post(`/doctor/setSchedule`, { date: freeDate, time: freeTime, action: e.target.value,id:doctorID.docData._id })
-      console.log(res.data,"res-------------50");
       if (res.data == 'error') {
         setMsg("Something went wrong")
       } else {
@@ -93,7 +92,6 @@ const removeSlot = async (e) => {
   }
   
 }
-console.log(scheduleLists,"scheduleLists",98);
     
   return (
 <>

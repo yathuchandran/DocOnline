@@ -21,7 +21,6 @@ function DoctorHome() {
   useEffect(()=>{
    try {
     async function dataCall() {
-      console.log("-----------------------------------------------------------------");
       const res=await axios.post(`/doctor/dash`,{docId})
       setDocAppoint(res.data)
       setPatients(res.data.length)

@@ -6,7 +6,6 @@ const upload = require("../middlewares/multer");
 require("dotenv").config();
 
 adminRoute.post("/login", adminController.login);
-//adminRoute.get("/adminData", validateAdminToken,(()=>{console.log("admindata route")}), adminController.adminData);
 adminRoute.get("/patients",validateAdminToken, adminController.patientsss);
 adminRoute.get("/doctors",validateAdminToken, adminController.Doctors);
 

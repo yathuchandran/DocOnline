@@ -11,7 +11,6 @@ function UserAppointments() {
   const user=useSelector((state)=>state.user.data)
   const email = useSelector(state => state.user.data.email)
  
-  console.log(email,13);
 
   const socket = useSocket()
     const navigate = useNavigate()
@@ -42,7 +41,6 @@ function UserAppointments() {
   const handleAppointments=useCallback(async(id)=>{
     try {
       const res=await axios.post(`/cancelAppoint`,{id})
-      console.log(res.data,34);
       setRefresh(!refresh)
       // setAppointments(res.data)
 

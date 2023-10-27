@@ -11,7 +11,6 @@ function DocAppointments() {
     const [filteredData, setFilteredData] = useState([]);
 
     const docData = useSelector((state) => state.doctor.data);
-console.log(appointments,"appointments==",14);
 
     const handleSearch = (e) => {
         const searchValue = e.target.value.toLowerCase();
@@ -20,12 +19,10 @@ console.log(appointments,"appointments==",14);
         const filtered = appointments.filter((appointment) =>
           appointment.user.name.toLowerCase().startsWith(searchValue)
         );
-        console.log(filtered);
         setFilteredData(filtered);
       };
 
 
-      console.log(docData.docData._id      ,"docData--------------------------------------docData",25);
       const docId=docData.docData._id
 
   const columns = [
@@ -59,7 +56,6 @@ console.log(appointments,"appointments==",14);
   useEffect(() => {
     try {
       const getAppointments = async () => {
-        console.log("getAppointments--------------");
       const res = await axios.post('/doctor/appointments',{docId});
       setFilteredData(res.data)
       setAppointments(res.data);

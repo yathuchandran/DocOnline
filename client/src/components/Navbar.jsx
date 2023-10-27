@@ -42,10 +42,24 @@ function Navbar({ value }) {
   };
   return (
     <nav
-      className="navbar navbar-expand-lg navbar-light"
-      style={{ backgroundColor: "#002147", color: "white" }}
+      className="navbar navbar-expand-lg navbar-light" style={
+        value === 'doctor'
+          ? {
+              boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)",
+              backgroundColor: "#002147", 
+              color: 'white',
+            }
+          :value==='admin'? {
+            backgroundColor: "#002147", 
+            color: 'white',
+          }: {
+            boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.3)",
+            backgroundColor: '#5F6E9D',
+            color: 'white',
+          }
+      }
     >
-      <div className="container" >
+        <div className="container" >
         <div className="d-flex justify-content-between align-items-center">
           <Link className="navbar-brand" to="/">
             
@@ -58,7 +72,7 @@ function Navbar({ value }) {
                   ? navigate("/admin/")
                   : navigate("/");
               }}
-              src="/Screenshotfrom.png"
+              src="/DocLogo.jpeg"
               alt=""
             />
           </Link>
@@ -92,7 +106,7 @@ function Navbar({ value }) {
                 className="btn btn-white btn-lg btn-md"
                 onClick={() => navigate("/findDoctor")}
                 style={{
-                  backgroundColor: "#002147",
+                  backgroundColor: "#5F6E9D",
                   color: "white",
                 }}
               >
@@ -107,8 +121,8 @@ function Navbar({ value }) {
 
          
         </div>
-
-        <div className="dropdown">
+                  
+<div className="dropdown">
           {value === "admin" ? (
             admin ? (
               <Link onClick={handleLogout}>
@@ -125,6 +139,20 @@ function Navbar({ value }) {
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              style={
+              value === 'doctor'
+              ? {
+                  backgroundColor: "#002147", 
+                  color: 'white',
+                }
+              :value==='admin'? {
+                backgroundColor: "#002147", 
+                color: 'white',
+              }:{
+                backgroundColor: '#5F6E9D',
+                color: 'white',
+              }
+          }
             >
               <IoIosContact size={40} />
             </a>
@@ -194,7 +222,7 @@ function Navbar({ value }) {
            : (
             <ul
               className="dropdown-menu right-0"
-              style={{ marginLeft: "-90px", textAlign: "center" }}
+              style={{ marginLeft: "7px", textAlign: "center" }}
             >
               <li>
                 {value === "doctor" ? (

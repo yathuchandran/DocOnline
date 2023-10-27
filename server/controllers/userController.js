@@ -37,7 +37,6 @@ const signup = async (req, res) => {
     } else {
       const hashedPassword = await securePassword(Password);
       const otp = Math.floor(1000 + Math.random() * 9000);
-      console.log(otp, "otp 32");
       const string = randomstring.generate();
       const user = new User({
         userName: Name,
@@ -48,10 +47,7 @@ const signup = async (req, res) => {
         token: string,
         timeStamp: dateTime,
       });
-      console.log(user,"user----------");
-
       const userData = await user.save();
-      console.log(userData,"userdat----------");
 
       if (userData) {
         await mailSender(Email, otp, "signup");
@@ -68,27 +64,22 @@ const signup = async (req, res) => {
 };
 
 const verifyOtp = async (req, res) => {
-  console.log("verifyOtp=user");
   try {
     const { otp } = req.body;
     const user = await User.findOne({ otp });
     if (user.otp != otp) {
       res.json("invalid");
     } else {
-      console.log("inside else");
       await User.findOneAndUpdate({ $set: { otp: "" } });
       res.status(200).json({ message: "user otp correct" });
     }
-    console.log(user, "user 107");
   } catch (error) {
     console.log(error);
   }
 };
 
 const login = async (req, res) => {
-  console.log("login");
   try {
-    console.log("login---------------");
 
     const { email, password } = req.body;
     const userData = await User.findOne({ email: email });
@@ -160,10 +151,8 @@ const findDoctors = async (req, res) => {
 
 
 const searchDoc = async (req, res) => {
-  console.log("searchDoc=========188");
   try {
     const searchKey = req.params.searchKey;
-    console.log(searchKey);
     let data =[]
     if (searchKey == "all") {
       data = await Doctor.aggregate([
@@ -183,7 +172,6 @@ const searchDoc = async (req, res) => {
           },
         },
       ]);
-      console.log(data,"-------------data 210");
     } else {
       data = await Doctor.aggregate([
         {
@@ -203,7 +191,6 @@ const searchDoc = async (req, res) => {
           },
         },
       ]);
-      console.log(data,"++++++++++++++++230");
     }
     // const data = await Doctor.find({ name: { $regex: new RegExp(`^${searchKey}`, 'i') } });
     res.json(data);
@@ -237,8 +224,6 @@ const setProfilee = async (req, res) => {
     if (!updatedData) {
       return res.status(404).json({ error: "User not found" });
     }
-
-    console.log(updatedData, "updatedData");
     res.status(200).json(updatedData);
   } catch (error) {
     console.error(error);
@@ -262,7 +247,6 @@ const department = async (req, res) => {
 const docSchedule = async (req, res) => {
   try {
     const docId=req.params.docId;
-    console.log(docId,261);
     const data = await Schedule.find({ doctor: docId }, { _id: 0, doctor: 0 });
 
     const appoint = await Appointment.find(
@@ -314,7 +298,6 @@ function createError(status, message) {
 
 const stripeSession = async (req, res, next) => {
   const { doctor, user, doctorName,  issues, fee,  date, time } = req.body;
-    console.log(req.body,"body",312);
     const existAppointment = await Appointment.findOne({ doctor: doctor, user:user, date:date,time:time});
     if (existAppointment)
       // return next(createError(409, " Appointment already exist"));
@@ -357,7 +340,6 @@ const stripeSession = async (req, res, next) => {
         createdAt: dateTime,
       });
       await appointment.save();
-      console.log(appointment,360);
 
   
   }else{
@@ -389,7 +371,6 @@ const loadAppointments = async (req, res) => {
 const cancelAppointments=async(req,res)=>{
   try {
     const id=req.body.id
-    console.log(req.body.id,391);
    const data= await Appointment.findByIdAndUpdate(
       { _id: id },
       { $set: { isCancelled: true } }
@@ -397,7 +378,6 @@ const cancelAppointments=async(req,res)=>{
     res.json(data);
     // res.status(200).json({data:data,message: "cancelled"});
 
-console.log(data,397);
   } catch (error) {
     res.json("error");
 
@@ -418,9 +398,7 @@ try {
 
 const rating = async (req, res) => {
   try {
-    console.log("rating");
     const data = req.body;
-console.log(req.body,421);
     const ratings = new Review({
       userId: data.userId,
       doctorId: data.docId,
@@ -449,7 +427,6 @@ const forgotPassword = async (req, res) => {
       console.log(otp,"otp+++++++++++++++++++++++++++");
       const mailupdated= await User.updateOne({email:email},{$set:{otp:otp}})
       await mailSender(email,otp,"forgotpassword")
-      console.log(email,"=======emailData.email");
 
       res.status(200).json("success");
     }else{
@@ -463,7 +440,6 @@ const forgotPassword = async (req, res) => {
 const resetPassword=async(req,res)=>{
  try {
   const {email,password}=req.body
-  console.log(email,"-----",password,"email,password");
   await User.findByIdAndUpdate({email:email},{$set:{password:password}}).then(
     res.status(200).json("success"))
     

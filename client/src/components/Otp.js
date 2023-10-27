@@ -23,17 +23,14 @@ function Otp({ value }) {
       try {
         if (value === "doctor") {
           const res = await axios.post(`/doctor/otp/${token}`, { otp: parseInt(otp) });
-          console.log("=====doctor=result========25");
 
           if (res.status === 200) {
-            console.log("Verified");
             navigate("/doctor/login");
           } else {
             setErrorMsg("Invalid OTP");
           }
         } else {
           const res = await axios.post("/otp", { otp });
-          console.log(res, "==========result============");
 
           if (res.data.message === "user otp correct") {
             navigate("/login");

@@ -13,7 +13,6 @@ function View({ user, setSelected, value }) {
     user.isBlocked ? "unblocked" : "blocked"
   );
   
-  console.log(blockButtonDoc,1);
   const [verify, setVerify] = useState(
     user.isVerified ? "Verified" : "Verify Reject"
   );
@@ -44,7 +43,6 @@ function View({ user, setSelected, value }) {
   const handleDoctor = async () => {
     const isDocVerify = !user.isVerified;
 
-    console.log(!user.isVerified,"!user.isVerified;",46);
     try {
       const res = await axios.put(`admin/manageDoctor/${user._id}`, {
         isDocVerify,

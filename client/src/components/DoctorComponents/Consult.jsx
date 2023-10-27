@@ -32,7 +32,6 @@ function Consult() {
 
 
   const handlePrescribe = useCallback((el) => {
-    console.log(el);
     dispatch(setData(el))
     navigate('/doctor/createPrscription')
 }, [dispatch, navigate])

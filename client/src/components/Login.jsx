@@ -63,7 +63,6 @@ function Login({ value }) {
 
 
 
-        console.log("user");
         const res = await axios.post("/login", input);
 
         if (res.data === 'unauthorized') {

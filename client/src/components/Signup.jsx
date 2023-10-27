@@ -53,7 +53,6 @@ function Signup({ value }) {
     }
 
     try {
-      console.log("adjfhewteibfg");
       const res = await axios.post(value === "doctor" ? "/doctor/signup" : "/signup", {
         Name,
         Email,
@@ -61,7 +60,6 @@ function Signup({ value }) {
         Password,
       });
 
-      console.log(res, "Response====");
 
       if (res.data.message === "Check mail") {
         navigate(value === "doctor" ? `/doctor/otp/${res.data.string}` : "/otp");

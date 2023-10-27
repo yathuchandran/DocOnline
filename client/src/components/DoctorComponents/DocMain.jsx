@@ -8,6 +8,7 @@ import DocAppointments from './DocAppointments';
 import Consult from './Consult';
 import CreatePrescription from './CreatePrescription';
 import Review from './Review';
+import Payments from './Payments';
 
 DocMain.propTypes = {
   value: PropTypes.string,
@@ -36,6 +37,8 @@ function DocMain({ value }) {
                         <CreatePrescription />
                         : value == 'review' ?
                         <Review />
+                        : value == 'payments' ?
+                           <Payments />
                         :''}
             </div>
           </div>

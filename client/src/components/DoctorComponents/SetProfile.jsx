@@ -104,7 +104,6 @@ function SetProfile() {
           try {
             const res=await axios.post('/doctor/setprofile',userform)
 
-            console.log(res.data,"ressssssssssssssssssssssssssssssssssssss");
             if (res.status===200) {
                 setMsg("profile succesfully updated")
                 dispatch(setDoctorData(res.data));

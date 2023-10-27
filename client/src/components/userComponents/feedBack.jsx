@@ -13,7 +13,6 @@ function FeedBack() {
 
   const data = useSelector((state) => state.appointment.appointment);
   const user=useSelector((state)=>state.user.data)
-  console.log(data.user, 10,review,);
   const docId = data.doctor;
   const userId = data.user;
 const userName=user.userName
@@ -30,8 +29,6 @@ const datas={review:review,
              userName}
   const handleHome = useCallback(async () => {
     try {
-      console.log(datas,33);
-
       const res = await axios.post(`/rating`,datas);
 
       navigate("/");

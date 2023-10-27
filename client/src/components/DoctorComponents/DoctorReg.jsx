@@ -17,7 +17,6 @@ import {
 function DoctorReg() {
   const docData = useSelector((state) => state.doctor.data);
 
-  console.log(docData,"20");
   
 
 
@@ -40,7 +39,6 @@ function DoctorReg() {
     const fetchDeptList = async () => {
       try {
         const res = await axios.get("/doctor/department");
-        console.log(res);
         if (res.data.message === "okey success") {
           setDepartments(res.data.dept);
         }
@@ -89,10 +87,8 @@ function DoctorReg() {
     const docId=docData.docData._id
     const dataToSend = {address,liceNum,department,exp,profile,docs,docId,gender};
     try {
-      console.log("EFEEFR");
       const res = await axios.post(`/doctor/registration`, dataToSend);
 
-      console.log(res, "res--------------");
       if (res.data.message === "Registration successful") {
         setErrorMsg("Registration successful")
         setDoctor(true);
@@ -103,7 +99,6 @@ function DoctorReg() {
         setErrorMsg("License number already exists")
         navigate("/doctor/");
       }
-      console.log("kerita");
     } catch (error) {
       setErrorMsg("An error occurred")
         }
@@ -114,7 +109,6 @@ function DoctorReg() {
       <div className="card mt-2 border-radius-round-10 ">
         <div className="card-body p-3 border-radius-round-10">
           <div className="row rounded shadow border-dark">
-            {/* Left Column - Background Image */}
             <div
               className="col-lg-6 col-md-8 p-0 pl-5 d-none d-md-block bg-cover rounded-10"
               style={{
@@ -135,7 +129,6 @@ function DoctorReg() {
               </div>
             </div>
 
-            {/* Right Column - Registration Form */}
             <div className="col-lg-5 col-md">
               <div className="card-body d-flex flex-column justify-content-center align-items-center p-3 p-md-5">
                 <div className="text-center">

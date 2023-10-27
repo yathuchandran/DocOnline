@@ -97,7 +97,6 @@ const managePatients = async (req, res) => {
 
 const manageDoctor = async (req, res) => {
   try {
-    console.log(req.body);
     const { isDocBlocked, isDocVerify } = req.body;
     const id = req.params.docId;
 

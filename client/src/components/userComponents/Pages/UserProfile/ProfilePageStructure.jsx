@@ -53,7 +53,7 @@ function ProfilePageStructure({value}) {
     <Link className="navbar-brand" to="/">
       <img
         className="small-logo"
-        src="/Screenshotfrom.png"
+        src="/DocLogo.jpeg"
         alt=""
       />
     </Link>
@@ -109,7 +109,7 @@ function ProfilePageStructure({value}) {
 
 
       </nav>
-      <div className="col-12 m-0 mt-0 col-md-12"style={{background: "linear-gradient(to bottom, rgb(240, 230, 245), #99ccff)",}}>
+      <div className="col-12  mb-0  col-md-12">
             {activeTab === 'profile' && <Profile />}
             {activeTab === 'appointments' && <UserAppointments />}
             {activeTab === 'prescriptions'&& <Prescription />}

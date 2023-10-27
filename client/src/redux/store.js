@@ -22,7 +22,7 @@ const reducer=combineReducers({
   user: userReducer,
   doctor: doctorReducer,
   admin: adminReducer,
-  docSchedule: scheduleReducer,
+  schedule: scheduleReducer,
   selectedDoc: selectedDocReducer,
   appointment: appointmentReducer,
   consult: consultReducer,

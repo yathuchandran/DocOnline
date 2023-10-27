@@ -27,7 +27,6 @@ const RoomPage = ({value}) => {
 
 
   const handleUserJoined = useCallback(({ email, id }) => {
-    console.log(`Email ${email} joined room`);
     setRemoteSocketId(id);
   }, []);
 
@@ -39,9 +38,7 @@ const RoomPage = ({value}) => {
         setCallActive(false)
         setRemoteStream('')
         if (value==='doctor') {
-          console.log("appointment");
          const res= await axios.patch(`doctor/endAppointment/${appoint}`)
-         console.log(res.data,46,"vedicall");
         }
         socket.emit('socket:disconnect', { socketId: remoteSocketId });
         if (value == 'doctor') {
@@ -72,7 +69,6 @@ const RoomPage = ({value}) => {
         video: true,
       });
       setMyStream(stream);
-      console.log(`Incoming Call`, from, offer);
       const ans = await peer.getAnswer(offer);
       socket.emit("call:accepted", { to: from, ans });
     },
@@ -90,7 +86,6 @@ const RoomPage = ({value}) => {
   const handleCallAccepted = useCallback(
     ({ from, ans }) => {
       peer.setLocalDescription(ans);
-      console.log("Call Accepted!");
       sendStreams();
       setCallActive(true)
     },
@@ -129,7 +124,6 @@ const RoomPage = ({value}) => {
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStream = ev.streams;
-      console.log("GOT TRACKS!!");
       setRemoteStream(remoteStream[0]);
     });
   }, []);

@@ -40,6 +40,7 @@ function Doctor() {
      <Route path='/schedule' element={<DocMain value={'schedule'} />} />
      <Route path='/appointments' element={<DocMain value={'appointments'} />} />
      <Route path='/review' element={<DocMain value={'review'} />} />
+     <Route path='/payments' element={<DocMain value={'payments'} />} />
 
 
      {/* <Route path='/call/:room' element={<VedioCall value="doctor" />} /> */}

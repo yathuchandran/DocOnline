@@ -22,7 +22,6 @@ function ForgotPassword({ value }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let validate = validateEmail(emailRef.current.value);
-    console.log(emailRef, "emailRef");
 
     if (!validate) {
       setErrorMsg("Please enter a valid email address");
@@ -31,16 +30,12 @@ function ForgotPassword({ value }) {
         if (value=='doctor') {
           const email=emailRef.current.value;
           const res=await axios.get( `/doctor/forgotPassword/${email}`)
-          console.log(res.data, "--------", res.status);
 
           if (res.status === 200) {
             setErrorMsg("");
             btnRef.current.style.display = "none";
             otpRef.current.style.display = "block";
             otpBtnRef.current.style.display = "block";
-            console.log("--------", res.status, "res.status");
-
-            console.log("success");
           } else {
             setErrorMsg("Email not found");
           }
@@ -48,15 +43,12 @@ function ForgotPassword({ value }) {
         }else if (!value) {
           const email = emailRef.current.value;
           const res = await axios.get(`/forgotPassword/${email}`);
-          console.log(res.data, "--------", res.status);
           if (res.status === 200) {
             setErrorMsg("");
             btnRef.current.style.display = "none";
             otpRef.current.style.display = "block";
             otpBtnRef.current.style.display = "block";
-            console.log("--------", res.status, "res.status");
 
-            console.log("success");
           } else {
             setErrorMsg("Email not found");
           }
@@ -79,9 +71,7 @@ function ForgotPassword({ value }) {
       if (value=='doctor') {
         const email = emailRef.current.value;
         const otp = otpRef.current.value;
-        console.log("==========docto=");
         const res = await axios.patch(`/doctor/verifyOtp`, { email, otp });
-        console.log(res, "----------------------------");
         if (res.status === 200) {
           navigate(`/doctor/newPassword/${emailRef.current.value}`)
         }else{
@@ -91,12 +81,9 @@ function ForgotPassword({ value }) {
       }else if (!value) {
         const email = emailRef.current.value;
         const otp = otpRef.current.value;
-        console.log("=================================================");
         const res = await axios.patch(`/verifyOtp`, { email, otp });
-        console.log(res, "----------------------------");
         if (res.status === 200) {
           navigate(`/newPassword/${emailRef.current.value}`)
-          console.log("success");
         }else{
           setErrorMsg("Invalid OTP")
         }

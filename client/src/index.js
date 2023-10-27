@@ -10,6 +10,7 @@ import AuthProvider from "./context/authContext";
 import { PersistGate } from "redux-persist/integration/react";
 import persistStore from "redux-persist/es/persistStore";
 import { SocketProvider } from "./context/socket/SocketProvider";
+import Footer from "./components/Footer";
 
 let persistor = persistStore(store);
 
@@ -21,6 +22,7 @@ root.render(
         <Provider store={store}>
           <PersistGate persistor={persistor}>
             <App />
+            <Footer />
           </PersistGate>
         </Provider>
       </AuthProvider>

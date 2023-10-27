@@ -24,7 +24,7 @@ function DoctorCard({ docData }) {
       <div className="d-flex  d-flex align-items-center justify-content-center ">
         {docData?.length > 0 ? (
           docData.map((el, index) => (
-            <div className="m-3 card" style={{ width: '14rem', minHeight: '20rem' }} key={index}>
+            <div className="m-3 card" style={{ width: '14rem', minHeight: '20rem', borderRadius: "10px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", }} key={index} >
               <div className='m-auto' style={{ width: '100%', height: '10rem' }}>
                 <img style={{ width: '100%', height: '10rem' }}    src={el.image}                     className="card-img-top" alt="..." />
               </div>
