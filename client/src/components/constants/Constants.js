@@ -1,1 +1,1 @@
-export const baseUrl ='http://localhost:5051/'
+export const baseUrl ='https://www.onlinedoctor.website/'

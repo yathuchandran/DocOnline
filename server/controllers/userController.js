@@ -80,10 +80,12 @@ const verifyOtp = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-
+console.log("login 83");
     const { email, password } = req.body;
     const userData = await User.findOne({ email: email });
     if (userData) {
+      console.log(userData,"login 83");
+
       const passwordMatch = await bcrypt.compare(password, userData.password);
       if (passwordMatch) {
         if (userData.isVerified === false) {
