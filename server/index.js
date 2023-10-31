@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true,limit:"500mb" }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors({
-  origin: 'https://online-doc-client.vercel.app/',
+  origin: '',
   // origin: 'http://localhost:3000/',
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
