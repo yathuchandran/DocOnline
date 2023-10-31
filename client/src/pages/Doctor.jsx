@@ -28,9 +28,7 @@ function Doctor() {
      <Route path='/forgotPassword' element={<ForgotPassword value={'doctor'} />} />
      <Route path='/newPassword/:email' element={<ResetPassword value={'doctor'} />} />
 
-     <Route path='/consult' element={<DocMain value={'consult'} />} />
-
-     <Route path='/call/:room' element={<RoomPage value="doctor" />} />
+   
 
 
      <Route  element={<RequireDoctor />}>
@@ -43,11 +41,12 @@ function Doctor() {
      <Route path='/payments' element={<DocMain value={'payments'} />} />
 
 
-     {/* <Route path='/call/:room' element={<VedioCall value="doctor" />} /> */}
 
      <Route path='/success' element={<Success  />} />
      <Route path='/createPrscription' element={<DocMain value="createPrescription" />} />
+     <Route path='/consult' element={<DocMain value={'consult'} />} />
 
+    <Route path='/call/:room' element={<RoomPage value="doctor" />} />
 
      </Route>
 
